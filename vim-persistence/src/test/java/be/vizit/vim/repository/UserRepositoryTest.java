@@ -13,10 +13,13 @@ class UserRepositoryTest extends RepositoryIntegrationTest {
     private UserRepository userRepository;
 
     @Test
-    void testFindUserById() {
+    void testFindUserByUsername() {
         User testUser = new User();
         testUser.setUsername("bob");
         userRepository.save(testUser);
-        assertThat(testUser.getId(), is(notNullValue()));
+
+        User userResult = userRepository.findUserByUsername("bob");
+        assertThat(userResult, is(notNullValue()));
+        assertThat(userResult.getUsername(), equalTo("bob"));
     }
 }

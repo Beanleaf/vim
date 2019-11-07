@@ -1,11 +1,13 @@
 package be.vizit.vim.services;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @DataJpaTest
+@Transactional
 public abstract class ServiceIntegrationTest {
 
     @PersistenceContext

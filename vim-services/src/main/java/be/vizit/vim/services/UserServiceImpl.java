@@ -26,4 +26,9 @@ public class UserServiceImpl implements UserService {
     public User getUser(String username) {
         return userRepository.findUserByUsername(username);
     }
+
+    @Override
+    public boolean validateUser(User user) {
+        return true;
+    }
 }

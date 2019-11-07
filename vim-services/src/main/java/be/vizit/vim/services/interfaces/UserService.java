@@ -6,4 +6,6 @@ public interface UserService {
     User getUser(long id);
 
     User getUser(String username);
+
+    boolean validateUser(User user);
 }

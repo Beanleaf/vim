@@ -4,8 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication //(scanBasePackages = "be.vizit")
-public class WebServiceApp {
+public class VimWebApp {
 	public static void main(String[] args) {
-		SpringApplication.run(WebServiceApp.class, args);
+        SpringApplication.run(VimWebApp.class, args);
+        System.out.println("VIM started");
 	}
 }

@@ -10,82 +10,82 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String username;
-    private boolean active;
-    private byte[] passwordSalt;
-    private byte[] passwordHash;
-    private String emailAddress;
-    private String firstName;
-    private String lastName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private String username;
+  private boolean active;
+  private byte[] passwordSalt;
+  private byte[] passwordHash;
+  private String emailAddress;
+  private String firstName;
+  private String lastName;
 
-    public User() {
-        //JPA
-    }
+  public User() {
+    //JPA
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public boolean isActive() {
+    return active;
+  }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 
-    public byte[] getPasswordSalt() {
-        return passwordSalt;
-    }
+  public byte[] getPasswordSalt() {
+    return passwordSalt;
+  }
 
-    public void setPasswordSalt(byte[] passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
+  public void setPasswordSalt(byte[] passwordSalt) {
+    this.passwordSalt = passwordSalt;
+  }
 
-    public byte[] getPasswordHash() {
-        return passwordHash;
-    }
+  public byte[] getPasswordHash() {
+    return passwordHash;
+  }
 
-    public void setPasswordHash(byte[] passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+  public void setPasswordHash(byte[] passwordHash) {
+    this.passwordHash = passwordHash;
+  }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+  public String getEmailAddress() {
+    return emailAddress;
+  }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 }

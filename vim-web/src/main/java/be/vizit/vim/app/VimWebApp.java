@@ -8,10 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = {"be.vizit.vim"})
 public class VimWebApp {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VimWebApp.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(VimWebApp.class);
 
-	public static void main(String[] args) {
-        SpringApplication.run(VimWebApp.class, args);
-        LOGGER.info("VIM web application has started");
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(VimWebApp.class, args);
+    LOGGER.info("VIM web application has started");
+  }
 }

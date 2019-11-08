@@ -1,40 +1,40 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>vim-services</artifactId>
 
-	<parent>
-		<groupId>be.vizit</groupId>
-		<artifactId>vim</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+  <dependencies>
+    <dependency>
+      <artifactId>vim-persistence</artifactId>
+      <groupId>be.vizit</groupId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>commons-lang3</artifactId>
+      <groupId>org.apache.commons</groupId>
+    </dependency>
 
-	<artifactId>vim-services</artifactId>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
+      <scope>test</scope>
+      <version>1.4.200</version>
+    </dependency>
+    <dependency>
+      <artifactId>junit-jupiter-api</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>5.5.2</version>
+    </dependency>
+  </dependencies>
 
-    <dependencies>
-        <dependency>
-            <groupId>be.vizit</groupId>
-            <artifactId>vim-persistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <artifactId>commons-lang3</artifactId>
-            <groupId>org.apache.commons</groupId>
-        </dependency>
+  <modelVersion>4.0.0</modelVersion>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-            <version>1.4.200</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.5.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+  <parent>
+    <artifactId>vim</artifactId>
+    <groupId>be.vizit</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 </project>

@@ -1,4 +1,4 @@
-# VIM ![Build status](https://travis-ci.org/mathiasbosman/VIM.svg?branch=master "Build status")
+# VIM [![Build Status](https://cloud.drone.io/api/badges/mathiasbosman/vim/status.svg)](https://cloud.drone.io/mathiasbosman/vim)
 Vizit Inventory Management
 
 ### Database

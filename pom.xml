@@ -3,7 +3,6 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>vim</artifactId>
-
   <build>
     <plugins>
       <plugin>
@@ -15,8 +14,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.8.0</version>
       </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>2.5.3</version>
+      </plugin>
     </plugins>
   </build>
+  <scm>
+    <developerConnection>scm:git:https://github.com/mathiasbosman/vim.git</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>

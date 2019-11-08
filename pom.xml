@@ -18,6 +18,10 @@
         <artifactId>maven-release-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
         <version>2.5.3</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -14,8 +14,12 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     private UserService userService;
 
     @Test
-    void validateUser() {
-        assertTrue(userService.validateUser(new User()));
+    void getUser() {
+        User user = new User();
+        user.setUsername("bob");
+        store(user);
+        assertNotNull(userService.getUser(user.getId()));
+        assertNotNull(userService.getUserByUsername("bob"));
     }
 
     @Test

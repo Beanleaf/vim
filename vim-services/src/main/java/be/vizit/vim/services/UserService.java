@@ -23,12 +23,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUser(String username) {
+    public User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
-    }
-
-    public boolean validateUser(User user) {
-        return true;
     }
 
     @Transactional

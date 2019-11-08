@@ -1,5 +1,6 @@
-package be.vizit.vim.domain;
+package be.vizit.vim.domain.entities;
 
+import be.vizit.vim.domain.UserRole;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class User {
   private String emailAddress;
   private String firstName;
   private String lastName;
+  private UserRole userRole;
 
   public User() {
     //JPA
@@ -87,5 +89,13 @@ public class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public UserRole getUserRole() {
+    return userRole;
+  }
+
+  public void setUserRole(UserRole userRole) {
+    this.userRole = userRole;
   }
 }

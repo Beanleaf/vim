@@ -5,7 +5,7 @@ Vizit Inventory Management
 ### Database
 
 Database connection parameters are set in `application.properties`
-```
+```properties
 spring.datasource.url=jbcUrl
 spring.datasource.username=username
 spring.datasource.password=password
@@ -22,12 +22,9 @@ mvn clean install
 ### Resource caching
 Some browsers (such as Chrome) love to cache static resources such as CSS en JS files.
 To disable this (for local development) an extra spring parameter can be added:
-```
+```properties
 spring.resources.chain.strategy.content.enabled=true
 ```
-
-### Builders
-We currently use Jenkins locally (with the help of ngrok) and Travis.org remotely
 
 ## Resources
 ### Backend

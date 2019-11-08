@@ -16,6 +16,13 @@
         <relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+    <modules>
+        <module>vim-domain</module>
+        <module>vim-persistence</module>
+        <module>vim-services</module>
+        <module>vim-web</module>
+    </modules>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -38,10 +45,11 @@
         </dependency>
 	</dependencies>
 
-	<modules>
-        <module>vim-domain</module>
-        <module>vim-persistence</module>
-		<module>vim-services</module>
-		<module>vim-web</module>
-	</modules>
+    <repositories>
+        <repository>
+            <id>repository.spring.release</id>
+            <name>Spring GA Repository</name>
+            <url>http://repo.spring.io/release</url>
+        </repository>
+    </repositories>
 </project>

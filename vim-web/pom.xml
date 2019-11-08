@@ -28,30 +28,4 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 	</dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.8.0</version>
-            </plugin>
-            <plugin>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <addResources>true</addResources>
-                    <profiles>
-                        <profile>dev</profile>
-                        <profile>test</profile>
-                        <profile>prod</profile>
-                    </profiles>
-                </configuration>
-                <groupId>org.springframework.boot</groupId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

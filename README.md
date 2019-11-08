@@ -29,9 +29,5 @@ spring.resources.chain.strategy.content.enabled=true
 ## Resources
 ### Backend
 * [Spring Boot](https://spring.io/guides/gs/serving-web-content/)
-* [Thymeleaf](https://www.thymeleaf.org/)
-### Front-end
-* [Primer](https://primer.style/) (+ [octicons](https://octicons.github.com/))
-* [Font Awesome icons](https://fontawesome.com/)
 ### Tools
 * [IntelliJ IDE](https://www.jetbrains.com/idea/)

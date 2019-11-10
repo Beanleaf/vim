@@ -12,7 +12,18 @@
       <artifactId>commons-lang3</artifactId>
       <groupId>org.apache.commons</groupId>
     </dependency>
+    <dependency>
+      <artifactId>core</artifactId>
+      <groupId>com.google.zxing</groupId>
+      <version>3.3.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>javase</artifactId>
+      <groupId>com.google.zxing</groupId>
+      <version>3.3.0</version>
+    </dependency>
 
+    <!-- Test dependencies -->
     <dependency>
       <artifactId>h2</artifactId>
       <groupId>com.h2database</groupId>

@@ -64,6 +64,6 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     User user = new User();
     user.setUuid("uuid");
     store(user);
-    assertThat(userService.findUserByUuid("uuid")).isNotNull();
+    assertNotNull(userService.findUserByUuid("uuid"));
   }
 }

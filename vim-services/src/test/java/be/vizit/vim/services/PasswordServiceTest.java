@@ -5,11 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import be.vizit.vim.AbstractTest;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class PasswordServiceTest extends ServiceIntegrationTest {
+class PasswordServiceTest extends AbstractTest {
 
   @Autowired
   private PasswordService passwordService;

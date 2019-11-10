@@ -10,7 +10,7 @@ create table users
     emailaddress varchar(256),
     firstname    varchar(255),
     lastname     varchar(255),
-    uuid         varchar(32)
+    uuid         varchar(36)
 );
 
 create unique index users_id_uindex

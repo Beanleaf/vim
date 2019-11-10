@@ -30,6 +30,11 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
+  public User findUserByUuid(String uuid) {
+    return userRepository.findUserByUuid(uuid);
+  }
+
+  @Transactional(readOnly = true)
   public List<User> findUsersByRole(UserRole role) {
     return userRepository.findAllByUserRole(role);
   }

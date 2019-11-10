@@ -22,6 +22,7 @@ public class User {
   private String firstName;
   private String lastName;
   private UserRole userRole;
+  private String uuid;
 
   public User() {
     //JPA
@@ -97,5 +98,13 @@ public class User {
 
   public void setUserRole(UserRole userRole) {
     this.userRole = userRole;
+  }
+
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 }

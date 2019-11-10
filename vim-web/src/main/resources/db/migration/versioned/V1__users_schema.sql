@@ -9,7 +9,8 @@ create table users
     passwordhash bytea,
     emailaddress varchar(256),
     firstname    varchar(255),
-    lastname     varchar(255)
+    lastname     varchar(255),
+    uuid         varchar(32)
 );
 
 create unique index users_id_uindex
@@ -20,3 +21,6 @@ create unique index users_username_uindex
 
 create unique index users_emailaddress_uindex
     on users (emailaddress);
+
+create unique index users_uuid_uindex
+    on users (uuid);

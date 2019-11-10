@@ -58,4 +58,12 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     store(user2);
     assertThat(userService.findUsersByRole(UserRole.ADMIN).size()).isEqualTo(2);
   }
+
+  @Test
+  void findUserByUuid() {
+    User user = new User();
+    user.setUuid("uuid");
+    store(user);
+    assertThat(userService.findUserByUuid("uuid")).isNotNull();
+  }
 }

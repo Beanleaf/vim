@@ -28,6 +28,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void deactivateUser() {
     User user = new User();
+    user.setUsername("bob");
     user.setActive(true);
     store(user);
     assertTrue(user.isActive());
@@ -38,6 +39,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void changePassword() {
     User user = new User();
+    user.setUsername("bob");
     byte[] byte16 = new byte[16];
     user.setPasswordSalt(byte16);
     byte[] byte8 = new byte[8];
@@ -51,9 +53,11 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void findUsersByRole() {
     User user = new User();
+    user.setUsername("bob");
     user.setUserRole(UserRole.ADMIN);
     store(user);
     User user2 = new User();
+    user2.setUsername("tom");
     user2.setUserRole(UserRole.ADMIN);
     store(user2);
     assertThat(userService.findUsersByRole(UserRole.ADMIN).size()).isEqualTo(2);
@@ -63,6 +67,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   void findUserByUuid() {
     User user = new User();
     user.setUuid("uuid");
+    user.setUsername("bob");
     store(user);
     assertNotNull(userService.findUserByUuid("uuid"));
   }

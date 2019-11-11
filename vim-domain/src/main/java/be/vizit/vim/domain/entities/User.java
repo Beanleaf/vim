@@ -1,6 +1,7 @@
 package be.vizit.vim.domain.entities;
 
 import be.vizit.vim.domain.UserRole;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,14 +15,17 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  @Column(unique = true, nullable = false)
   private String username;
   private boolean active;
   private byte[] passwordSalt;
   private byte[] passwordHash;
   private String emailAddress;
+  private String phonenumber;
   private String firstName;
   private String lastName;
   private UserRole userRole;
+  @Column(unique = true)
   private String uuid;
 
   public User() {
@@ -74,6 +78,14 @@ public class User {
 
   public void setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
+  }
+
+  public String getPhonenumber() {
+    return phonenumber;
+  }
+
+  public void setPhonenumber(String phonenumber) {
+    this.phonenumber = phonenumber;
   }
 
   public String getFirstName() {

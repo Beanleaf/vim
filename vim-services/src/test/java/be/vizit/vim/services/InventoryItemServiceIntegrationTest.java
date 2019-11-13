@@ -1,5 +1,6 @@
 package be.vizit.vim.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.fixtures.InventoryItemFixture;
+import be.vizit.vim.fixtures.ItemCategoryFixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +25,15 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     store(item);
     assertNull(inventoryItemService.findByUuid("uuid_b"));
     assertEquals("uuid", inventoryItemService.findByUuid("uuid").getUuid());
+  }
+
+  @Test
+  void findAllByItemCategory() {
+    ItemCategory itemCategory = ItemCategoryFixture.newItemCategory("code");
+    store(itemCategory);
+    store(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
+    store(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
+    assertThat(inventoryItemService.findAllByItemCategory(itemCategory)).hasSize(2);
   }
 
   @Test

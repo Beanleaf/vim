@@ -1,12 +1,18 @@
 package be.vizit.vim.fixtures;
 
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.ItemCategory;
 
 public class InventoryItemFixture {
 
-  public static InventoryItem newInventoryItem(String uuid) {
+  public static InventoryItem newInventoryItem(String uuid, ItemCategory itemCategory) {
     InventoryItem inventoryItem = new InventoryItem();
     inventoryItem.setUuid(uuid);
+    inventoryItem.setItemCategory(itemCategory);
     return inventoryItem;
+  }
+
+  public static InventoryItem newInventoryItem(String uuid) {
+    return newInventoryItem(uuid, null);
   }
 }

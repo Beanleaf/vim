@@ -1,7 +1,9 @@
 package be.vizit.vim.services;
 
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.repository.InventoryitemRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,11 @@ public class InventoryItemService {
   @Transactional(readOnly = true)
   public InventoryItem getInventoryItem(long id) {
     return inventoryitemRepository.findInventoryItemById(id);
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory) {
+    return inventoryitemRepository.findAllByItemCategory(itemCategory);
   }
 
   @Transactional

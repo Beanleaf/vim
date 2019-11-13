@@ -5,24 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "inventory_items")
-public class InventoryItem {
+@Table(name = "item_categories")
+public class ItemCategory {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private boolean active;
   @Column(unique = true, nullable = false)
-  private String uuid;
+  private String shortCode;
   private String description;
-  @ManyToOne
-  private ItemCategory itemCategory;
 
-  public InventoryItem() {
+  public ItemCategory() {
   }
 
   public Long getId() {
@@ -33,20 +29,12 @@ public class InventoryItem {
     this.id = id;
   }
 
-  public boolean isActive() {
-    return active;
+  public String getShortCode() {
+    return shortCode;
   }
 
-  public void setActive(boolean active) {
-    this.active = active;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
+  public void setShortCode(String shortCode) {
+    this.shortCode = shortCode;
   }
 
   public String getDescription() {
@@ -55,13 +43,5 @@ public class InventoryItem {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public ItemCategory getItemCategory() {
-    return itemCategory;
-  }
-
-  public void setItemCategory(ItemCategory itemCategory) {
-    this.itemCategory = itemCategory;
   }
 }

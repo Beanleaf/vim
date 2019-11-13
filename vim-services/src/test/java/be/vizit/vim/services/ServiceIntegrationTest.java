@@ -19,6 +19,13 @@ public abstract class ServiceIntegrationTest extends AbstractTest {
   public <T> void store(T t) {
     entityManager.persist(t);
   }
+
+  @SafeVarargs
+  public final <T> void storeAll(T... t) {
+    for (T object : t) {
+      store(object);
+    }
+  }
 }
 
 

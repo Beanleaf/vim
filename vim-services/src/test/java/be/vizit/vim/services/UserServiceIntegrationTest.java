@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.domain.UserRole;
 import be.vizit.vim.domain.entities.User;
+import be.vizit.vim.fixtures.UserFixture;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void getUser() {
-    User user = new User();
-    user.setUsername("bob");
+    User user = UserFixture.newUser("bob", "uuid");
     store(user);
     assertNotNull(userService.getUser(user.getId()));
     assertNotNull(userService.getUserByUsername("bob"));
@@ -27,9 +27,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void deactivateUser() {
-    User user = new User();
-    user.setUsername("bob");
-    user.setActive(true);
+    User user = UserFixture.newUser("bob", "uuid", true);
     store(user);
     assertTrue(user.isActive());
     userService.deactivateUser(user.getId());
@@ -38,8 +36,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void changePassword() {
-    User user = new User();
-    user.setUsername("bob");
+    User user = UserFixture.newUser("bob", "uuid");
     byte[] byte16 = new byte[16];
     user.setPasswordSalt(byte16);
     byte[] byte8 = new byte[8];
@@ -52,12 +49,10 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findUsersByRole() {
-    User user = new User();
-    user.setUsername("bob");
+    User user = UserFixture.newUser("bob", "uuid");
     user.setUserRole(UserRole.ADMIN);
     store(user);
-    User user2 = new User();
-    user2.setUsername("tom");
+    User user2 = UserFixture.newUser("tom", "uuid2");
     user2.setUserRole(UserRole.ADMIN);
     store(user2);
     assertThat(userService.findUsersByRole(UserRole.ADMIN).size()).isEqualTo(2);
@@ -65,9 +60,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findUserByUuid() {
-    User user = new User();
-    user.setUuid("uuid");
-    user.setUsername("bob");
+    User user = UserFixture.newUser("bob", "uuid");
     store(user);
     assertNotNull(userService.findUserByUuid("uuid"));
   }

@@ -1,9 +1,6 @@
 package be.vizit.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.AbstractTest;
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,8 +16,8 @@ class PasswordServiceTest extends AbstractTest {
   void createSaltHashPair() {
     String password = "thereIsNoSpoon";
     Pair<byte[], byte[]> saltHashPair = passwordService.createHashSaltPair(password);
-    assertNotNull(saltHashPair.getLeft());
-    assertNotNull(saltHashPair.getRight());
+    assertThat(saltHashPair.getLeft()).isNotNull();
+    assertThat(saltHashPair.getRight()).isNotNull();
   }
 
   @Test
@@ -29,8 +26,8 @@ class PasswordServiceTest extends AbstractTest {
     Pair<byte[], byte[]> saltHashPair = passwordService.createHashSaltPair(password);
     byte[] salt = saltHashPair.getLeft();
     byte[] hash = saltHashPair.getRight();
-    assertTrue(passwordService.isExpectedPassword(password, salt, hash));
-    assertFalse(passwordService.isExpectedPassword("itIsAFork", salt, hash));
+    assertThat(passwordService.isExpectedPassword(password, salt, hash)).isTrue();
+    assertThat(passwordService.isExpectedPassword("itIsAFork", salt, hash)).isFalse();
   }
 
   @Test

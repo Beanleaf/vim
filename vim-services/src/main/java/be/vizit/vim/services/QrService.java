@@ -15,7 +15,7 @@ public class QrService {
 
   public byte[] generateQr(String input, int width, int height) {
     if (StringUtils.isEmpty(input)) {
-      throw new IllegalArgumentException("The input wihle generating the QR code was not set.");
+      throw new IllegalArgumentException("The input while generating the QR code was not set.");
     }
 
     try {

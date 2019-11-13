@@ -1,7 +1,6 @@
 package be.vizit.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.fixtures.ItemCategoryFixture;
@@ -16,7 +15,7 @@ class ItemCategoryServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void getItemCategory() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    assertNotNull(itemCategoryService.getItemCategory(itemCategory.getId()));
+    assertThat(itemCategoryService.getItemCategory(itemCategory.getId())).isNotNull();
   }
 
   @Test
@@ -29,13 +28,13 @@ class ItemCategoryServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void findByShortCode() {
     store(ItemCategoryFixture.newItemCategory("code"));
-    assertNotNull(itemCategoryService.findByShortCode("code"));
+    assertThat(itemCategoryService.findByShortCode("code")).isNotNull();
   }
 
   @Test
   void save() {
     ItemCategory itemCategory = ItemCategoryFixture.newItemCategory("code");
     itemCategoryService.save(itemCategory);
-    assertNotNull(itemCategory.getId());
+    assertThat(itemCategory.getId()).isNotNull();
   }
 }

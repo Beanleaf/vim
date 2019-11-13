@@ -5,10 +5,11 @@
   <title>VIM - Login</title>
 </head>
 <body>
+<p th:if="${error}" th:text="${error}"></p>
 <form method="post" th:action="@{/login}">
-  <label for="loginId">Login ID: <input id="loginId" name="loginId"
-                                        placeholder="Scan your code or enter your username"
-                                        type="password"/></label>
+  <label for="username">Login ID: <input id="username" name="username"
+                                         placeholder="Scan your code or enter your username"
+                                         type="password"/></label>
   <input type="submit" value="Login"/>
 </form>
 </body>

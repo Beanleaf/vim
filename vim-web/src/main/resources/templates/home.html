@@ -1,10 +1,15 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>VIM -Vizit Inventory Management</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 </head>
 <body>
+<p th:if="${activeUser}">
+  Hey there <span th:text="${activeUser.getFirstName()}"></span>
+<p th:if="${activeUser.getUserRole()}">
+  You're role is <span th:text="${activeUser.getUserRole().getDescription()}"></span>, you stud!
+</p>
 <p>Welcome to VIM</p>
 </body>
 </html>

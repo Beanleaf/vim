@@ -1,11 +1,6 @@
 package be.vizit.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
@@ -22,8 +17,8 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void findByUuid() {
     store(InventoryItemFixture.newInventoryItem("uuid"));
-    assertNull(inventoryItemService.findByUuid("uuid_b"));
-    assertEquals("uuid", inventoryItemService.findByUuid("uuid").getUuid());
+    assertThat(inventoryItemService.findByUuid("uuid_b")).isNull();
+    assertThat(inventoryItemService.findByUuid("uuid").getUuid()).isEqualTo("uuid");
   }
 
   @Test
@@ -39,16 +34,16 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
     item.setActive(true);
     store(item);
-    assertTrue(inventoryItemService.getInventoryItem(item.getId()).isActive());
+    assertThat(inventoryItemService.getInventoryItem(item.getId()).isActive()).isTrue();
     inventoryItemService.delete(item);
-    assertFalse(item.isActive());
+    assertThat(item.isActive()).isFalse();
   }
 
   @Test
   void save() {
     InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
     inventoryItemService.save(item);
-    assertNotNull(item.getId());
+    assertThat(item.getId()).isNotNull();
   }
 
   @Test

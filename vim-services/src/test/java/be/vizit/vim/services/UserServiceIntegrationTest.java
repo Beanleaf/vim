@@ -1,9 +1,6 @@
 package be.vizit.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.domain.UserRole;
 import be.vizit.vim.domain.entities.User;
@@ -20,16 +17,16 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void getUser() {
     User user = createAndStore(UserFixture.newUser("bob", "uuid"));
-    assertNotNull(userService.getUser(user.getId()));
-    assertNotNull(userService.getUserByUsername("bob"));
+    assertThat(userService.getUser(user.getId())).isNotNull();
+    assertThat(userService.getUserByUsername("bob")).isNotNull();
   }
 
   @Test
   void deactivateUser() {
     User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
-    assertTrue(user.isActive());
+    assertThat(user.isActive()).isTrue();
     userService.deactivateUser(user.getId());
-    assertFalse(user.isActive());
+    assertThat(user.isActive()).isFalse();
   }
 
   @Test
@@ -57,8 +54,18 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   }
 
   @Test
-  void findUserByUuid() {
+  void getUserByUuid() {
     store(UserFixture.newUser("bob", "uuid"));
-    assertNotNull(userService.findUserByUuid("uuid"));
+    assertThat(userService.getUserByUuid("uuid")).isNotNull();
+  }
+
+  @Test
+  void login() {
+    store(UserFixture.newUser("bob", "uuid", true));
+    assertThat(userService.login("tom")).isNull();
+    assertThat(userService.login("bob")).isNotNull();
+    assertThat(userService.login("uuid")).isNotNull();
+    store(UserFixture.newUser("tom", "uuid2", false));
+    assertThat(userService.login("tom")).isNull();
   }
 }

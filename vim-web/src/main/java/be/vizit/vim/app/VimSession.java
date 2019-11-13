@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserSession {
+public class VimSession {
 
-  private User user;
+  private User activeUser;
 
-  public User getUser() {
-    return user;
+  public User getActiveUser() {
+    return activeUser;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setActiveUser(User activeUser) {
+    this.activeUser = activeUser;
   }
 }

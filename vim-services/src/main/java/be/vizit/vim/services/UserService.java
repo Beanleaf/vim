@@ -30,7 +30,7 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public User findUserByUuid(String uuid) {
+  public User getUserByUuid(String uuid) {
     return userRepository.findUserByUuid(uuid);
   }
 
@@ -50,5 +50,14 @@ public class UserService {
     User user = getUser(userId);
     user.setPasswordHash(hashSalt.getLeft());
     user.setPasswordSalt(hashSalt.getRight());
+  }
+
+  @Transactional(readOnly = true)
+  public User login(String uuidOrUsername) {
+    User user = getUserByUuid(uuidOrUsername);
+    if (user == null) {
+      user = getUserByUsername(uuidOrUsername);
+    }
+    return user != null && user.isActive() ? user : null;
   }
 }

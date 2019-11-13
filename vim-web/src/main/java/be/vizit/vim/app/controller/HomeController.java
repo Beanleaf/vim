@@ -27,6 +27,6 @@ public class HomeController {
   @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
   public @ResponseBody
   byte[] getQr(@RequestParam(name = "content") String input) {
-    return qrService.generateQr(StringUtils.trim(input), 100, 100);
+    return qrService.generateQr(StringUtils.trim(input), 200, 200);
   }
 }

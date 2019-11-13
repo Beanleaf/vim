@@ -2,10 +2,12 @@ package be.vizit.vim.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.fixtures.InventoryItemFixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +18,7 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findByUuid() {
-    InventoryItem item = new InventoryItem();
-    item.setUuid("uuid");
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
     store(item);
     assertNull(inventoryItemService.findByUuid("uuid_b"));
     assertEquals("uuid", inventoryItemService.findByUuid("uuid").getUuid());
@@ -25,11 +26,18 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void delete() {
-    InventoryItem item = new InventoryItem();
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
     item.setActive(true);
     store(item);
     assertTrue(inventoryItemService.getInventoryItem(item.getId()).isActive());
     inventoryItemService.delete(item);
     assertFalse(item.isActive());
+  }
+
+  @Test
+  void save() {
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
+    inventoryItemService.save(item);
+    assertNotNull(item.getId());
   }
 }

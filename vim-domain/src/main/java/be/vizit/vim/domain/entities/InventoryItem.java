@@ -1,5 +1,6 @@
 package be.vizit.vim.domain.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +15,9 @@ public class InventoryItem {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private boolean active;
+  @Column(unique = true, nullable = false)
   private String uuid;
+  private String description;
 
   public InventoryItem() {
   }
@@ -41,5 +44,13 @@ public class InventoryItem {
 
   public void setUuid(String uuid) {
     this.uuid = uuid;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

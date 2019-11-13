@@ -34,6 +34,11 @@ public class InventoryItemService {
     inventoryitem.setActive(false);
   }
 
+  @Transactional
+  public void save(InventoryItem inventoryItem) {
+    inventoryitemRepository.save(inventoryItem);
+  }
+
   public byte[] getQrCode(InventoryItem inventoryitem) {
     return qrService.generateQr(inventoryitem.getUuid(), 100, 100);
   }

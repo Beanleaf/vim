@@ -15,16 +15,14 @@ class ItemCategoryServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void getItemCategory() {
-    ItemCategory itemCategory = ItemCategoryFixture.newItemCategory("code");
-    store(itemCategory);
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     assertNotNull(itemCategoryService.getItemCategory(itemCategory.getId()));
   }
 
   @Test
   void findAllCategories() {
-    ItemCategory itemCategory = ItemCategoryFixture.newItemCategory("code1");
-    ItemCategory itemCategory1 = ItemCategoryFixture.newItemCategory("code2");
-    storeAll(itemCategory, itemCategory1);
+    store(ItemCategoryFixture.newItemCategory("code1"));
+    store(ItemCategoryFixture.newItemCategory("code2"));
     assertThat(itemCategoryService.findAllCategories()).hasSize(2);
   }
 

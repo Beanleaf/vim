@@ -21,16 +21,14 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findByUuid() {
-    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
-    store(item);
+    store(InventoryItemFixture.newInventoryItem("uuid"));
     assertNull(inventoryItemService.findByUuid("uuid_b"));
     assertEquals("uuid", inventoryItemService.findByUuid("uuid").getUuid());
   }
 
   @Test
   void findAllByItemCategory() {
-    ItemCategory itemCategory = ItemCategoryFixture.newItemCategory("code");
-    store(itemCategory);
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     store(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
     store(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
     assertThat(inventoryItemService.findAllByItemCategory(itemCategory)).hasSize(2);

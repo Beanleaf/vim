@@ -19,16 +19,14 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void getUser() {
-    User user = UserFixture.newUser("bob", "uuid");
-    store(user);
+    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
     assertNotNull(userService.getUser(user.getId()));
     assertNotNull(userService.getUserByUsername("bob"));
   }
 
   @Test
   void deactivateUser() {
-    User user = UserFixture.newUser("bob", "uuid", true);
-    store(user);
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
     assertTrue(user.isActive());
     userService.deactivateUser(user.getId());
     assertFalse(user.isActive());
@@ -60,8 +58,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findUserByUuid() {
-    User user = UserFixture.newUser("bob", "uuid");
-    store(user);
+    store(UserFixture.newUser("bob", "uuid"));
     assertNotNull(userService.findUserByUuid("uuid"));
   }
 }

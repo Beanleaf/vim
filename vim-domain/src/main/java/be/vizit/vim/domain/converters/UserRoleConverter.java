@@ -14,6 +14,10 @@ public class UserRoleConverter implements AttributeConverter<UserRole, Integer> 
 
   @Override
   public UserRole convertToEntityAttribute(Integer integer) {
+    if (integer == null) {
+      return null;
+    }
+
     for (UserRole role : UserRole.values()) {
       if (role.getId() == integer) {
         return role;

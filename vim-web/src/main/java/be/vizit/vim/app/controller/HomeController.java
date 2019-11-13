@@ -19,7 +19,7 @@ public class HomeController {
     this.qrService = qrService;
   }
 
-  @GetMapping("/home")
+  @GetMapping("/")
   public String home() {
     return "home";
   }

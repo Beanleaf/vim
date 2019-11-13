@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>VIM - Login</title>
+</head>
+<body>
+<form method="post" th:action="@{/login}">
+  <label for="loginId">Login ID: <input id="loginId" name="loginId"
+                                        placeholder="Scan your code or enter your username"
+                                        type="password"/></label>
+  <input type="submit" value="Login"/>
+</form>
+</body>
+</html>

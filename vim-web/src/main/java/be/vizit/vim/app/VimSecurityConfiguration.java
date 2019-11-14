@@ -10,12 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class VimConfiguration extends WebSecurityConfigurerAdapter {
+public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final VimAuthenticationProvider vimAuthenticationProvider;
 
   @Autowired
-  public VimConfiguration(VimAuthenticationProvider vimAuthenticationProvider) {
+  public VimSecurityConfiguration(VimAuthenticationProvider vimAuthenticationProvider) {
     this.vimAuthenticationProvider = vimAuthenticationProvider;
   }
 
@@ -25,6 +25,7 @@ public class VimConfiguration extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/login*").permitAll()
         .antMatchers("/admin/*").hasRole(UserRole.ADMIN.name())
+        .antMatchers("/css/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .formLogin()

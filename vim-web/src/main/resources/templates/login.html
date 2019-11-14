@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>VIM - Login</title>
-</head>
+<head th:replace="fragments/header :: htmlHead"></head>
 <body>
-<p th:if="${error}" th:text="${error}"></p>
-<form method="post" th:action="@{/login}">
-  <label for="username">Login ID: <input id="username" name="username"
-                                         placeholder="Scan your code or enter your username"
-                                         type="password"/></label>
-  <input type="submit" value="Login"/>
-</form>
+<div class="container flex-centered">
+  <div class="columns text-center">
+    <div class="column col-mx-auto col-auto">
+
+      <div class="hero">
+        <div class="hero-body">
+          <h1>VIM</h1>
+          <p>Vizit Inventory Management</p>
+        </div>
+      </div>
+
+      <div class="empty">
+        <div class="empty-icon">
+          <i class="icon icon-3x icon-people"></i>
+        </div>
+        <p class="empty-title h5" th:text="#{login.title}">You are not LDMFKJ in</p>
+        <p class="empty-subtitle" th:text="#{login.subtitle}">Please log in to start</p>
+        <div class="toast toast-error my-2" th:if="${error}">
+          <button class="btn btn-clear float-right"></button>
+          <span th:text="#{login.error}"></span>
+        </div>
+
+        <form method="post" th:action="@{/login}">
+          <div class="input-group">
+            <input autofocus class="form-input" id="username" name="username"
+                   th:placeholder="#{login.placeholder}" type="password"/>
+            <input class="btn btn-primary input-group-btn" type="submit" value="Login"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

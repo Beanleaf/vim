@@ -20,7 +20,7 @@ public class SecurityController extends VimController {
 
   @GetMapping("/login_error")
   public String loginErrror(Model model) {
-    model.addAttribute("error", "Something weant wrong.");
+    model.addAttribute("error", true);
     return "login";
   }
 

@@ -8,8 +8,8 @@
 
       <div class="hero">
         <div class="hero-body">
-          <h1>VIM</h1>
-          <p>Vizit Inventory Management</p>
+          <h1 th:text="#{application.title}">application.title</h1>
+          <p th:text="#{application.subtitle}">application.subtitle</p>
         </div>
       </div>
 
@@ -17,11 +17,11 @@
         <div class="empty-icon">
           <i class="icon icon-3x icon-people"></i>
         </div>
-        <p class="empty-title h5" th:text="#{login.title}">You are not LDMFKJ in</p>
-        <p class="empty-subtitle" th:text="#{login.subtitle}">Please log in to start</p>
+        <p class="empty-title h5" th:text="#{login.title}">login.title</p>
+        <p class="empty-subtitle" th:text="#{login.subtitle}">login.subtitle</p>
         <div class="toast toast-error my-2" th:if="${error}">
           <button class="btn btn-clear float-right"></button>
-          <span th:text="#{login.error}"></span>
+          <span th:text="#{login.error}">login.error</span>
         </div>
 
         <form method="post" th:action="@{/login}">
@@ -37,4 +37,7 @@
 </div>
 
 </body>
+<footer class="container columns p-fixed flex-centered bottom-0 my-1">
+  <div class="column text-center text-italic text-gray">Created by Beanleaf</div>
+</footer>
 </html>

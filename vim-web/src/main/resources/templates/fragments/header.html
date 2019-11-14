@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="ie=edge" http-equiv="X-UA-Compatible">
-  <title>VIM - Vizit Inventory Management</title>
+  <title th:text="#{application.title} + ' - ' + #{application.subtitle}">
+    application.title - application.subtitle
+  </title>
+  <link rel="stylesheet" th:href="@{/css/vim.css}">
   <link rel="stylesheet" th:href="@{/css/spectre.css}">
   <link rel="stylesheet" th:href="@{/css/spectre-exp.css}">
   <link rel="stylesheet" th:href="@{/css/spectre-icons.css}">

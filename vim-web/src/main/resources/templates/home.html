@@ -1,15 +1,11 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>VIM -Vizit Inventory Management</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-</head>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
 <body>
+
+
 <p th:if="${activeUser}">
-  Hey there <span th:text="${activeUser.getFirstName()}"></span>
-<p th:if="${activeUser.getUserRole()}">
-  You're role is <span th:text="${activeUser.getUserRole().getDescription()}"></span>, you stud!
-</p>
-<p>Welcome to VIM</p>
+  <span th:text="#{home.greeting(${activeUser.getFirstName()})}"></span>
+  <i th:if="${activeUser.getUserRole()}" th:text="${activeUser.getUserRole().getDescription()}"></i>
 </body>
 </html>

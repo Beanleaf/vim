@@ -55,6 +55,12 @@
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
     </dependency>
+    <!-- hot swapping, disable cache for template, enable live reload -->
+    <dependency>
+      <artifactId>spring-boot-devtools</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
   <distributionManagement>
     <site>

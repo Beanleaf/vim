@@ -3,9 +3,19 @@
 <head th:replace="fragments/header :: htmlHead"></head>
 <body>
 <header th:replace="fragments/header :: topBar"></header>
-<p th:if="${activeUser}">
-  <span th:text="#{home.greeting(${activeUser.getFirstName()})}"></span>
-  <i th:if="${activeUser.getUserRole()}" th:text="${activeUser.getUserRole().getDescription()}"></i>
+
+<div class="container-lg px-3 p-responsive width-full">
+  <div class="pagehead pb-1 my-2">
+    <h1 th:text="#{inventory.out.title}">inventory.out.title</h1>
+  </div>
+
+  <p th:if="${activeUser}">
+    <span th:text="#{home.greeting(${activeUser.getFirstName()})}"></span>
+    <i th:if="${activeUser.getUserRole()}"
+       th:text="${activeUser.getUserRole().getDescription()}"></i>
+</div>
+
+
 </body>
 
 <footer th:replace="fragments/footer :: footer"></footer>

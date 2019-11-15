@@ -1,7 +1,21 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<footer class="container columns p-fixed flex-centered bottom-0 my-1"
-        th:fragment="applicationFooter">
-  <div class="column text-center text-italic text-gray" th:text="#{application.copyright}"></div>
+<footer class="container-lg px-3 p-responsive width-full" th:fragment="footer">
+  <div
+      class="position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light">
+    <ul class="list-style-none d-flex flex-wrap">
+      <li class="mr-3">
+        <span th:text="#{application.copyright}">applicatoin.copyright</span>
+        &copy;
+        <span th:text="${#dates.format(#dates.createNow(), 'YYYY')}"></span>
+      </li>
+    </ul>
+    <a class="icon" th:href="@{/}" th:title="#{application.title}">
+      <i class="octicon octicon-repo-clone"></i>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap">
+      <li class="mr-3"><a th:href="'mailto:' + #{application.contact.email}">Contact</a></li>
+    </ul>
+  </div>
 </footer>
 </html>

@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: htmlHead"></head>
 <body>
-
-
 <p th:if="${activeUser}">
   <span th:text="#{home.greeting(${activeUser.getFirstName()})}"></span>
   <i th:if="${activeUser.getUserRole()}" th:text="${activeUser.getUserRole().getDescription()}"></i>
 </body>
+
+<footer th:replace="fragments/footer :: footer"></footer>
 </html>

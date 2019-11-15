@@ -2,6 +2,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>vim-web</artifactId>
 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>libsass-maven-plugin</artifactId>
+        <configuration>
+          <generateSourceMap>false</generateSourceMap>
+          <inputPath>${scss.path.source}</inputPath>
+          <outputPath>${scss.path.target}</outputPath>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+        <groupId>com.github.warmuuh</groupId>
+        <version>0.2.10-libsass_3.5.3</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>vim</artifactId>
+    <groupId>be.vizit</groupId>
+    <version>0.0.2-SNAPSHOT</version>
+  </parent>
+
   <dependencies>
     <dependency>
       <artifactId>vim-services</artifactId>
@@ -28,13 +59,10 @@
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
+    <dependency>
+      <artifactId>octicons</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>4.3.0</version>
+    </dependency>
   </dependencies>
-
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <artifactId>vim</artifactId>
-    <groupId>be.vizit</groupId>
-    <version>0.0.2-SNAPSHOT</version>
-  </parent>
 </project>

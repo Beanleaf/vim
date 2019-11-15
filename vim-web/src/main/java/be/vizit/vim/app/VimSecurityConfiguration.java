@@ -26,6 +26,7 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/login*").permitAll()
         .antMatchers("/admin/*").hasRole(UserRole.ADMIN.name())
         .antMatchers("/css/**").permitAll()
+        .antMatchers("/webjars/octicons/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .formLogin()

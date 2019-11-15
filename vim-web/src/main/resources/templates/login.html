@@ -1,41 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: htmlHead"></head>
-<body>
-<div class="container flex-centered">
-  <div class="columns text-center">
-    <div class="column col-mx-auto col-auto">
+<body class="bg-gray loginpage">
+<div class="container-xs my-4">
+  <h1 class="text-center" th:text="#{application.title}">application.title</h1>
+  <p class="f3 text-center" th:text="#{application.subtitle}">application.subtitle</p>
 
-      <div class="hero">
-        <div class="hero-body">
-          <h1 th:text="#{application.title}">application.title</h1>
-          <p th:text="#{application.subtitle}">application.subtitle</p>
-        </div>
-      </div>
 
-      <div class="empty">
-        <div class="empty-icon">
-          <i class="icon icon-3x icon-people"></i>
-        </div>
-        <p class="empty-title h5" th:text="#{login.title}">login.title</p>
-        <p class="empty-subtitle" th:text="#{login.subtitle}">login.subtitle</p>
-        <div class="toast toast-error my-2" th:if="${error}">
-          <button class="btn btn-clear float-right"></button>
-          <span th:text="#{login.error}">login.error</span>
-        </div>
-
-        <form method="post" th:action="@{/login}">
-          <div class="input-group">
-            <input autofocus class="form-input" id="username" name="username"
-                   th:placeholder="#{login.placeholder}" type="password"/>
-            <input class="btn btn-primary input-group-btn" type="submit" value="Login"/>
-          </div>
-        </form>
-      </div>
+  <form class="box-shadow-medium p-3 my-3 bg-white" method="post" th:action="@{/login}">
+    <div class="flash mb-3 flash-warn" th:if="${error}">
+      <button class="flash-close js-flash-close"><i class="octicon octicon-x"></i></button>
+      <span class="octicon octicon-alert"> </span>
+      <span th:text="#{login.error}">login.error</span>
     </div>
-  </div>
+
+    <div class="input-group">
+      <input autofocus class="form-control" id="username" name="username"
+             th:placeholder="#{login.placeholder}" type="password"/>
+      <span class="input-group-button">
+        <button class="btn" type="submit">Login</button>
+      </span>
+    </div>
+  </form>
 </div>
 
 </body>
-<footer th:replace="fragments/footer :: applicationFooter"></footer>
+<!--<footer th:replace="fragments/footer :: applicationFooter"></footer>-->
 </html>

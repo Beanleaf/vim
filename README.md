@@ -29,6 +29,6 @@ spring.resources.chain.strategy.content.enabled=true
 ### Backend
 * [Spring Boot](https://spring.io/guides/gs/serving-web-content/)
 ### CSS frameworks
-* [Spectre](https://github.com/picturepan2/spectre)
+* [Primer CSS](https://primer.style/css)
 ### Tools
 * [IntelliJ IDE](https://www.jetbrains.com/idea/)

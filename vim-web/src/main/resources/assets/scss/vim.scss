@@ -13,3 +13,44 @@ footer a.icon {
     background-color: #fff;
   }
 }
+
+.topbar {
+  background-color: $gray-900;
+  padding: 10px 0;
+
+  .logo {
+    font-size: 32px;
+  }
+
+  a.navlink {
+    font-weight: $fw-bold;
+    color: white;
+
+    &:hover {
+      text-decoration: none;
+      color: $white-fade-85;
+    }
+
+    &:not(:last-child) {
+      margin-right: 16px; // .mr-3
+    }
+  }
+
+  .search {
+    input {
+      min-width: 200px;
+      transition: .2s ease-in-out;
+      transition-property: min-width;
+      background: $gray-800;
+      color: $gray-200;
+      border: none;
+
+      &:focus {
+        min-width: 300px;
+        outline: none;
+        background: $white;
+        color: $gray-900;
+      }
+    }
+  }
+}

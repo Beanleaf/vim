@@ -7,8 +7,39 @@
   <title th:text="#{application.title} + ' - ' + #{application.subtitle}">
     application.title - application.subtitle
   </title>
-  <link rel="stylesheet" th:href="@{/css/vim.css}">
-  <link rel="stylesheet" th:href="@{/css/github-primer.css}">
-  <link rel="stylesheet" th:href="@{/webjars/octicons/4.3.0/build/font/octicons.css}">
+  <link rel="stylesheet" th:href="@{/css/vim.css}"/>
+  <link rel="stylesheet" th:href="@{/css/github-primer.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/octicons/4.3.0/build/font/octicons.css}"/>
+  <link rel="icon" th:href="@{/favicon.ico}"/>
 </head>
+
+<!-- Navigation -->
+<header class="topbar p-responsive d-flex flex-justify-between flex-items-center"
+        th:fragment="topBar">
+  <div class="text-white">
+    <i class="logo octicon octicon-repo-clone"></i>
+  </div>
+  <div class="search mx-3">
+    <form>
+      <input class="form-control input-block input-sm"
+             th:placeholder="#{navigation.search.placeholder}"
+             type="text"/>
+    </form>
+  </div>
+  <nav class="navigation flex-auto text-left">
+    <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
+    <a class="navlink" href="">Page 1</a>
+    <a class="navlink" href="">Page 2</a>
+  </nav>
+  <div class="userutils text-right">
+    <!--/*@thymesVar id="activeUser" type="be.vizit.vim.domain.entities.User"*/-->
+    <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
+    <div class="position-relative text-right pr-2" th:if="${activeUser}">
+      <a class="navlink" href="#">
+        <span class="octicon octicon-person"></span>
+      </a>
+    </div>
+  </div>
+</header>
+
 </html>

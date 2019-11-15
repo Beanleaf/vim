@@ -9,7 +9,8 @@
 
   <form class="box-shadow-medium p-3 my-3 bg-white" method="post" th:action="@{/login}">
     <div class="flash mb-3 flash-warn" th:if="${error}">
-      <button class="flash-close js-flash-close"><i class="octicon octicon-x"></i></button>
+      <button class="flash-close js-flash-close" type="button"><i class="octicon octicon-x"></i>
+      </button>
       <span class="octicon octicon-alert"> </span>
       <span th:text="#{login.error}">login.error</span>
     </div>
@@ -25,5 +26,5 @@
 </div>
 
 </body>
-<!--<footer th:replace="fragments/footer :: applicationFooter"></footer>-->
+<footer th:replace="fragments/footer :: sripts"></footer>
 </html>

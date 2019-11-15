@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: htmlHead"></head>
 <body>
+<header th:replace="fragments/header :: topBar"></header>
 <p th:if="${activeUser}">
   <span th:text="#{home.greeting(${activeUser.getFirstName()})}"></span>
   <i th:if="${activeUser.getUserRole()}" th:text="${activeUser.getUserRole().getDescription()}"></i>

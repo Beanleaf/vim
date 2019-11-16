@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="activeUser" type="be.vizit.vim.domain.entities.User"*/-->
 <head th:fragment="htmlHead" th:remove="tag">
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -28,16 +29,16 @@
   </div>
   <nav class="navigation flex-auto text-left">
     <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
-    <a class="navlink" href="">Page 1</a>
-    <a class="navlink" href="">Page 2</a>
+    <a class="navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/inventory}"
+       th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
+    <a class="navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}"
+       th:text="#{navigation.userManagement}">navigation.userManagement</a>
   </nav>
   <div class="userutils text-right">
-    <!--/*@thymesVar id="activeUser" type="be.vizit.vim.domain.entities.User"*/-->
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
-    <div class="position-relative text-right pr-2" th:if="${activeUser}">
-      <a class="navlink" href="#">
-        <span class="octicon octicon-person"></span>
-      </a>
+    <div class="position-relative text-right pr-2 text-white" th:if="${activeUser}">
+      <span
+          th:text="${#strings.concat(activeUser.getFirstName(),' ',#strings.substring(activeUser.getLastName(), 0,1), '.')}">shortusername</span>
     </div>
   </div>
 </header>

@@ -1,17 +1,18 @@
 package be.vizit.vim.domain;
 
-public enum UserRole implements IntegerEnum {
-  ADMIN(99, "administrator"),
-  STANDARD(1, "standard user");
+public enum InventoryDirection implements IntegerEnum {
+  OUT(0, "out"),
+  IN(1, "in");
 
   private int id;
   private String description;
 
-  UserRole(int id, String description) {
+  InventoryDirection(int id, String description) {
     this.id = id;
     this.description = description;
   }
 
+  @Override
   public int getId() {
     return id;
   }

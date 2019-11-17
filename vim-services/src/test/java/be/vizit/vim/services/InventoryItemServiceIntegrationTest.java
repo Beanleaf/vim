@@ -46,9 +46,4 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(item.getId()).isNotNull();
   }
 
-  @Test
-  void getQrCode() {
-    InventoryItem item = createAndStore(InventoryItemFixture.newInventoryItem("uuid"));
-    assertThat(inventoryItemService.getQrCode(item)).isNotEmpty();
-  }
 }

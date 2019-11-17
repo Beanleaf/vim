@@ -13,12 +13,17 @@ class QrServiceTest extends AbstractTest {
 
   @Test
   void generateQr() {
-    assertThat(qrService.generateQr("input", 50, 50)).isNotNull();
+    assertThat(qrService.generateQr("input", "png", 50, 50)).isNotNull();
     try {
-      qrService.generateQr("", 50, 50);
+      qrService.generateQr("", "png", 50, 50);
     } catch (Exception e) {
       assertThat(e).isInstanceOf(IllegalArgumentException.class);
       assertThat(e.getMessage()).isEqualTo("The input while generating the QR code was not set.");
     }
+  }
+
+  @Test
+  void getQrPngSrc() {
+    assertThat(qrService.getQrPngSrc("input", 10, 10)).isNotNull();
   }
 }

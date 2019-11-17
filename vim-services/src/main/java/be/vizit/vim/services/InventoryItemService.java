@@ -12,13 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class InventoryItemService {
 
   private final InventoryitemRepository inventoryitemRepository;
-  private final QrService qrService;
 
   @Autowired
-  public InventoryItemService(InventoryitemRepository inventoryitemRepository,
-      QrService qrService) {
+  public InventoryItemService(InventoryitemRepository inventoryitemRepository) {
     this.inventoryitemRepository = inventoryitemRepository;
-    this.qrService = qrService;
   }
 
   @Transactional(readOnly = true)
@@ -44,9 +41,5 @@ public class InventoryItemService {
   @Transactional
   public void save(InventoryItem inventoryItem) {
     inventoryitemRepository.save(inventoryItem);
-  }
-
-  public byte[] getQrCode(InventoryItem inventoryitem) {
-    return qrService.generateQr(inventoryitem.getUuid(), 100, 100);
   }
 }

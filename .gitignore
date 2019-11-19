@@ -4,8 +4,9 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-### DEV properties ###
-*dev.properties
+### properties ###
+*-dev.properties
+*-prod.properties
 
 ### Generated CSS files ###
 *.css

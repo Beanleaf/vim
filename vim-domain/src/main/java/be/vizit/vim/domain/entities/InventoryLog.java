@@ -2,6 +2,7 @@ package be.vizit.vim.domain.entities;
 
 import be.vizit.vim.domain.InventoryDirection;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +17,13 @@ public class InventoryLog {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  @ManyToOne
+  @ManyToOne(optional = false)
   private InventoryItem inventoryItem;
-  @ManyToOne
+  @ManyToOne(optional = false)
   private User user;
+  @Column(nullable = false)
   private Date timestamp;
+  @Column(nullable = false)
   private InventoryDirection inventoryDirection;
   private String comment;
 

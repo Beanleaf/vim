@@ -3,7 +3,7 @@ package be.vizit.vim.fixtures;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 
-public class InventoryItemFixture {
+public abstract class InventoryItemFixture {
 
   public static InventoryItem newInventoryItem(String uuid, ItemCategory itemCategory) {
     InventoryItem inventoryItem = new InventoryItem();

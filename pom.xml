@@ -14,15 +14,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.8.0</version>
       </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>2.5.3</version>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -44,12 +35,6 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <site>
-      <id>gh-pages</id>
-      <url>${scm.url}</url>
-    </site>
-  </distributionManagement>
   <groupId>be.vizit</groupId>
 
   <modelVersion>4.0.0</modelVersion>
@@ -72,18 +57,8 @@
 
   <properties>
     <java.version>1.8</java.version>
-    <scm.connection>scm:git:https://github.com/mathiasbosman/vim.git</scm.connection>
-    <scm.url>https://github.com/mathiasbosman/vim</scm.url>
     <scss.path.source>src/main/resources/assets/scss/</scss.path.source>
     <scss.path.target>src/main/resources/static/css/</scss.path.target>
   </properties>
-
-  <scm>
-    <connection>${scm.connection}</connection>
-    <developerConnection>${scm.connection}</developerConnection>
-    <tag>HEAD</tag>
-    <url>${scm.url}</url>
-  </scm>
-
   <version>0.0.2-SNAPSHOT</version>
 </project>

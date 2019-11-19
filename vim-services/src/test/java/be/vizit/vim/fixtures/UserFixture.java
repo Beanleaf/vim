@@ -2,7 +2,7 @@ package be.vizit.vim.fixtures;
 
 import be.vizit.vim.domain.entities.User;
 
-public class UserFixture {
+public abstract class UserFixture {
 
   public static User newUser(String username, String uuid, boolean isActive) {
     User user = new User();

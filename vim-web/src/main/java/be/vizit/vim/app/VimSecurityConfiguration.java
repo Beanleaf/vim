@@ -24,7 +24,7 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.csrf().disable()
         .authorizeRequests()
         .antMatchers("/").permitAll()
-        .antMatchers("/admin/*").hasRole(UserRole.ADMIN.name())
+        .antMatchers("/admin/*").hasAuthority(UserRole.ADMIN.name())
         .antMatchers("/login*").permitAll()
         .antMatchers("/css/**").permitAll()
         .antMatchers("/js/**").permitAll()

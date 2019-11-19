@@ -29,9 +29,9 @@
   </div>
   <nav class="navigation flex-auto text-left">
     <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
-    <a class="navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/inventory}"
+    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
        th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
-    <a class="navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}"
+    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"
        th:text="#{navigation.userManagement}">navigation.userManagement</a>
   </nav>
   <div class="userutils text-right">

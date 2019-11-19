@@ -64,4 +64,5 @@ public class InventoryItem {
   public void setItemCategory(ItemCategory itemCategory) {
     this.itemCategory = itemCategory;
   }
+
 }

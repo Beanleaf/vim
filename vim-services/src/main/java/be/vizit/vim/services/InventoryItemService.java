@@ -5,6 +5,8 @@ import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.repository.InventoryitemRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +31,14 @@ public class InventoryItemService {
   }
 
   @Transactional(readOnly = true)
-  public List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory) {
-    return inventoryitemRepository.findAllByItemCategory(itemCategory);
+  public List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory, Pageable pageable) {
+    return inventoryitemRepository.findAllByItemCategory(itemCategory, pageable);
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryItem> findAll(Pageable pageable) {
+    Page<InventoryItem> all = inventoryitemRepository.findAll(pageable);
+    return all.getContent();
   }
 
   @Transactional

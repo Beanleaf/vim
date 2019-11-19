@@ -6,8 +6,12 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.fixtures.InventoryItemFixture;
 import be.vizit.vim.fixtures.ItemCategoryFixture;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
@@ -26,7 +30,20 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     store(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
     store(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
-    assertThat(inventoryItemService.findAllByItemCategory(itemCategory)).hasSize(2);
+    assertThat(inventoryItemService.findAllByItemCategory(itemCategory, Pageable.unpaged()))
+        .hasSize(2);
+  }
+
+  @Test
+  void findAll() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid3", itemCategory));
+    assertThat(inventoryItemService.findAll(Pageable.unpaged())).hasSize(3);
+    List<InventoryItem> byUuid = inventoryItemService
+        .findAll(PageRequest.of(0, 1, Sort.by("uuid").descending()));
+    assertThat(byUuid.get(0).getUuid()).isEqualTo("uuid3");
   }
 
   @Test

@@ -61,4 +61,12 @@
     <scss.path.target>src/main/resources/static/css/</scss.path.target>
   </properties>
   <version>0.0.2-SNAPSHOT</version>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Beanleaf Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/Beanleaf/vim</url>
+    </repository>
+  </distributionManagement>
 </project>

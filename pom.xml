@@ -60,7 +60,7 @@
     <scss.path.source>src/main/resources/assets/scss/</scss.path.source>
     <scss.path.target>src/main/resources/static/css/</scss.path.target>
   </properties>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
 
   <distributionManagement>
     <repository>

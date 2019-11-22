@@ -3,6 +3,11 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>vim-web</artifactId>
+  <parent>
+    <artifactId>vim</artifactId>
+    <groupId>be.vizit</groupId>
+    <version>0.0.3-SNAPSHOT</version>
+  </parent>
   <build>
     <finalName>${project.artifactId}</finalName>
     <plugins>
@@ -78,11 +83,10 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>vim</artifactId>
-    <groupId>be.vizit</groupId>
-    <version>0.0.2</version>
-  </parent>
+  <properties>
+    <scss.path.source>src/main/resources/assets/scss/</scss.path.source>
+    <scss.path.target>src/main/resources/static/css/</scss.path.target>
+  </properties>
 
   <packaging>jar</packaging>
 </project>

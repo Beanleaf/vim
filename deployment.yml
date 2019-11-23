@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: vizit-vim
+  name: vim-app
 spec:
   replicas: 1
   strategy:
@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: vizit-vim
+        app: vim-app
     spec:
       containers:
         - name: vizit-vim
-          image: gcr.io/vizit-vim:TAG
+          image: gcr.io/vizit-vim/vim-app:TAG
           ports:
             - containerPort: 5000
           resources:

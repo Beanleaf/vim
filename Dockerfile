@@ -4,4 +4,4 @@ VOLUME /tmp
 EXPOSE 8080
 ARG JAR_FILE=vim-web/target/vim-web.jar
 ADD ${JAR_FILE} vim-web.jar
-ENTRYPOINT ["java","${EXTRA_JAVA_OPTS}","-jar","/vim-web.jar"]
+ENTRYPOINT ["java","-jar","/vim-web.jar"]

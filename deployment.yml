@@ -17,6 +17,17 @@ spec:
       containers:
         - name: vizit-vim
           image: gcr.io/vizit-vim/vim-app:TAG
+          env:
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                    name: db-user-pass
+                    key: db-user
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                    name: db-user-pass
+                    key: db-pass
           ports:
             - containerPort: 5000
           resources:

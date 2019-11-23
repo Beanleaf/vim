@@ -1,6 +1,7 @@
 # This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
 name: Build and Deploy to GKE
 
+# TODO: change this to deploy over time
 on:
   push
 

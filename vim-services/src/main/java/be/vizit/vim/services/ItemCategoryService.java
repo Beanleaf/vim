@@ -4,6 +4,7 @@ import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.repository.ItemCategoryRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class ItemCategoryService {
 
   @Transactional(readOnly = true)
   public List<ItemCategory> findAllCategories() {
-    return itemCategoryRepository.findAll();
+    return itemCategoryRepository.findAll(Sort.by("description"));
   }
 
   @Transactional(readOnly = true)

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.fixtures.ItemCategoryFixture;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,9 +21,11 @@ class ItemCategoryServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void findAllCategories() {
-    store(ItemCategoryFixture.newItemCategory("code1"));
-    store(ItemCategoryFixture.newItemCategory("code2"));
-    assertThat(itemCategoryService.findAllCategories()).hasSize(2);
+    store(ItemCategoryFixture.newItemCategory("code1", "z_description"));
+    store(ItemCategoryFixture.newItemCategory("code2", "a_description"));
+    List<ItemCategory> allCategories = itemCategoryService.findAllCategories();
+    assertThat(allCategories.get(0).getDescription()).isEqualTo("a_description");
+    assertThat(allCategories).hasSize(2);
   }
 
   @Test

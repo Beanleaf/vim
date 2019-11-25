@@ -10,4 +10,5 @@ public interface ItemCategoryRepository extends JpaRepository<ItemCategory, Long
   ItemCategory findItemCategoryById(Long id);
 
   ItemCategory findByShortCode(String shortCode);
+
 }

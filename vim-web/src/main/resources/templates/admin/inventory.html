@@ -5,9 +5,21 @@
 <header th:replace="fragments/header :: topBar"></header>
 
 <div class="container-lg px-3 p-responsive width-full">
-  <div class="pagehead pb-1 my-2">
-    <h1 th:text="#{inventory.allItems}">inventory.allItems</h1>
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
+    <div class="Subhead-actions">
+      <button type="button" class="btn btn-sm btn-primary" onclick="addOverlay(); $('#inventoryItemForm').show()">
+        <i class="octicon octicon-plus text-white"></i>
+        <span th:text="#{inventory.newItem}">inventory.newItem</span>
+      </button>
+    </div>
+    <div class="Subhead-description" th:text="#{inventory.allItems.description}">
+      inventory.allItems.description
+    </div>
   </div>
+
+
+  <div th:replace="fragments/forms/inventory :: inventoryItemForm"></div>
 
   <div class="rounded-border">
     <table class="vimTable">
@@ -22,8 +34,7 @@
       </thead>
       <tbody>
 
-      <!--/*@thymesVar id="item" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
-      <tr th:each="itemsList: ${item}">
+      <tr th:each="item: ${itemsList}">
         <td th:text="${item.getId()}">item.getId()</td>
         <td th:text="${item.getItemCategory().getShortCode()}">
           item.getItemCategory().getShortCode()

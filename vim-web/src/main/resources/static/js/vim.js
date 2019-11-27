@@ -1,4 +1,4 @@
-$(".js-flash-close").click(function (e) {
+$(".js-flash-close").click(function () {
   $(this).closest(".flash").hide();
 });
 
@@ -6,7 +6,7 @@ $(".js-toast-close").click(function () {
   $(this).closest(".Toast").remove();
 });
 
-$(".js-box-close").click(function (e) {
+$(".js-box-close").click(function () {
   $(this).closest(".Box").hide();
   removeOverlay();
 });

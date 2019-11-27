@@ -7,18 +7,22 @@ import be.vizit.vim.domain.utilities.MessageType;
 import be.vizit.vim.services.FeedbackService;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class InventoryController extends VimController {
+
+  private static final String VIEW_NEW_ITEM = "admin/inventory/newInventoryItem";
+  private static final String VIEW_OVERVIEW = "admin/inventory/overview";
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
@@ -34,18 +38,29 @@ public class InventoryController extends VimController {
     this.feedbackService = feedbackService;
   }
 
-  @GetMapping({"/admin/inventory", "/admin/inventory/{page}"})
+  @GetMapping({"admin/inventory", "admin/inventory/{page}"})
   public String inventory(@PathVariable(required = false) Integer page, Model model) {
     int startPage = page != null ? page : 0;
     model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(startPage, 50)));
-    model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
-    model.addAttribute("inventoryItemDto", new InventoryItemDto());
-    return "admin/inventory";
+    return VIEW_OVERVIEW;
   }
 
-  @PostMapping("/admin/inventory")
-  public ModelAndView newInventoryItem(@ModelAttribute InventoryItemDto inventoryItemDto,
-      Model model) {
+  @GetMapping("admin/inventory/new")
+  public String inventoryNew(Model model) {
+    model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
+    model.addAttribute("inventoryItemDto", new InventoryItemDto());
+    return VIEW_NEW_ITEM;
+  }
+
+  @PostMapping("admin/inventory/new")
+  public String newInventoryItem(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
+      BindingResult bindingResult, Model model) {
+    model.addAttribute(inventoryItemDto);
+    model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
+    if (bindingResult.hasErrors()) {
+      return VIEW_NEW_ITEM;
+    }
+
     try {
       inventoryItemService.createNewItem(
           inventoryItemDto.getItemCategory(),
@@ -53,12 +68,15 @@ public class InventoryController extends VimController {
           inventoryItemDto.isActive(),
           getVimSession().getActiveUser()
       );
-      model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
+      PageRequest paging = PageRequest.of(0, 50);
+      model.addAttribute("itemsList", inventoryItemService.findAll(paging));
       model.addAttribute(
-          new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess", true));
+          new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
+              true));
+      return inventory(paging.getPageNumber(), model);
     } catch (Exception e) {
       model.addAttribute(feedbackService.createMessage(e));
+      return VIEW_NEW_ITEM;
     }
-    return render("/admin/inventory", model);
   }
 }

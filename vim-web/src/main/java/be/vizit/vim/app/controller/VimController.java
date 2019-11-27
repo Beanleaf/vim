@@ -1,9 +1,11 @@
 package be.vizit.vim.app.controller;
 
 import be.vizit.vim.app.VimSession;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +29,15 @@ public abstract class VimController {
   }
 
   ModelAndView render(String view, Model model) {
-    return new ModelAndView(view, model.asMap());
+    return render(view, model.asMap());
+  }
+
+  ModelAndView render(String view, BindingResult bindingResult) {
+    return new ModelAndView(view, bindingResult.getModel());
+  }
+
+  private ModelAndView render(String view, Map<String, Object> modelMap) {
+    return new ModelAndView(view, modelMap);
   }
 
   ModelAndView redirect(String view) {

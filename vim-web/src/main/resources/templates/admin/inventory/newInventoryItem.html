@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg px-3 p-responsive width-full">
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{inventory.newItem}"></div>
+    <div class="Subhead-description" th:text="#{inventory.newitemDescription}">
+      inventory.allItems.description
+    </div>
+  </div>
+
+  <div th:replace="fragments/inventory :: inventoryItemForm"></div>
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

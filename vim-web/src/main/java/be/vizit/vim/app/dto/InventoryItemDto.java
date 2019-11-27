@@ -1,9 +1,13 @@
 package be.vizit.vim.app.dto;
 
 import be.vizit.vim.domain.entities.ItemCategory;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class InventoryItemDto {
+  @NotNull(message = "{validations.notNull.message}")
   private ItemCategory itemCategory;
+  @NotEmpty(message = "{validations.notEmpty.message}")
   private String description;
   private boolean active = true;
 

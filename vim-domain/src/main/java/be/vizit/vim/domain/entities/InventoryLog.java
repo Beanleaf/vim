@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class InventoryLog {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @ManyToOne(optional = false)
   private InventoryItem inventoryItem;

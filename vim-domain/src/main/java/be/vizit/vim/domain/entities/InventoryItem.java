@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class InventoryItem {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private boolean active;
   @Column(unique = true, nullable = false)

@@ -2,13 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: htmlHead"></head>
 <body>
+<section th:replace="fragments/header :: baseElements"></section>
 <header th:replace="fragments/header :: topBar"></header>
 
 <div class="container-lg px-3 p-responsive width-full">
   <div class="Subhead pb-1 my-2">
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
     <div class="Subhead-actions">
-      <button type="button" class="btn btn-sm btn-primary" onclick="addOverlay(); $('#inventoryItemForm').show()">
+      <button type="button" class="btn btn-sm btn-primary"
+              onclick="addOverlay(); $('#inventoryItemForm').show()">
         <i class="octicon octicon-plus text-white"></i>
         <span th:text="#{inventory.newItem}">inventory.newItem</span>
       </button>
@@ -27,7 +29,6 @@
       <tr>
         <th>#</th>
         <th th:text="#{inventory.item.category}">item.category</th>
-        <th th:text="#{inventory.item.name}">item.name</th>
         <th th:text="#{inventory.item.description}">item.description</th>
         <th th:text="#{actions}"></th>
       </tr>

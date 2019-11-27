@@ -14,6 +14,35 @@
   <link rel="icon" th:href="@{/favicon.ico}"/>
 </head>
 
+<section th:fragment="baseElements">
+  <!--/*@thymesVar id="toastMessage" type="be.vizit.vim.app.ToastMessage"*/-->
+  <div th:if="${toastMessage}" class="p-1 position-fixed bottom-0 left-0 mb-3 ml-3">
+    <div class="Toast Toast--animateIn"
+         th:classappend="'Toast--' + ${toastMessage.getType().getCssClass()}">
+      <span class="Toast-icon"><i class="octicon"
+                                  th:classappend="'octicon-' + ${toastMessage.getType().getIconClass()}"></i></span>
+      <span class="Toast-content" th:text="#{${toastMessage.getMessage()}}">toastMessage.getMessage()</span>
+      <button th:if="${toastMessage.isCloseable()}" class="Toast-dismissButton js-toast-close"><i
+          class="octicon octicon-x"></i></button>
+    </div>
+  </div>
+
+  <!--/*@thymesVar id="feedbackmessage" type="be.vizit.vim.domain.utilities.Feedbackmessage"*/-->
+  <div class="flash position-fixed top-0 m-3" th:if="${feedbackmessage}"
+       th:classappend="'flash-' + ${feedbackmessage.getType().getCssClass()}">
+    <button class="flash-close js-flash-close" th:if="${feedbackmessage.isCloseable()}"
+            type="button"><i
+        class="octicon octicon-x"></i></button>
+    <p>
+      <i class="octicon"
+         th:classappend="'octicon-' + ${feedbackmessage.getType().getIconClass()}"></i>
+      <span th:text="${feedbackmessage.getMessage()}">Feedback message</span>
+    </p>
+    <pre th:if="${feedbackmessage.getStackTrace()}"><code
+        th:text="${feedbackmessage.getStackTrace()}"></code></pre>
+  </div>
+</section>
+
 <!-- Navigation -->
 <header class="topbar p-responsive d-flex flex-justify-between flex-items-center"
         th:fragment="topBar">

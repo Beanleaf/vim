@@ -47,6 +47,14 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   }
 
   @Test
+  void createNewItem() {
+    InventoryItem newItem = inventoryItemService
+        .createNewItem(ItemCategoryFixture.newItemCategory("code"), "description", false);
+    assertThat(newItem.getId()).isNotNull();
+    assertThat(newItem.getUuid()).isNotNull();
+  }
+
+  @Test
   void delete() {
     InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
     item.setActive(true);

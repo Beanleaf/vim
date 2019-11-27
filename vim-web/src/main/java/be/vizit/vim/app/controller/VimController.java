@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public abstract class VimController {
@@ -23,5 +24,13 @@ public abstract class VimController {
   @ModelAttribute
   public void addModelAttributes(Model model) {
     model.addAttribute("activeUser", vimSession.getActiveUser());
+  }
+
+  ModelAndView render(String view, Model model) {
+    return new ModelAndView(view, model.asMap());
+  }
+
+  ModelAndView redirect(String view) {
+    return new ModelAndView("redirect:" + view);
   }
 }

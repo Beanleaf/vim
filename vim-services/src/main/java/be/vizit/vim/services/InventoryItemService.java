@@ -4,6 +4,7 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.repository.InventoryitemRepository;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,17 @@ public class InventoryItemService {
   public List<InventoryItem> findAll(Pageable pageable) {
     Page<InventoryItem> all = inventoryitemRepository.findAll(pageable);
     return all.getContent();
+  }
+
+  @Transactional
+  public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active) {
+    InventoryItem item = new InventoryItem();
+    item.setItemCategory(itemCategory);
+    item.setDescription(description);
+    item.setActive(active);
+    item.setUuid(UUID.randomUUID().toString());
+    save(item);
+    return item;
   }
 
   @Transactional

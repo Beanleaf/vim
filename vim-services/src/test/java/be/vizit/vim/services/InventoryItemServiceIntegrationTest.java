@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
+import be.vizit.vim.domain.entities.User;
 import be.vizit.vim.fixtures.InventoryItemFixture;
+import be.vizit.vim.fixtures.InventoryLogFixture;
 import be.vizit.vim.fixtures.ItemCategoryFixture;
 import be.vizit.vim.fixtures.UserFixture;
 import java.util.List;
@@ -20,27 +22,12 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   InventoryItemService inventoryItemService;
 
   @Test
-  void findByUuid() {
-    store(InventoryItemFixture.newInventoryItem("uuid"));
-    assertThat(inventoryItemService.findByUuid("uuid_b")).isNull();
-    assertThat(inventoryItemService.findByUuid("uuid").getUuid()).isEqualTo("uuid");
-  }
-
-  @Test
-  void findAllByItemCategory() {
-    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    store(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
-    store(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
-    assertThat(inventoryItemService.findAllByItemCategory(itemCategory, Pageable.unpaged()))
-        .hasSize(2);
-  }
-
-  @Test
   void findAll() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory));
-    createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory));
-    createAndStore(InventoryItemFixture.newInventoryItem("uuid3", itemCategory));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory, user));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid3", itemCategory, user));
     assertThat(inventoryItemService.findAll(Pageable.unpaged())).hasSize(3);
     List<InventoryItem> byUuid = inventoryItemService
         .findAll(PageRequest.of(0, 1, Sort.by("uuid").descending()));
@@ -50,7 +37,10 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void createNewItem() {
     InventoryItem newItem = inventoryItemService
-        .createNewItem(ItemCategoryFixture.newItemCategory("code"), "description", false,
+        .createNewItem(
+            createAndStore(ItemCategoryFixture.newItemCategory("code")),
+            "description",
+            false,
             createAndStore(UserFixture.newUser("bob", "uuid")));
     assertThat(newItem.getId()).isNotNull();
     assertThat(newItem.getUuid()).isNotNull();
@@ -58,19 +48,18 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void delete() {
-    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
+    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    ItemCategory category = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", category, user);
     item.setActive(true);
     store(item);
-    assertThat(inventoryItemService.getInventoryItem(item.getId()).isActive()).isTrue();
+    createAndStore(InventoryLogFixture.newInventoryLog(item, user));
     inventoryItemService.delete(item);
     assertThat(item.isActive()).isFalse();
-  }
 
-  @Test
-  void save() {
-    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid");
-    inventoryItemService.save(item);
-    assertThat(item.getId()).isNotNull();
+    InventoryItem item2 = createAndStore(InventoryItemFixture.newInventoryItem("uuid2", category, user));
+    inventoryItemService.delete(item2);
+    assertThat(inventoryItemService.findByUuid("uuid2")).isNull();
   }
 
 }

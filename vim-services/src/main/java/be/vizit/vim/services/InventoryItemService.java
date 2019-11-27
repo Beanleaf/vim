@@ -1,6 +1,7 @@
 package be.vizit.vim.services;
 
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.InventoryLog;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.domain.entities.User;
 import be.vizit.vim.repository.InventoryitemRepository;
@@ -16,10 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class InventoryItemService {
 
   private final InventoryitemRepository inventoryitemRepository;
+  private final InventoryLogService inventoryLogService;
 
   @Autowired
-  public InventoryItemService(InventoryitemRepository inventoryitemRepository) {
+  public InventoryItemService(InventoryitemRepository inventoryitemRepository,
+      InventoryLogService inventoryLogService) {
     this.inventoryitemRepository = inventoryitemRepository;
+    this.inventoryLogService = inventoryLogService;
   }
 
   @Transactional(readOnly = true)
@@ -57,7 +61,12 @@ public class InventoryItemService {
 
   @Transactional
   public void delete(InventoryItem inventoryitem) {
-    inventoryitem.setActive(false);
+    List<InventoryLog> logs = inventoryLogService.findForItem(inventoryitem, Pageable.unpaged());
+    if (!logs.isEmpty()) {
+      inventoryitem.setActive(false);
+    } else {
+      inventoryitemRepository.delete(inventoryitem);
+    }
   }
 
   @Transactional

@@ -8,7 +8,6 @@ import be.vizit.vim.repository.InventoryLogRepository;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +32,7 @@ public class InventoryLogService {
     return inventoryLogRepository.save(log);
   }
 
-  @Transactional(readOnly = true)
-  public List<InventoryLog> findAll(Pageable pageable) {
-    Page<InventoryLog> all = inventoryLogRepository.findAll(pageable);
-    return all.getContent();
+  public List<InventoryLog> findForItem(InventoryItem inventoryitem, Pageable pageable) {
+    return inventoryLogRepository.findAllByInventoryItem(inventoryitem, pageable);
   }
 }

@@ -69,8 +69,8 @@
       <td th:text="${item.getAddedByUser().getShortName()}"></td>
       <td>
         <button class="btn-octicon" type="button"><i class="octicon octicon-pencil"></i></button>
-        <button class="btn-octicon btn-octicon-danger" type="button"><i
-            class="octicon octicon-trashcan"></i></button>
+        <a th:href="@{/admin/inventory/delete/{uuid}/(uuid=${item.getUuid()})}" class="btn-octicon btn-octicon-danger"><i
+            class="octicon octicon-trashcan"></i></a>
       </td>
     </tr>
     </tbody>

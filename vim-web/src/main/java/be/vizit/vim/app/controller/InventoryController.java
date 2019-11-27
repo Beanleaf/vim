@@ -3,8 +3,8 @@ package be.vizit.vim.app.controller;
 import be.vizit.vim.app.ToastMessage;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
+import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.utilities.MessageType;
-import be.vizit.vim.services.FeedbackService;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
 import javax.validation.Valid;
@@ -26,22 +26,28 @@ public class InventoryController extends VimController {
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
-  private final FeedbackService feedbackService;
 
   @Autowired
   public InventoryController(VimSession vimSession,
-      InventoryItemService inventoryItemService, ItemCategoryService itemCategoryService,
-      FeedbackService feedbackService) {
+      InventoryItemService inventoryItemService, ItemCategoryService itemCategoryService) {
     super(vimSession);
     this.inventoryItemService = inventoryItemService;
     this.itemCategoryService = itemCategoryService;
-    this.feedbackService = feedbackService;
   }
 
   @GetMapping({"admin/inventory", "admin/inventory/{page}"})
   public String inventory(@PathVariable(required = false) Integer page, Model model) {
     int startPage = page != null ? page : 0;
     model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(startPage, 50)));
+    return VIEW_OVERVIEW;
+  }
+
+  @GetMapping("admin/inventory/delete/{uuid}")
+  public String deleteInventoryItem(@PathVariable String uuid, Model model) {
+    InventoryItem item = inventoryItemService.findByUuid(uuid);
+    inventoryItemService.delete(item);
+    model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
+    model.addAttribute(new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
     return VIEW_OVERVIEW;
   }
 
@@ -60,23 +66,18 @@ public class InventoryController extends VimController {
     if (bindingResult.hasErrors()) {
       return VIEW_NEW_ITEM;
     }
-
-    try {
-      inventoryItemService.createNewItem(
-          inventoryItemDto.getItemCategory(),
-          inventoryItemDto.getDescription(),
-          inventoryItemDto.isActive(),
-          getVimSession().getActiveUser()
-      );
-      PageRequest paging = PageRequest.of(0, 50);
-      model.addAttribute("itemsList", inventoryItemService.findAll(paging));
-      model.addAttribute(
-          new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
-              true));
-      return inventory(paging.getPageNumber(), model);
-    } catch (Exception e) {
-      model.addAttribute(feedbackService.createMessage(e));
-      return VIEW_NEW_ITEM;
-    }
+    inventoryItemService.createNewItem(
+        inventoryItemDto.getItemCategory(),
+        inventoryItemDto.getDescription(),
+        inventoryItemDto.isActive(),
+        getVimSession().getActiveUser()
+    );
+    PageRequest paging = PageRequest.of(0, 50);
+    model.addAttribute("itemsList", inventoryItemService.findAll(paging));
+    model.addAttribute(
+        new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
+            true));
+    return inventory(paging.getPageNumber(), model);
   }
+
 }

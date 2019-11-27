@@ -1,6 +1,7 @@
 package be.vizit.vim.app.controller;
 
 import be.vizit.vim.app.VimSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SecurityController extends VimController {
 
 
+  @Autowired
   SecurityController(VimSession vimSession) {
     super(vimSession);
   }

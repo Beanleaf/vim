@@ -19,9 +19,9 @@ public class InventoryItem {
   @Column(unique = true, nullable = false)
   private String uuid;
   private String description;
-  @ManyToOne
+  @ManyToOne(optional = false)
   private ItemCategory itemCategory;
-  @ManyToOne
+  @ManyToOne(optional = false)
   private User addedByUser;
 
   public InventoryItem() {

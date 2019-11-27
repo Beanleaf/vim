@@ -8,11 +8,14 @@ public class ToastMessage {
   private String message;
   private boolean isCloseable;
 
-  public ToastMessage(MessageType type, String message,
-      boolean isCloseable) {
+  public ToastMessage(MessageType type, String message, boolean isCloseable) {
     this.type = type;
     this.message = message;
     this.isCloseable = isCloseable;
+  }
+
+  public ToastMessage(MessageType type, String message) {
+    this(type, message, true);
   }
 
   public MessageType getType() {

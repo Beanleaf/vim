@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -118,5 +119,10 @@ public class User {
 
   public void setUuid(String uuid) {
     this.uuid = uuid;
+  }
+
+  @Transient
+  public String getShortName() {
+    return getFirstName() + ' ' + getLastName().substring(0, 1) + '.';
   }
 }

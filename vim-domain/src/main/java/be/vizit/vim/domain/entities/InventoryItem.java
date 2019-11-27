@@ -21,6 +21,8 @@ public class InventoryItem {
   private String description;
   @ManyToOne
   private ItemCategory itemCategory;
+  @ManyToOne
+  private User addedByUser;
 
   public InventoryItem() {
   }
@@ -65,4 +67,11 @@ public class InventoryItem {
     this.itemCategory = itemCategory;
   }
 
+  public User getAddedByUser() {
+    return addedByUser;
+  }
+
+  public void setAddedByUser(User addedByUser) {
+    this.addedByUser = addedByUser;
+  }
 }

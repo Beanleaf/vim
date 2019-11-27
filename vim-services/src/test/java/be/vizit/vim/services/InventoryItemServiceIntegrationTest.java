@@ -6,6 +6,7 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.fixtures.InventoryItemFixture;
 import be.vizit.vim.fixtures.ItemCategoryFixture;
+import be.vizit.vim.fixtures.UserFixture;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void createNewItem() {
     InventoryItem newItem = inventoryItemService
-        .createNewItem(ItemCategoryFixture.newItemCategory("code"), "description", false);
+        .createNewItem(ItemCategoryFixture.newItemCategory("code"), "description", false,
+            createAndStore(UserFixture.newUser("bob", "uuid")));
     assertThat(newItem.getId()).isNotNull();
     assertThat(newItem.getUuid()).isNotNull();
   }

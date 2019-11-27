@@ -67,7 +67,7 @@
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
     <div class="position-relative text-right pr-2 text-white" th:if="${activeUser}">
       <span
-          th:text="${#strings.concat(activeUser.getFirstName(),' ',#strings.substring(activeUser.getLastName(), 0,1), '.')}">shortusername</span>
+          th:text="${activeUser.getShortName()}">activeUser.getShortName()</span>
     </div>
   </div>
 </header>

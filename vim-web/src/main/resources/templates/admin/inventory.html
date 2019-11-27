@@ -30,6 +30,8 @@
         <th>#</th>
         <th th:text="#{inventory.item.category}">item.category</th>
         <th th:text="#{inventory.item.description}">item.description</th>
+        <th th:text="#{inventory.item.active}" class="text-center">item.active</th>
+        <th th:text="#{inventory.item.addedBy}">item.addedBy</th>
         <th th:text="#{actions}"></th>
       </tr>
       </thead>
@@ -41,6 +43,11 @@
           item.getItemCategory().getShortCode()
         </td>
         <td th:text="${item.getDescription()}">item.getDescription()</td>
+        <td class="text-center">
+          <i th:if="${item.isActive()}" class="octicon octicon-check text-green"></i>
+          <i th:unless="${item.isActive()}" class="octicon octicon-x"></i>
+        </td>
+        <td th:text="${item.getAddedByUser().getShortName()}"></td>
         <td>
           <button class="btn-octicon" type="button"><i class="octicon octicon-pencil"></i></button>
           <button class="btn-octicon btn-octicon-danger" type="button"><i

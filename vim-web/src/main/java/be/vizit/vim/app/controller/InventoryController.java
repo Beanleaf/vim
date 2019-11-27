@@ -47,9 +47,15 @@ public class InventoryController extends VimController {
   public ModelAndView newInventoryItem(@ModelAttribute InventoryItemDto inventoryItemDto,
       Model model) {
     try {
-      inventoryItemService.createNewItem(inventoryItemDto.getItemCategory(), inventoryItemDto.getDescription(),inventoryItemDto.isActive());
+      inventoryItemService.createNewItem(
+          inventoryItemDto.getItemCategory(),
+          inventoryItemDto.getDescription(),
+          inventoryItemDto.isActive(),
+          getVimSession().getActiveUser()
+      );
       model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
-      model.addAttribute(new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess", true));
+      model.addAttribute(
+          new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess", true));
     } catch (Exception e) {
       model.addAttribute(feedbackService.createMessage(e));
     }

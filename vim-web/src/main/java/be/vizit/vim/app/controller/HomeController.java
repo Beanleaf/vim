@@ -1,11 +1,7 @@
 package be.vizit.vim.app.controller;
 
 import be.vizit.vim.app.VimSession;
-import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -22,8 +18,7 @@ public class HomeController extends VimController {
 
   @GetMapping(value = {URL_HOME, "/home"})
   public String home() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+    //TODO: add succesfull logout message
     return VIEW_HOME;
   }
 }

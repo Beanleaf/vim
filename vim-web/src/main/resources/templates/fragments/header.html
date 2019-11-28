@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="activeUser" type="be.vizit.vim.domain.entities.User"*/-->
 <head th:fragment="htmlHead" th:remove="tag">
   <meta charset="UTF-8">
@@ -64,9 +65,11 @@
   </nav>
   <div class="userutils text-right">
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
-    <div class="position-relative text-right pr-2 text-white" th:if="${activeUser}">
-      <span
-          th:text="${activeUser.getShortName()}">activeUser.getShortName()</span>
+    <div th:if="${activeUser}">
+      <span class="position-relative pr-2 text-white" th:text="${activeUser.getShortName()}">activeUser.getShortName()</span>
+      <a th:href="@{/logout}" class="btn-icon text-white" th:label="#{navigation.logout}">
+        <i class="octicon octicon-sign-out"></i>
+      </a>
     </div>
   </div>
 </header>

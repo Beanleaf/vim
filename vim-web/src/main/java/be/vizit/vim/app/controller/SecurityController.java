@@ -11,7 +11,6 @@ public class SecurityController extends VimController {
 
   public static final String URL_LOGIN = "/login";
   public static final String URL_LOGIN_ERROR = "/login_error";
-  public static final String URL_LOGOUT = "/logout";
   private static final String VIEW_LOGIN = "login";
 
   @Autowired
@@ -28,11 +27,5 @@ public class SecurityController extends VimController {
   public String loginErrror(Model model) {
     model.addAttribute("error", true);
     return VIEW_LOGIN;
-  }
-
-  @GetMapping(URL_LOGOUT)
-  public String logout() {
-    getVimSession().setActiveUser(null);
-    return redirect(HomeController.URL_HOME);
   }
 }

@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController extends VimController {
 
+  public static final String URL_HOME = "/";
+  private static final String VIEW_HOME = "home";
+
   @Autowired
   public HomeController(VimSession vimSession) {
     super(vimSession);
   }
 
-  @GetMapping(value = {"/", "/home"})
+  @GetMapping(value = {URL_HOME, "/home"})
   public String home() {
-    return "home";
+    return VIEW_HOME;
   }
 }

@@ -1,5 +1,7 @@
 package be.vizit.vim.app;
 
+import be.vizit.vim.app.controller.HomeController;
+import be.vizit.vim.app.controller.SecurityController;
 import be.vizit.vim.domain.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -35,13 +37,13 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .anyRequest().authenticated()
         .and()
         .formLogin()
-        .loginPage("/login")
-        .defaultSuccessUrl("/", true)
-        .failureUrl("/login_error")
+        .loginPage(SecurityController.URL_LOGIN)
+        .defaultSuccessUrl(HomeController.URL_HOME, true)
+        .failureUrl(SecurityController.URL_LOGIN_ERROR)
         .and()
         .logout()
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("/");
+        .logoutUrl(SecurityController.URL_LOGOUT)
+        .logoutSuccessUrl(HomeController.URL_HOME);
   }
 
   @Override

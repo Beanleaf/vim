@@ -1,0 +1,12 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: vim
+build:
+  artifacts:
+  - image: gcr.io/vizit-vim/vim-app
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yml
+    - service.yml

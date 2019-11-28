@@ -5,25 +5,25 @@ import be.vizit.vim.domain.utilities.MessageType;
 public class ToastMessage {
 
   private MessageType type;
-  private String message;
+  private String messagePropertie;
   private boolean isCloseable;
 
-  public ToastMessage(MessageType type, String message, boolean isCloseable) {
+  public ToastMessage(MessageType type, String messagePropertie, boolean isCloseable) {
     this.type = type;
-    this.message = message;
+    this.messagePropertie = messagePropertie;
     this.isCloseable = isCloseable;
   }
 
-  public ToastMessage(MessageType type, String message) {
-    this(type, message, true);
+  public ToastMessage(MessageType type, String messagePropertie) {
+    this(type, messagePropertie, true);
   }
 
   public MessageType getType() {
     return type;
   }
 
-  public String getMessage() {
-    return message;
+  public String getMessagePropertie() {
+    return messagePropertie;
   }
 
   public boolean isCloseable() {

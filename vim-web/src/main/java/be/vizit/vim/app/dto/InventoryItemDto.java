@@ -4,7 +4,7 @@ import be.vizit.vim.domain.entities.ItemCategory;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class InventoryItemDto {
+public class InventoryItemDto implements FormDto {
   @NotNull(message = "{validations.notNull.message}")
   private ItemCategory itemCategory;
   @NotEmpty(message = "{validations.notEmpty.message}")

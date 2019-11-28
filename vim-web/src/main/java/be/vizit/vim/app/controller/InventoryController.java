@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class InventoryController extends VimController {
 
-  private static final String VIEW_NEW_ITEM = "admin/inventory/newInventoryItem";
-  private static final String VIEW_OVERVIEW = "admin/inventory/overview";
+  private static final String VIEW_NEW_ITEM = "/admin/inventory/newInventoryItem";
+  private static final String URL_NEW_ITEM = "/admin/inventory/new";
+  private static final String VIEW_OVERVIEW = "/admin/inventory/overview";
+  private static final String URL_OVERVIEW = "/admin/inventory";
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
@@ -35,32 +38,32 @@ public class InventoryController extends VimController {
     this.itemCategoryService = itemCategoryService;
   }
 
-  @GetMapping({"admin/inventory", "admin/inventory/{page}"})
+  @GetMapping({URL_OVERVIEW, URL_OVERVIEW + "/{page}"})
   public String inventory(@PathVariable(required = false) Integer page, Model model) {
     int startPage = page != null ? page : 0;
     model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(startPage, 50)));
     return VIEW_OVERVIEW;
   }
 
-  @GetMapping("admin/inventory/delete/{uuid}")
-  public String deleteInventoryItem(@PathVariable String uuid, Model model) {
+  @GetMapping(URL_OVERVIEW + "/delete/{uuid}")
+  public String deleteInventoryItem(@PathVariable String uuid, RedirectAttributes redirectAttributes) {
     InventoryItem item = inventoryItemService.findByUuid(uuid);
     inventoryItemService.delete(item);
-    model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
-    model.addAttribute(new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
-    return VIEW_OVERVIEW;
+    redirectAttributes.addFlashAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
+    redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
+    return redirect(URL_OVERVIEW);
   }
 
-  @GetMapping("admin/inventory/new")
+  @GetMapping(URL_NEW_ITEM)
   public String inventoryNew(Model model) {
     model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
     model.addAttribute("inventoryItemDto", new InventoryItemDto());
     return VIEW_NEW_ITEM;
   }
 
-  @PostMapping("admin/inventory/new")
+  @PostMapping(URL_NEW_ITEM)
   public String newInventoryItem(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
-      BindingResult bindingResult, Model model) {
+      BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
     model.addAttribute(inventoryItemDto);
     model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
     if (bindingResult.hasErrors()) {
@@ -73,11 +76,11 @@ public class InventoryController extends VimController {
         getVimSession().getActiveUser()
     );
     PageRequest paging = PageRequest.of(0, 50);
-    model.addAttribute("itemsList", inventoryItemService.findAll(paging));
-    model.addAttribute(
+    redirectAttributes.addFlashAttribute("itemsList", inventoryItemService.findAll(paging));
+    redirectAttributes.addFlashAttribute(
         new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
             true));
-    return inventory(paging.getPageNumber(), model);
+    return redirect(URL_OVERVIEW);
   }
 
 }

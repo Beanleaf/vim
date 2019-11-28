@@ -20,7 +20,7 @@
          th:classappend="'Toast--' + ${toastMessage.getType().getCssClass()}">
       <span class="Toast-icon"><i class="octicon"
                                   th:classappend="'octicon-' + ${toastMessage.getType().getIconClass()}"></i></span>
-      <span class="Toast-content" th:text="#{${toastMessage.getMessage()}}">toastMessage.getMessage()</span>
+      <span class="Toast-content" th:text="#{${toastMessage.getMessagePropertie()}}">toastMessage.getMessage()</span>
       <button th:if="${toastMessage.isCloseable()}" class="Toast-dismissButton js-toast-close"><i
           class="octicon octicon-x"></i></button>
     </div>

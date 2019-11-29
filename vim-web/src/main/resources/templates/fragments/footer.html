@@ -15,6 +15,7 @@
     </a>
     <ul class="list-style-none d-flex flex-wrap">
       <li class="mr-3"><a th:href="'mailto:' + #{application.contact.email}">Contact</a></li>
+      <li class="mr-3"><a target="_blank" th:href="#{application.issuetracker.link}" th:text="#{application.issuetracker.name}"></a></li>
     </ul>
   </div>
   <section th:replace="fragments/footer :: sripts"></section>

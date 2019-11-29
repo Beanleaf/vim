@@ -24,6 +24,8 @@ public class InventoryController extends VimController {
 
   private static final String VIEW_NEW_ITEM = "/admin/inventory/newInventoryItem";
   private static final String URL_NEW_ITEM = "/admin/inventory/new";
+  private static final String VIEW_EDIT_ITEM = "/admin/inventory/editInventoryItem";
+  private static final String URL_EDIT_ITEM = "/admin/inventory/edit";
   private static final String VIEW_OVERVIEW = "/admin/inventory/overview";
   private static final String URL_OVERVIEW = "/admin/inventory";
 
@@ -46,26 +48,62 @@ public class InventoryController extends VimController {
   }
 
   @GetMapping(URL_OVERVIEW + "/delete/{uuid}")
-  public String deleteInventoryItem(@PathVariable String uuid, RedirectAttributes redirectAttributes) {
+  public String deleteInventoryItem(@PathVariable String uuid,
+      RedirectAttributes redirectAttributes) {
     InventoryItem item = inventoryItemService.findByUuid(uuid);
     inventoryItemService.delete(item);
-    redirectAttributes.addFlashAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
-    redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
+    redirectAttributes
+        .addFlashAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
+    redirectAttributes.addFlashAttribute(
+        new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
     return redirect(URL_OVERVIEW);
   }
 
-  @GetMapping(URL_NEW_ITEM)
-  public String inventoryNew(Model model) {
+  private void setupItemForm(Model model, InventoryItemDto inventoryItemDto, String action) {
+    model.addAttribute(inventoryItemDto);
+    model.addAttribute("frmAction", action);
     model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
-    model.addAttribute("inventoryItemDto", new InventoryItemDto());
+  }
+
+  @GetMapping(URL_EDIT_ITEM + "/{id}")
+  public String inventoryItemEdit(@PathVariable long id, Model model) {
+    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    model.addAttribute("originalItem", inventoryItem);
+    setupItemForm(model, new InventoryItemDto(
+        inventoryItem.getItemCategory(),
+        inventoryItem.getDescription(),
+        inventoryItem.isActive()
+    ), URL_EDIT_ITEM + "/" + id);
+    return VIEW_EDIT_ITEM;
+  }
+
+  @PostMapping(URL_EDIT_ITEM + "/{id}")
+  public String inventoryItemEditPost(@PathVariable long id, Model model,
+      @Valid @ModelAttribute InventoryItemDto inventoryItemDto, BindingResult bindingResult) {
+    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    model.addAttribute("originalItem", inventoryItem);
+    setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
+    if (!bindingResult.hasErrors()) {
+      inventoryItem.setActive(inventoryItemDto.isActive());
+      inventoryItem.setDescription(inventoryItemDto.getDescription());
+      inventoryItem.setItemCategory(inventoryItemDto.getItemCategory());
+      inventoryItemService.save(inventoryItem);
+      model.addAttribute(new ToastMessage(MessageType.SUCCESS,
+          "notifications.inventory.editItemSuccess", false));
+    }
+    return VIEW_EDIT_ITEM;
+  }
+
+  @GetMapping(URL_NEW_ITEM)
+  public String inventoryItemNew(Model model) {
+    setupItemForm(model, new InventoryItemDto(), URL_NEW_ITEM);
     return VIEW_NEW_ITEM;
   }
 
   @PostMapping(URL_NEW_ITEM)
-  public String newInventoryItem(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
+  public String inventoryItemNewPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
       BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-    model.addAttribute(inventoryItemDto);
-    model.addAttribute("itemCategories", itemCategoryService.findAllCategories());
+    setupItemForm(model, inventoryItemDto, URL_NEW_ITEM);
     if (bindingResult.hasErrors()) {
       return VIEW_NEW_ITEM;
     }

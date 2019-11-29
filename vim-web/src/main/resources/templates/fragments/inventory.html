@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="inventoryItemForm">
     <!--/*@thymesVar id="inventoryItemDto" type="be.vizit.vim.app.dto.InventoryItemDto"*/-->
-    <form method="post" th:action="@{/admin/inventory/new}" th:object="${inventoryItemDto}">
+    <form method="post" th:action="@{${frmAction}}" th:object="${inventoryItemDto}">
       <dl class="form-group" th:classappend="${#fields.hasErrors('itemCategory')} ? 'errored'">
         <dt><label for="item-category" th:text="#{inventory.item.category}">item.category</label>
         </dt>
@@ -68,7 +68,7 @@
       </td>
       <td th:text="${item.getAddedByUser().getShortName()}"></td>
       <td>
-        <button class="btn-octicon" type="button"><i class="octicon octicon-pencil"></i></button>
+        <a th:href="@{/admin/inventory/edit/{id}/(id=${item.getId()})}" class="btn-octicon" ><i class="octicon octicon-pencil"></i></a>
         <a th:href="@{/admin/inventory/delete/{uuid}/(uuid=${item.getUuid()})}" class="btn-octicon btn-octicon-danger"><i
             class="octicon octicon-trashcan"></i></a>
       </td>

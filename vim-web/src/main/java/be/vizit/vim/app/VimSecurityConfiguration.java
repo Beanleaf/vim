@@ -3,7 +3,6 @@ package be.vizit.vim.app;
 import be.vizit.vim.app.controller.HomeController;
 import be.vizit.vim.app.controller.SecurityController;
 import be.vizit.vim.domain.UserRole;
-import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,8 +25,8 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
-          .antMatchers("/login*").permitAll()
           .antMatchers("/admin/*").hasAuthority(UserRole.ADMIN.name())
+          .antMatchers("/inventory/*").hasAnyAuthority(getAllPossibleUserRoles())
           .antMatchers("/db/**").denyAll()
           .antMatchers("/css/**").permitAll()
           .antMatchers("/js/**").permitAll()
@@ -35,7 +34,6 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/webjars/octicons/**").permitAll()
           .antMatchers("/webjars/jquery/**").permitAll()
           .antMatchers("/").permitAll()
-          .anyRequest().authenticated()
           .and()
         .formLogin()
           .loginPage(SecurityController.URL_LOGIN)
@@ -47,13 +45,18 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .logoutSuccessUrl(HomeController.URL_HOME);
   }
 
+  private String[] getAllPossibleUserRoles() {
+    UserRole[] values = UserRole.values();
+    int i = 0;
+    String[] result = new String[values.length];
+    for (UserRole value : values) {
+      result[i++] = value.name();
+    }
+    return result;
+  }
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth) {
     auth.authenticationProvider(vimAuthenticationProvider);
-  }
-
-  @PreDestroy
-  private void destroySecurityContext() {
-    //SecurityContextHolde
   }
 }

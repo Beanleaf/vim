@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg p-3 p-responsive width-full">
+
+  <div class="blankslate blankslate-narrow mt-3">
+    <i class="octicon mega-octicon octicon-repo-push blankslate-icon"></i>
+    <h3 th:text="#{inventory.actions.in.title}">home.login</h3>
+    <p th:text="#{inventory.actions.in.description}">inventory.actions.in.description</p>
+    <div class="input-group">
+      <!-- todo: make this hidden? Can we auto focus? -->
+      <input autofocus class="form-control" name="itemUuid" type="text"/>
+      <span class="input-group-button">
+        <button class="btn" type="submit" th:text="#{inventory.actions.in.title}">
+          inventory.actions.in.title
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+
+
+</body>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

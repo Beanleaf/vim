@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg pt-3 p-responsive width-full">
+  <div class="blankslate blankslate-large">
+    <i class="octicon mega-octicon blankslate-icon octicon-alert"></i>
+    <i class="octicon mega-octicon blankslate-icon octicon-shield"></i>
+    <i class="octicon mega-octicon blankslate-icon octicon-lock"></i>
+    <h3 class="mb-1" th:text="#{navigation.forbidden}">navigation.forbidden</h3>
+    <p th:text="#{navigation.forbiddenMessage}">navigation.forbiddenMessage</p>
+  </div>
+</div>
+
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

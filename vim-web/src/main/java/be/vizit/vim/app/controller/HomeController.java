@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController extends VimController {
 
   public static final String URL_HOME = "/";
-  private static final String VIEW_HOME = "home";
+  private static final String VIEW_HOME = "public/home";
 
   @Autowired
   public HomeController(VimSession vimSession) {

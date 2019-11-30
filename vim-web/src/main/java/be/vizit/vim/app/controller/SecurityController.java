@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SecurityController extends VimController {
 
   public static final String URL_LOGIN = "/login";
+  private static final String VIEW_LOGIN = "public/login";
   public static final String URL_LOGIN_ERROR = "/login_error";
-  private static final String VIEW_LOGIN = "login";
 
   @Autowired
   SecurityController(VimSession vimSession) {

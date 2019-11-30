@@ -20,7 +20,9 @@
       <input autofocus class="form-control" id="username" name="username"
              th:placeholder="#{login.placeholder}" type="password"/>
       <span class="input-group-button">
-        <button class="btn" type="submit">Login</button>
+        <button class="btn" type="submit" th:text="#{navigation.login}">
+          navigation.login
+        </button>
       </span>
     </div>
   </form>

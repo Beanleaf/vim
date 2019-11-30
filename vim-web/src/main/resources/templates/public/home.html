@@ -14,7 +14,7 @@
     </h3>
     <p th:text="#{home.actions}">home.actions</p>
     <div class="BtnGroup my-3">
-    <a class="btn BtnGroup-item" href="#" th:text="#{inventory.actions.in.title}">Scan in</a>
+    <a class="btn BtnGroup-item" th:href="@{/inventory/scan/in}" th:text="#{inventory.actions.in.title}">Scan in</a>
     <a class="btn BtnGroup-item" href="#" th:text="#{inventory.actions.out.title}">Scan out</a>
     </div>
     <p sec:authorize="hasAuthority('ADMIN')">

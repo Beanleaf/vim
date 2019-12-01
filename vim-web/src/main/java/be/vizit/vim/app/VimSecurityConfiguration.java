@@ -42,7 +42,7 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .and()
         .logout()
           .logoutUrl("/logout")
-          .logoutSuccessUrl(HomeController.URL_HOME);
+          .logoutSuccessUrl(HomeController.URL_HOME + "?logout");
   }
 
   private String[] getAllPossibleUserRoles() {

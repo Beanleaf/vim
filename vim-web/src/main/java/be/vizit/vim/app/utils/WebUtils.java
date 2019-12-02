@@ -3,7 +3,7 @@ package be.vizit.vim.app.utils;
 public abstract class WebUtils {
 
   public static String icon(String css) {
-    return "<i class='" + css + "'><i>";
+    return "<i class='" + css + "'></i>";
   }
 
   public static String link(String href, String css, String content) {

@@ -119,10 +119,11 @@ public class InventoryManagementController extends VimController {
               protected String getText(InventoryItem object) {
                 String pencilIcon = WebUtils.icon("octicon octicon-pencil");
                 String trashcanIcon = WebUtils.icon("octicon octicon-trashcan");
-                return
-                    WebUtils.link(URL_EDIT_ITEM + "/" + object.getId(), "btn-octicon", pencilIcon) +
-                        WebUtils.link(URL_DELETE_ITEM + "/" + object.getId(),
-                            "btn-octicon btn-octicon-danger", trashcanIcon);
+                String deleteLink = WebUtils.link(URL_DELETE_ITEM + "/" + object.getId(),
+                    "btn-octicon btn-octicon-danger", trashcanIcon);
+                String editLink = WebUtils
+                    .link(URL_EDIT_ITEM + "/" + object.getId(), "btn-octicon", pencilIcon);
+                return editLink + deleteLink;
               }
             }
         );

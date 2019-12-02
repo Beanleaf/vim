@@ -7,7 +7,7 @@
 
 <div class="container-lg p-3 p-responsive width-full">
 
-  <div class="blankslate blankslate-narrow mt-3">
+  <div class="blankslate mt-3">
     <i class="octicon mega-octicon octicon-repo-push blankslate-icon"></i>
     <h3 th:text="#{inventory.actions.in.title}">home.login</h3>
     <p th:text="#{inventory.actions.in.description}">inventory.actions.in.description</p>
@@ -31,6 +31,32 @@
       </span>
       </div>
     </form>
+
+
+    <h3 class="text-left mt-3 mb-1" th:text="#{inventory.recentlyLogged}">
+      inventory.recentlyLogged</h3>
+    <div class="rounded-border text-left">
+      <table class="vimTable">
+        <thead>
+        <tr>
+          <th th:text="#{dateTime}">dateTime</th>
+          <th>#</th>
+          <th th:text="#{inventory.item.description}">item.description</th>
+          <th th:text="#{inventory.item.category}">item.category</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log: ${recentLogs}" th:with="item=${log.getInventoryItem()}">
+          <td th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}">
+            log.getTimestamp
+          </td>
+          <td th:text="${item.getId()}">inventoryItem.getId</td>
+          <td th:text="${item.getDescription()}">item.getDescription()</td>
+          <td th:text="${item.getItemCategory().getShortCode()}">item.getItemCategory()</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

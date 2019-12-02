@@ -3,10 +3,13 @@ package be.vizit.vim.app.controller;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.utils.FeedbackUtils;
 import be.vizit.vim.app.utils.MessageType;
+import be.vizit.vim.domain.InventoryDirection;
 import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.InventoryLog;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.InventoryLogService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +36,10 @@ public class InventoryController extends VimController {
   }
 
   @GetMapping(URL_IN)
-  public String scanIn() {
+  public String scanIn(Model model) {
+    List<InventoryLog> recentLogsForUser = inventoryLogService
+        .findRecentLogsForUser(getVimSession().getActiveUser(), InventoryDirection.IN);
+    model.addAttribute("recentLogs", recentLogsForUser);
     return VIEW_IN;
   }
 

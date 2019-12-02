@@ -6,6 +6,8 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.InventoryLog;
 import be.vizit.vim.domain.entities.User;
 import be.vizit.vim.repository.InventoryLogRepository;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,18 @@ public class InventoryLogService {
     return inventoryLogRepository.save(log);
   }
 
+  @Transactional(readOnly = true)
   public List<InventoryLog> findForItem(InventoryItem inventoryitem, Pageable pageable) {
     return inventoryLogRepository.findAllByInventoryItem(inventoryitem, pageable);
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryLog> findRecentLogsForUser(User user, InventoryDirection direction) {
+    Instant now = Instant.now();
+    Instant yesterday = now.minus(Duration.ofHours(24));
+    return inventoryLogRepository
+        .findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(
+            user, Date.from(yesterday), Date.from(now), direction
+        );
   }
 }

@@ -55,7 +55,6 @@
     </tr>
     </thead>
     <tbody>
-
     <!--/*@thymesVar id="itemsList" type="java.util.List<be.vizit.vim.domain.entities.InventoryItem>"*/-->
     <tr th:each="item: ${itemsList}">
       <td th:text="${item.getId()}">item.getId()</td>
@@ -70,9 +69,13 @@
       <td th:text="${item.getAddedByUser().getShortName()}"></td>
       <td th:text="#{'inventory.item.status.' + ${item.getCurrentStatus().getDescription()}}"></td>
       <td>
-        <a th:href="@{/admin/inventory/edit/{id}/(id=${item.getId()})}" class="btn-octicon" ><i class="octicon octicon-pencil"></i></a>
-        <a th:href="@{/admin/inventory/delete/{uuid}/(uuid=${item.getUuid()})}" class="btn-octicon btn-octicon-danger"><i
-            class="octicon octicon-trashcan"></i></a>
+        <a class="btn-octicon" th:href="@{/admin/inventory/edit/{id}/(id=${item.getId()})}">
+          <i class="octicon octicon-pencil"></i>
+        </a>
+        <a class="btn-octicon btn-octicon-danger"
+           th:href="@{/admin/inventory/delete/{uuid}/(uuid=${item.getUuid()})}">
+          <i class="octicon octicon-trashcan"></i>
+        </a>
       </td>
     </tr>
     </tbody>

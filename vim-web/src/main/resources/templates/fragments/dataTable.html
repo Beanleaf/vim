@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--/*@thymesVar id="dataTable" type="be.vizit.vim.app.utils.VimDataTable"*/-->
+<div th:fragment="dataTable" th:with="totalPages=${dataTable.getTotalPages()}">
+  <div class="rounded-border">
+    <table class="vimTable">
+      <thead>
+      <tr>
+        <th th:each="columnTitle: ${dataTable.getColumnTitles()}">
+          <span th:text="#{${columnTitle}}"></span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="dataObject: ${dataTable.getData()}">
+        <td th:each="columnDto: ${dataTable.getColumnData(dataObject)}">
+          <span th:if="!${columnDto.isRawHtml()}" th:text="${columnDto.getContent()}"></span>
+          <span th:if="${columnDto.isRawHtml()}" th:utext="${columnDto.getContent()}"></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav class="paginate-container" th:if="${totalPages > 1}"
+       th:with="currentPage = ${dataTable.getCurrentPage() + 1}">
+    <div class="pagination" th:with="start=${currentPage - 3}">
+      <span class="previous_page"
+            th:classappend="${currentPage} < 2 ? 'disabled' : ''"
+            th:text="#{pagination.previous}">
+        pagination.previous
+      </span>
+
+      <span class="gap" th:if="${start > 1}">…</span>
+      <a th:each="i: ${#numbers.sequence(start, currentPage - 1)}"
+         th:href="${dataTable.getPageUrl(i)}"
+         th:if="${i > 0}"
+         th:text="${i}"></a>
+      <em class="current selected" th:text="${currentPage}"></em>
+      <a th:each="i: ${#numbers.sequence(currentPage + 1, currentPage + 3)}"
+         th:href="${dataTable.getPageUrl(i)}"
+         th:if="${i <= totalPages}"
+         th:text="${i}"></a>
+      <span class="gap" th:if="${currentPage + 3 < totalPages}">…</span>
+
+      <a class="next_page" href="#url" rel="next"
+         th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
+         th:text="#{pagination.next}">
+        pagination.next
+      </a>
+    </div>
+  </nav>
+</div>
+</html>

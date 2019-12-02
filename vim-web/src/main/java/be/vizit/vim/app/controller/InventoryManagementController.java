@@ -4,12 +4,18 @@ import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
 import be.vizit.vim.app.utils.MessageType;
 import be.vizit.vim.app.utils.ToastMessage;
+import be.vizit.vim.app.utils.VimDataTable;
+import be.vizit.vim.app.utils.VimDataTableColumn;
+import be.vizit.vim.app.utils.WebUtils;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
+import java.util.Arrays;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,6 +35,7 @@ public class InventoryManagementController extends VimController {
   private static final String URL_EDIT_ITEM = "/admin/inventory/edit";
   private static final String VIEW_OVERVIEW = "/admin/inventory/overview";
   private static final String URL_OVERVIEW = "/admin/inventory";
+  private static final String URL_DELETE_ITEM = "/admin/inventory/delete";
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
@@ -40,14 +48,91 @@ public class InventoryManagementController extends VimController {
     this.itemCategoryService = itemCategoryService;
   }
 
-  @GetMapping({URL_OVERVIEW, URL_OVERVIEW + "/{page}"})
-  public String inventory(@PathVariable(required = false) Integer page, Model model) {
-    int startPage = page != null ? page : 0;
-    model.addAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(startPage, 50)));
+  @GetMapping(URL_OVERVIEW)
+  public String inventory(@RequestParam(required = false) Integer page, Model model) {
+    VimDataTable<InventoryItem> table = new VimDataTable<InventoryItem>(page, 15, URL_OVERVIEW) {
+      @Override
+      public int getCount() {
+        return inventoryItemService.findAll(Pageable.unpaged()).size(); //TODO: replace this
+      }
+
+      @Override
+      public List<InventoryItem> getData() {
+        return inventoryItemService.findAll(getPageRequest());
+      }
+
+      @Override
+      protected List<VimDataTableColumn<InventoryItem>> getColumns() {
+        return Arrays.asList(
+            new VimDataTableColumn<InventoryItem>("inventory.item.id") {
+              @Override
+              protected Long getValue(InventoryItem object) {
+                return object.getId();
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("inventory.item.description") {
+              @Override
+              protected String getText(InventoryItem object) {
+                return object.getDescription();
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("inventory.item.brand") {
+              @Override
+              protected String getText(InventoryItem object) {
+                return object.getBrand();
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("inventory.item.active") {
+              @Override
+              public boolean isRawHtml() {
+                return true;
+              }
+
+              @Override
+              protected String getText(InventoryItem object) {
+                return object.isActive()
+                    ? WebUtils.icon("octicon octicon-check text-green")
+                    : WebUtils.icon("octicon octicon-x");
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("inventory.item.addedBy") {
+              @Override
+              protected String getText(InventoryItem object) {
+                return object.getAddedByUser().getShortName();
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("inventory.item.status") {
+              @Override
+              protected String getText(InventoryItem object) {
+                return getLocaleString(
+                    "inventory.item.status." + object.getCurrentStatus().getDescription());
+              }
+            },
+            new VimDataTableColumn<InventoryItem>("actions") {
+
+              @Override
+              public boolean isRawHtml() {
+                return true;
+              }
+
+              @Override
+              protected String getText(InventoryItem object) {
+                String pencilIcon = WebUtils.icon("octicon octicon-pencil");
+                String trashcanIcon = WebUtils.icon("octicon octicon-trashcan");
+                return
+                    WebUtils.link(URL_EDIT_ITEM + "/" + object.getId(), "btn-octicon", pencilIcon) +
+                        WebUtils.link(URL_DELETE_ITEM + "/" + object.getId(),
+                            "btn-octicon btn-octicon-danger", trashcanIcon);
+              }
+            }
+        );
+      }
+    };
+    model.addAttribute("dataTable", table);
     return VIEW_OVERVIEW;
   }
 
-  @GetMapping(URL_OVERVIEW + "/delete/{id}")
+  @GetMapping(URL_DELETE_ITEM + "/{id}")
   public String deleteInventoryItem(@PathVariable long id, RedirectAttributes redirectAttributes) {
     InventoryItem item = inventoryItemService.getInventoryItem(id);
     inventoryItemService.delete(item);

@@ -71,47 +71,4 @@
     </div>
   </form>
 </div>
-
-<div th:fragment="inventoryOverview" class="rounded-border" id="inventoryOverview">
-  <table class="vimTable">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th th:text="#{inventory.item.category}">item.category</th>
-      <th th:text="#{inventory.item.description}">item.description</th>
-      <th th:text="#{inventory.item.brand}">item.brand</th>
-      <th th:text="#{inventory.item.active}" class="text-center">item.active</th>
-      <th th:text="#{inventory.item.addedBy}">item.addedBy</th>
-      <th th:text="#{inventory.item.status}">item.status</th>
-      <th th:text="#{actions}"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--/*@thymesVar id="itemsList" type="java.util.List<be.vizit.vim.domain.entities.InventoryItem>"*/-->
-    <tr th:each="item: ${itemsList}">
-      <td th:text="${item.getId()}">item.getId()</td>
-      <td th:text="${item.getItemCategory().getShortCode()}">
-        item.getItemCategory().getShortCode()
-      </td>
-      <td th:text="${item.getDescription()}">item.getDescription()</td>
-      <td th:text="${item.getBrand()}">item.getBrand()</td>
-      <td class="text-center">
-        <i th:if="${item.isActive()}" class="octicon octicon-check text-green"></i>
-        <i th:unless="${item.isActive()}" class="octicon octicon-x"></i>
-      </td>
-      <td th:text="${item.getAddedByUser().getShortName()}"></td>
-      <td th:text="#{'inventory.item.status.' + ${item.getCurrentStatus().getDescription()}}"></td>
-      <td>
-        <a class="btn-octicon" th:href="@{/admin/inventory/edit/{id}/(id=${item.getId()})}">
-          <i class="octicon octicon-pencil"></i>
-        </a>
-        <a class="btn-octicon btn-octicon-danger"
-           th:href="@{/admin/inventory/delete/{id}/(id=${item.getId()})}">
-          <i class="octicon octicon-trashcan"></i>
-        </a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
 </html>

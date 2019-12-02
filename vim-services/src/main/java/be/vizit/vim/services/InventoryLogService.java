@@ -26,13 +26,24 @@ public class InventoryLogService {
   }
 
   @Transactional
-  public InventoryLog logIn(InventoryItem inventoryItem, User user) {
+  public void logIn(InventoryItem inventoryItem, User user) {
+    log(inventoryItem, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
+  }
+
+  @Transactional
+  public void logOut(InventoryItem inventoryItem, User user) {
+    log(inventoryItem, user, InventoryDirection.OUT, ItemStatus.LEND);
+  }
+
+  @Transactional
+  InventoryLog log(InventoryItem inventoryItem, User user, InventoryDirection direction,
+      ItemStatus status) {
     InventoryLog log = new InventoryLog();
     log.setInventoryItem(inventoryItem);
-    log.setInventoryDirection(InventoryDirection.IN);
+    log.setInventoryDirection(direction);
     log.setUser(user);
     log.setTimestamp(new Date());
-    inventoryItem.setCurrentStatus(ItemStatus.AVAILABLE);
+    inventoryItem.setCurrentStatus(status);
     return inventoryLogRepository.save(log);
   }
 

@@ -27,7 +27,8 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     User user = createAndStore(UserFixture.newUser("bob", "uuid"));
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
-    InventoryLog log = inventoryLogService.logIn(item, user);
+    InventoryLog log = inventoryLogService
+        .log(item, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
     assertThat(log.getId()).isNotNull();
     assertThat(log.getTimestamp()).isNotNull();
     assertThat(log.getInventoryDirection()).isEqualTo(InventoryDirection.IN);

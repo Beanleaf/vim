@@ -8,11 +8,11 @@
 <div class="container-lg p-3 p-responsive width-full">
 
   <div class="blankslate mt-3">
-    <i class="octicon mega-octicon octicon-repo-push blankslate-icon"></i>
-    <h3 th:text="#{inventory.actions.in.title}">in.title</h3>
-    <p th:text="#{inventory.actions.in.description}">inventory.actions.in.description</p>
+    <i class="octicon mega-octicon octicon-repo-pull blankslate-icon"></i>
+    <h3 th:text="#{inventory.actions.out.title}">out.title</h3>
+    <p th:text="#{inventory.actions.out.description}">inventory.actions.out.description</p>
 
-    <form method="post" th:action="@{/inventory/scan/in}">
+    <form method="post" th:action="@{/inventory/scan/out}">
       <div class="flash mb-3"
            th:classappend="'flash-' + ${frmFeedback.getType().getCssClass()}"
            th:if="${frmFeedback}">
@@ -23,10 +23,10 @@
         <span th:text="#{${frmFeedback.getMessage()}}">feedback.message</span>
       </div>
       <div class="input-group">
-        <input placeholder="#" autofocus class="form-control" name="itemUuid" type="text"/>
+        <input autofocus class="form-control" name="itemUuid" placeholder="#" type="text"/>
         <span class="input-group-button">
-        <button class="btn" type="submit" th:text="#{inventory.actions.in.title}">
-          inventory.actions.in.title
+        <button class="btn" th:text="#{inventory.actions.out.title}" type="submit">
+          inventory.actions.out.title
         </button>
       </span>
       </div>

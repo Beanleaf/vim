@@ -1,6 +1,4 @@
-package be.vizit.vim.app;
-
-import be.vizit.vim.domain.utilities.MessageType;
+package be.vizit.vim.app.utils;
 
 public class ToastMessage {
 

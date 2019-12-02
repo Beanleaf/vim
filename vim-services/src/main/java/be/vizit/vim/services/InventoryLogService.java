@@ -1,6 +1,7 @@
 package be.vizit.vim.services;
 
 import be.vizit.vim.domain.InventoryDirection;
+import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.InventoryLog;
 import be.vizit.vim.domain.entities.User;
@@ -23,12 +24,13 @@ public class InventoryLogService {
   }
 
   @Transactional
-  public InventoryLog log(InventoryItem inventoryItem, InventoryDirection direction, User user) {
+  public InventoryLog logIn(InventoryItem inventoryItem, User user) {
     InventoryLog log = new InventoryLog();
     log.setInventoryItem(inventoryItem);
-    log.setInventoryDirection(direction);
+    log.setInventoryDirection(InventoryDirection.IN);
     log.setUser(user);
     log.setTimestamp(new Date());
+    inventoryItem.setCurrentStatus(ItemStatus.AVAILABLE);
     return inventoryLogRepository.save(log);
   }
 

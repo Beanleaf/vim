@@ -50,6 +50,7 @@
       <th th:text="#{inventory.item.description}">item.description</th>
       <th th:text="#{inventory.item.active}" class="text-center">item.active</th>
       <th th:text="#{inventory.item.addedBy}">item.addedBy</th>
+      <th th:text="#{inventory.item.status}">item.status</th>
       <th th:text="#{actions}"></th>
     </tr>
     </thead>
@@ -67,6 +68,7 @@
         <i th:unless="${item.isActive()}" class="octicon octicon-x"></i>
       </td>
       <td th:text="${item.getAddedByUser().getShortName()}"></td>
+      <td th:text="#{'inventory.item.status.' + ${item.getCurrentStatus().getDescription()}}"></td>
       <td>
         <a th:href="@{/admin/inventory/edit/{id}/(id=${item.getId()})}" class="btn-octicon" ><i class="octicon octicon-pencil"></i></a>
         <a th:href="@{/admin/inventory/delete/{uuid}/(uuid=${item.getUuid()})}" class="btn-octicon btn-octicon-danger"><i

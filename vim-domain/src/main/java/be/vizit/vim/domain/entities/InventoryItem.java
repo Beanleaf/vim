@@ -1,5 +1,6 @@
 package be.vizit.vim.domain.entities;
 
+import be.vizit.vim.domain.ItemStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,8 @@ public class InventoryItem {
   private ItemCategory itemCategory;
   @ManyToOne(optional = false)
   private User addedByUser;
+  @Column(nullable = false)
+  private ItemStatus currentStatus;
 
   public InventoryItem() {
   }
@@ -73,5 +76,13 @@ public class InventoryItem {
 
   public void setAddedByUser(User addedByUser) {
     this.addedByUser = addedByUser;
+  }
+
+  public ItemStatus getCurrentStatus() {
+    return currentStatus;
+  }
+
+  public void setCurrentStatus(ItemStatus currentStatus) {
+    this.currentStatus = currentStatus;
   }
 }

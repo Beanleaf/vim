@@ -1,4 +1,4 @@
-package be.vizit.vim.domain.utilities;
+package be.vizit.vim.app.utils;
 
 public class Feedbackmessage {
 

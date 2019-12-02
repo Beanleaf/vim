@@ -11,15 +11,26 @@
     <i class="octicon mega-octicon octicon-repo-push blankslate-icon"></i>
     <h3 th:text="#{inventory.actions.in.title}">home.login</h3>
     <p th:text="#{inventory.actions.in.description}">inventory.actions.in.description</p>
-    <div class="input-group">
-      <!-- todo: make this hidden? Can we auto focus? -->
-      <input autofocus class="form-control" name="itemUuid" type="text"/>
-      <span class="input-group-button">
+
+    <form method="post" th:action="@{/inventory/scan/in}">
+      <div class="flash mb-3"
+           th:classappend="'flash-' + ${frmFeedback.getType().getCssClass()}"
+           th:if="${frmFeedback}">
+        <button class="flash-close js-flash-close" type="button">
+          <i class="octicon octicon-x"></i>
+        </button>
+        <i class="octicon octicon-alert"></i>
+        <span th:text="#{${frmFeedback.getMessage()}}">feedback.message</span>
+      </div>
+      <div class="input-group">
+        <input placeholder="#" autofocus class="form-control" name="itemUuid" type="text"/>
+        <span class="input-group-button">
         <button class="btn" type="submit" th:text="#{inventory.actions.in.title}">
           inventory.actions.in.title
         </button>
       </span>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
 

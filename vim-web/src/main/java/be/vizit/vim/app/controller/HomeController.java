@@ -1,8 +1,8 @@
 package be.vizit.vim.app.controller;
 
-import be.vizit.vim.app.ToastMessage;
 import be.vizit.vim.app.VimSession;
-import be.vizit.vim.domain.utilities.MessageType;
+import be.vizit.vim.app.utils.MessageType;
+import be.vizit.vim.app.utils.ToastMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

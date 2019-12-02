@@ -15,7 +15,7 @@
 </head>
 
 <section th:fragment="baseElements">
-  <!--/*@thymesVar id="toastMessage" type="be.vizit.vim.app.ToastMessage"*/-->
+  <!--/*@thymesVar id="toastMessage" type="be.vizit.vim.app.utils.ToastMessage"*/-->
   <div th:if="${toastMessage}" class="p-1 position-fixed bottom-0 left-0 mb-3 ml-3">
     <div class="Toast Toast--animateIn"
          th:classappend="'Toast--' + ${toastMessage.getType().getCssClass()}">
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <!--/*@thymesVar id="feedbackmessage" type="be.vizit.vim.domain.utilities.Feedbackmessage"*/-->
+  <!--/*@thymesVar id="feedbackmessage" type="be.vizit.vim.app.utils.Feedbackmessage"*/-->
   <div class="flash position-fixed top-0 m-3" th:if="${feedbackmessage}"
        th:classappend="'flash-' + ${feedbackmessage.getType().getCssClass()}">
     <button class="flash-close js-flash-close" th:if="${feedbackmessage.isCloseable()}"

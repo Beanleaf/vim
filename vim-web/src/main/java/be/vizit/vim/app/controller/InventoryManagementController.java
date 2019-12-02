@@ -1,10 +1,10 @@
 package be.vizit.vim.app.controller;
 
-import be.vizit.vim.app.ToastMessage;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
+import be.vizit.vim.app.utils.MessageType;
+import be.vizit.vim.app.utils.ToastMessage;
 import be.vizit.vim.domain.entities.InventoryItem;
-import be.vizit.vim.domain.utilities.MessageType;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
 import javax.validation.Valid;

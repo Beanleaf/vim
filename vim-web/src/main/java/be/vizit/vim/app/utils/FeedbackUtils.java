@@ -1,7 +1,5 @@
 package be.vizit.vim.app.utils;
 
-import be.vizit.vim.domain.utilities.Feedbackmessage;
-import be.vizit.vim.domain.utilities.MessageType;
 import be.vizit.vim.domain.utilities.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;

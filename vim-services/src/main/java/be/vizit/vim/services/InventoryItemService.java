@@ -1,5 +1,6 @@
 package be.vizit.vim.services;
 
+import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.InventoryLog;
 import be.vizit.vim.domain.entities.ItemCategory;
@@ -27,6 +28,15 @@ public class InventoryItemService {
   }
 
   @Transactional(readOnly = true)
+  public InventoryItem findByUuidOrId(String input) {
+    InventoryItem byUuid = findByUuid(input);
+    if (byUuid != null) {
+      return byUuid;
+    }
+    return getInventoryItem(Long.parseLong(input));
+  }
+
+  @Transactional(readOnly = true)
   public InventoryItem findByUuid(String uuid) {
     return inventoryitemRepository.findByUuid(uuid);
   }
@@ -48,13 +58,15 @@ public class InventoryItemService {
   }
 
   @Transactional
-  public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active, User user) {
+  public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
+      User user) {
     InventoryItem item = new InventoryItem();
     item.setItemCategory(itemCategory);
     item.setDescription(description);
     item.setActive(active);
     item.setUuid(UUID.randomUUID().toString());
     item.setAddedByUser(user);
+    item.setCurrentStatus(ItemStatus.AVAILABLE);
     save(item);
     return item;
   }

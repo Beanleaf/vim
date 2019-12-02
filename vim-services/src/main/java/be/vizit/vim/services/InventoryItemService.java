@@ -59,7 +59,7 @@ public class InventoryItemService {
 
   @Transactional
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
-      User user) {
+      String brand, User user) {
     InventoryItem item = new InventoryItem();
     item.setItemCategory(itemCategory);
     item.setDescription(description);
@@ -67,6 +67,7 @@ public class InventoryItemService {
     item.setUuid(UUID.randomUUID().toString());
     item.setAddedByUser(user);
     item.setCurrentStatus(ItemStatus.AVAILABLE);
+    item.setBrand(brand);
     save(item);
     return item;
   }

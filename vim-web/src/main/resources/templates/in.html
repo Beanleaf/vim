@@ -30,32 +30,7 @@
       </span>
       </div>
     </form>
-
-
-    <h3 class="text-left mt-3 mb-1" th:text="#{inventory.recentlyLogged}">
-      inventory.recentlyLogged</h3>
-    <div class="rounded-border text-left">
-      <table class="vimTable">
-        <thead>
-        <tr>
-          <th th:text="#{dateTime}">dateTime</th>
-          <th>#</th>
-          <th th:text="#{inventory.item.description}">item.description</th>
-          <th th:text="#{inventory.item.category}">item.category</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="log: ${recentLogs}" th:with="item=${log.getInventoryItem()}">
-          <td th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}">
-            log.getTimestamp
-          </td>
-          <td th:text="${item.getId()}">inventoryItem.getId</td>
-          <td th:text="${item.getDescription()}">item.getDescription()</td>
-          <td th:text="${item.getItemCategory().getShortCode()}">item.getItemCategory()</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <div th:replace="fragments/logs :: recentLogs"></div>
   </div>
 </div>
 

@@ -41,6 +41,7 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
             createAndStore(ItemCategoryFixture.newItemCategory("code")),
             "description",
             false,
+            null,
             createAndStore(UserFixture.newUser("bob", "uuid")));
     assertThat(newItem.getId()).isNotNull();
     assertThat(newItem.getUuid()).isNotNull();

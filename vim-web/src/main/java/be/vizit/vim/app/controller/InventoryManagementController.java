@@ -47,10 +47,9 @@ public class InventoryManagementController extends VimController {
     return VIEW_OVERVIEW;
   }
 
-  @GetMapping(URL_OVERVIEW + "/delete/{uuid}")
-  public String deleteInventoryItem(@PathVariable String uuid,
-      RedirectAttributes redirectAttributes) {
-    InventoryItem item = inventoryItemService.findByUuid(uuid);
+  @GetMapping(URL_OVERVIEW + "/delete/{id}")
+  public String deleteInventoryItem(@PathVariable long id, RedirectAttributes redirectAttributes) {
+    InventoryItem item = inventoryItemService.getInventoryItem(id);
     inventoryItemService.delete(item);
     redirectAttributes
         .addFlashAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
@@ -72,14 +71,15 @@ public class InventoryManagementController extends VimController {
     setupItemForm(model, new InventoryItemDto(
         inventoryItem.getItemCategory(),
         inventoryItem.getDescription(),
-        inventoryItem.isActive()
+        inventoryItem.isActive(),
+        inventoryItem.getBrand()
     ), URL_EDIT_ITEM + "/" + id);
     return VIEW_EDIT_ITEM;
   }
 
   @PostMapping(URL_EDIT_ITEM + "/{id}")
-  public String inventoryItemEditPost(@PathVariable long id, Model model,
-      @Valid @ModelAttribute InventoryItemDto inventoryItemDto, BindingResult bindingResult) {
+  public String inventoryItemEditPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
+      BindingResult bindingResult, @PathVariable long id, Model model) {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
@@ -87,6 +87,7 @@ public class InventoryManagementController extends VimController {
       inventoryItem.setActive(inventoryItemDto.isActive());
       inventoryItem.setDescription(inventoryItemDto.getDescription());
       inventoryItem.setItemCategory(inventoryItemDto.getItemCategory());
+      inventoryItem.setBrand(inventoryItemDto.getBrand());
       inventoryItemService.save(inventoryItem);
       model.addAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.inventory.editItemSuccess", false));
@@ -111,6 +112,7 @@ public class InventoryManagementController extends VimController {
         inventoryItemDto.getItemCategory(),
         inventoryItemDto.getDescription(),
         inventoryItemDto.isActive(),
+        inventoryItemDto.getBrand(),
         getVimSession().getActiveUser()
     );
     PageRequest paging = PageRequest.of(0, 50);

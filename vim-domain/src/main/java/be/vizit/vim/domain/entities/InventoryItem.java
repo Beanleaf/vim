@@ -26,6 +26,8 @@ public class InventoryItem {
   private User addedByUser;
   @Column(nullable = false)
   private ItemStatus currentStatus;
+  @Column(length = 100)
+  private String brand;
 
   public InventoryItem() {
   }
@@ -84,5 +86,13 @@ public class InventoryItem {
 
   public void setCurrentStatus(ItemStatus currentStatus) {
     this.currentStatus = currentStatus;
+  }
+
+  public String getBrand() {
+    return brand;
+  }
+
+  public void setBrand(String brand) {
+    this.brand = brand;
   }
 }

@@ -1,52 +1,75 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="inventoryItemForm">
-    <!--/*@thymesVar id="inventoryItemDto" type="be.vizit.vim.app.dto.InventoryItemDto"*/-->
-    <form method="post" th:action="@{${frmAction}}" th:object="${inventoryItemDto}">
-      <dl class="form-group" th:classappend="${#fields.hasErrors('itemCategory')} ? 'errored'">
-        <dt><label for="item-category" th:text="#{inventory.item.category}">item.category</label>
-        </dt>
-        <dd>
-          <select th:field="*{itemCategory}" class="form-select" id="item-category">
-            <option th:text="#{form.select.default}" value="">form.select.default</option>
-            <!--/*@thymesVar id="itemCategories" type="java.util.List<be.vizit.vim.domain.entities.ItemCategory>"*/-->
-            <option th:each="category: ${itemCategories}"
-                    th:value="${category.getId()}"
-                    th:text="${category.getDescription()}">
-              category.getShortCode()
-            </option>
-          </select>
-        </dd>
-        <dd class="error" th:if="${#fields.hasErrors('itemCategory')}"
-            th:errors="*{itemCategory}"></dd>
-      </dl>
-      <dl class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'errored'">
-        <dt><label for="item-description"
-                   th:text="#{inventory.item.description}">item.description</label></dt>
-        <dd><input th:field="*{description}" class="form-control" maxlength="255" type="text"
-                   id="item-description"/></dd>
-        <dd class="error" th:if="${#fields.hasErrors('description')}"
-            th:errors="*{description}"></dd>
-      </dl>
-      <dl class="form-group" th:classappend="${#fields.hasErrors('brand')} ? 'errored'">
-        <dt><label for="item-brand"
-                   th:text="#{inventory.item.brand}">item.brand</label></dt>
-        <dd><input class="form-control" id="item-brand" maxlength="100" th:field="*{brand}"
-                   type="text"/></dd>
-        <dd class="error" th:errors="*{brand}"
-            th:if="${#fields.hasErrors('brand')}"></dd>
-      </dl>
-      <div class="form-checkbox">
-        <label><input type="checkbox" checked="checked" th:field="*{active}"/> <span
-            th:text="#{inventory.item.active}">inventory.item.active</span> </label>
-        <p class="note" th:text="#{inventory.item.activeDescription}">
-          inventory.item.activeDescription</p>
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary" th:text="#{form.save}">form.save</button>
-        <a th:href="@{/admin/inventory}" class="btn" th:text="#{form.cancel}">form.cancel</a>
-      </div>
-    </form>
+  <!--/*@thymesVar id="inventoryItemDto" type="be.vizit.vim.app.dto.InventoryItemDto"*/-->
+  <form method="post" th:action="@{${frmAction}}" th:object="${inventoryItemDto}">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('itemCategory')} ? 'errored'">
+      <dt><label for="item-category" th:text="#{inventory.item.category}">item.category</label>
+      </dt>
+      <dd>
+        <select class="form-select" id="item-category" th:field="*{itemCategory}">
+          <option th:text="#{form.select.default}" value="">form.select.default</option>
+          <!--/*@thymesVar id="itemCategories" type="java.util.List<be.vizit.vim.domain.entities.ItemCategory>"*/-->
+          <option th:each="category: ${itemCategories}"
+                  th:text="${category.getDescription()}"
+                  th:value="${category.getId()}">
+            category.getShortCode()
+          </option>
+        </select>
+      </dd>
+      <dd class="error" th:errors="*{itemCategory}"
+          th:if="${#fields.hasErrors('itemCategory')}"></dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'errored'">
+      <dt><label for="item-description"
+                 th:text="#{inventory.item.description}">item.description</label></dt>
+      <dd><input class="form-control" id="item-description" maxlength="255"
+                 th:field="*{description}"
+                 type="text"/></dd>
+      <dd class="error" th:errors="*{description}"
+          th:if="${#fields.hasErrors('description')}"></dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('brand')} ? 'errored'">
+      <dt><label for="item-brand"
+                 th:text="#{inventory.item.brand}">item.brand</label></dt>
+      <dd><input class="form-control" id="item-brand" maxlength="100" th:field="*{brand}"
+                 type="text"/></dd>
+      <dd class="error" th:errors="*{brand}"
+          th:if="${#fields.hasErrors('brand')}"></dd>
+    </dl>
+
+    <div class="form-checkbox">
+      <label><input th:checked="*{active}" type="checkbox"/> <span
+          th:text="#{inventory.item.active}">inventory.item.active</span> </label>
+      <p class="note" th:text="#{inventory.item.activeDescription}">
+        inventory.item.activeDescription</p>
+    </div>
+
+    <div class="form-checkbox mt-2" th:if="!${originalItem}">
+      <label>
+        <input name="#items" th:checked="${inventoryItemDto.getAmount() <= 1}" type="radio"/>
+        <span th:text="#{inventory.oneItem}">
+      </label>
+    </div>
+    <div class="form-checkbox" th:if="!${originalItem}">
+      <label aria-live="polite">
+        <input class="form-checkbox-details-trigger" name="#items"
+               th:checked="${inventoryItemDto.getAmount() > 1}"
+               type="radio"/>
+        <span th:text="#{inventory.multipleItems}">
+        <span class="form-checkbox-details text-normal">
+        <span class="d-block mb-1" th:text="#{inventory.amountOfItems}"></span>
+        <input class="form-control input-contrast" size="3" th:field="*{amount}" type="text"/>
+        <span class="text-small text-gray pl-2" th:text="#{inventory.items}"></span>
+      </span>
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" th:text="#{form.save}" type="submit">form.save</button>
+      <a class="btn" th:href="@{/admin/inventory}" th:text="#{form.cancel}">form.cancel</a>
+    </div>
+  </form>
 </div>
 
 <div th:fragment="inventoryOverview" class="rounded-border" id="inventoryOverview">

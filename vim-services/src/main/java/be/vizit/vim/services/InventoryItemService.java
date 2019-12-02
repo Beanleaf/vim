@@ -57,7 +57,6 @@ public class InventoryItemService {
     return all.getContent();
   }
 
-  @Transactional
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
       String brand, User user) {
     InventoryItem item = new InventoryItem();
@@ -68,8 +67,17 @@ public class InventoryItemService {
     item.setAddedByUser(user);
     item.setCurrentStatus(ItemStatus.AVAILABLE);
     item.setBrand(brand);
-    save(item);
     return item;
+  }
+
+  @Transactional
+  public void updateItem(InventoryItem item, ItemCategory itemCategory, String description,
+      boolean active,
+      String brand) {
+    item.setItemCategory(itemCategory);
+    item.setDescription(description);
+    item.setActive(active);
+    item.setBrand(brand);
   }
 
   @Transactional
@@ -83,7 +91,18 @@ public class InventoryItemService {
   }
 
   @Transactional
-  public void save(InventoryItem inventoryItem) {
+  public void saveItemMultipleTimes(Integer amount, ItemCategory category, String description,
+      boolean active, String brand, User user) {
+    int totalAmount = amount != null ? amount : 1;
+    for (int i = 1; i <= totalAmount; i++) {
+      String newDescription = totalAmount > 1 ? description + " #" + i : description;
+      InventoryItem item = createNewItem(category, newDescription, active, brand, user);
+      save(item);
+    }
+  }
+
+  @Transactional
+  void save(InventoryItem inventoryItem) {
     inventoryitemRepository.save(inventoryItem);
   }
 }

@@ -35,16 +35,19 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   }
 
   @Test
-  void createNewItem() {
-    InventoryItem newItem = inventoryItemService
-        .createNewItem(
+  void saveItemMultipleTimes() {
+    inventoryItemService
+        .saveItemMultipleTimes(
+            2,
             createAndStore(ItemCategoryFixture.newItemCategory("code")),
             "description",
             false,
             null,
             createAndStore(UserFixture.newUser("bob", "uuid")));
-    assertThat(newItem.getId()).isNotNull();
-    assertThat(newItem.getUuid()).isNotNull();
+
+    List<InventoryItem> items = inventoryItemService.findAll(Pageable.unpaged());
+    assertThat(items).hasSize(2);
+    assertThat(items.get(0).getDescription()).contains("#");
   }
 
   @Test

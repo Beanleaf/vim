@@ -84,11 +84,11 @@ public class InventoryManagementController extends VimController {
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
     if (!bindingResult.hasErrors()) {
-      inventoryItem.setActive(inventoryItemDto.isActive());
-      inventoryItem.setDescription(inventoryItemDto.getDescription());
-      inventoryItem.setItemCategory(inventoryItemDto.getItemCategory());
-      inventoryItem.setBrand(inventoryItemDto.getBrand());
-      inventoryItemService.save(inventoryItem);
+      inventoryItemService.updateItem(inventoryItem,
+          inventoryItemDto.getItemCategory(),
+          inventoryItemDto.getDescription(),
+          inventoryItemDto.isActive(),
+          inventoryItemDto.getBrand());
       model.addAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.inventory.editItemSuccess", false));
     }
@@ -108,7 +108,7 @@ public class InventoryManagementController extends VimController {
     if (bindingResult.hasErrors()) {
       return VIEW_NEW_ITEM;
     }
-    inventoryItemService.createNewItem(
+    inventoryItemService.saveItemMultipleTimes(inventoryItemDto.getAmount(),
         inventoryItemDto.getItemCategory(),
         inventoryItemDto.getDescription(),
         inventoryItemDto.isActive(),

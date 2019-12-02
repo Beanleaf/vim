@@ -14,6 +14,7 @@ public class InventoryItemDto implements FormDto {
   private boolean active;
   @Length(max = 100, message = "{validations.length.100}")
   private String brand;
+  private Integer amount;
 
   public InventoryItemDto() {
     this(null, null, true, null);
@@ -57,5 +58,13 @@ public class InventoryItemDto implements FormDto {
 
   public void setBrand(String brand) {
     this.brand = brand;
+  }
+
+  public Integer getAmount() {
+    return amount;
+  }
+
+  public void setAmount(Integer amount) {
+    this.amount = amount;
   }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<!--/*@thymesVar id="dataTable" type="be.vizit.vim.app.utils.datatable.VimDataTable"*/-->
+<!--/*@thymesVar id="dataTable" type="be.beanleaf.datatable.BeanleafDatatable"*/-->
 <div th:fragment="dataTable" th:with="totalPages=${dataTable.getTotalPages()}">
   <div th:if="${dataTable.getNavPosition() == 'top' or dataTable.getNavPosition() == 'both'}">
     <nav th:replace="fragments/dataTable :: dataTableNavigation"></nav>
@@ -36,25 +36,25 @@
   <div class="pagination" th:with="start=${currentPage - 3}">
     <a class="previous_page"
        th:classappend="${currentPage} < 2 ? 'disabled' : ''"
-       th:href="${dataTable.getPageUrl(currentPage - 1)}"
+       th:href="@{''(page=${currentPage - 1})}"
        th:text="#{pagination.previous}">
       pagination.previous
     </a>
 
     <span class="gap" th:if="${start > 1}">…</span>
     <a th:each="i: ${#numbers.sequence(start, currentPage - 1)}"
-       th:href="${dataTable.getPageUrl(i)}"
+       th:href="@{''(page=${i})}"
        th:if="${i > 0}"
        th:text="${i}"></a>
     <em class="current selected" th:text="${currentPage}"></em>
     <a th:each="i: ${#numbers.sequence(currentPage + 1, currentPage + 3)}"
-       th:href="${dataTable.getPageUrl(i)}"
+       th:href="@{''(page=${i})}"
        th:if="${i <= totalPages}"
        th:text="${i}"></a>
     <span class="gap" th:if="${currentPage + 3 < totalPages}">…</span>
 
     <a class="next_page" th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
-       th:href="${dataTable.getPageUrl(currentPage + 1)}"
+       th:href="@{''(page=${currentPage+1})}"
        th:text="#{pagination.next}">
       pagination.next
     </a>

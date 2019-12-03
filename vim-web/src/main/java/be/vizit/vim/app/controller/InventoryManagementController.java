@@ -1,12 +1,12 @@
 package be.vizit.vim.app.controller;
 
+import be.beanleaf.datatable.BeanleafDatatable;
+import be.beanleaf.datatable.BeanleafDatatableColumn;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
 import be.vizit.vim.app.utils.MessageType;
 import be.vizit.vim.app.utils.ToastMessage;
 import be.vizit.vim.app.utils.WebUtils;
-import be.vizit.vim.app.utils.datatable.VimDataTable;
-import be.vizit.vim.app.utils.datatable.VimDataTableColumn;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
@@ -49,7 +49,7 @@ public class InventoryManagementController extends VimController {
 
   @GetMapping(URL_OVERVIEW)
   public String inventory(@RequestParam(required = false) Integer page, Model model) {
-    VimDataTable<InventoryItem> table = new VimDataTable<InventoryItem>(page, 15, URL_OVERVIEW) {
+    BeanleafDatatable<InventoryItem> table = new BeanleafDatatable<InventoryItem>(page, 15) {
       @Override
       public long getCount() {
         return inventoryItemService.countAllItems();
@@ -57,31 +57,32 @@ public class InventoryManagementController extends VimController {
 
       @Override
       public List<InventoryItem> getData() {
-        return inventoryItemService.findAll(getPageRequest());
+        return inventoryItemService.findAll(PageRequest.of(getCurrentPage(), getPageSize()));
       }
 
       @Override
-      public List<VimDataTableColumn<InventoryItem>> getColumns() {
+      public List<BeanleafDatatableColumn<InventoryItem>> getColumns() {
         return Arrays.asList(
-            new VimDataTableColumn<InventoryItem>("inventory.item.id") {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.id") {
               @Override
               protected Long getValue(InventoryItem object) {
                 return object.getId();
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.description") {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.description") {
               @Override
               public String getText(InventoryItem object) {
                 return object.getDescription();
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.brand") {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.brand") {
               @Override
               public String getText(InventoryItem object) {
                 return object.getBrand();
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.active", "text-center", true) {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.active", "text-center",
+                true) {
               @Override
               public String getText(InventoryItem object) {
                 return object.isActive()
@@ -89,20 +90,20 @@ public class InventoryManagementController extends VimController {
                     : WebUtils.icon("octicon octicon-x");
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.addedBy") {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.addedBy") {
               @Override
               public String getText(InventoryItem object) {
                 return object.getAddedByUser().getShortName();
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.status") {
+            new BeanleafDatatableColumn<InventoryItem>("inventory.item.status") {
               @Override
               public String getText(InventoryItem object) {
                 return getLocaleString(
                     "inventory.item.status." + object.getCurrentStatus().getDescription());
               }
             },
-            new VimDataTableColumn<InventoryItem>("actions", true) {
+            new BeanleafDatatableColumn<InventoryItem>("actions", true) {
               @Override
               public String getText(InventoryItem object) {
                 String pencilIcon = WebUtils.icon("octicon octicon-pencil");

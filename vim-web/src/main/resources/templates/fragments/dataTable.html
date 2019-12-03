@@ -1,8 +1,12 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<!--/*@thymesVar id="dataTable" type="be.vizit.vim.app.utils.VimDataTable"*/-->
+<!--/*@thymesVar id="dataTable" type="be.vizit.vim.app.utils.datatable.VimDataTable"*/-->
 <div th:fragment="dataTable" th:with="totalPages=${dataTable.getTotalPages()}">
+  <div th:if="${dataTable.getNavPosition() == 'top' or dataTable.getNavPosition() == 'both'}">
+    <nav th:replace="fragments/dataTable :: dataTableNavigation"></nav>
+  </div>
+
   <div class="rounded-border">
     <table class="vimTable">
       <thead>
@@ -14,43 +18,46 @@
       </thead>
       <tbody>
       <tr th:each="dataObject: ${dataTable.getData()}">
-        <td th:classappend="${columnDto.getCss()}"
-            th:each="columnDto: ${dataTable.getColumnData(dataObject)}">
-          <span th:if="!${columnDto.isRawHtml()}" th:text="${columnDto.getContent()}"></span>
-          <span th:if="${columnDto.isRawHtml()}" th:utext="${columnDto.getContent()}"></span>
+        <td th:classappend="${column.getCss()}" th:each="column: ${dataTable.getColumns()}">
+          <span th:if="!${column.isRawHtml()}" th:text="${column.getText(dataObject)}"></span>
+          <span th:if="${column.isRawHtml()}" th:utext="${column.getText(dataObject)}"></span>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <nav class="paginate-container" th:if="${totalPages > 1}"
-       th:with="currentPage = ${dataTable.getCurrentPage() + 1}">
-    <div class="pagination" th:with="start=${currentPage - 3}">
-      <a class="previous_page"
-         th:classappend="${currentPage} < 2 ? 'disabled' : ''"
-         th:href="${dataTable.getPageUrl(currentPage - 1)}"
-         th:text="#{pagination.previous}">
-        pagination.previous
-      </a>
 
-      <span class="gap" th:if="${start > 1}">…</span>
-      <a th:each="i: ${#numbers.sequence(start, currentPage - 1)}"
-         th:href="${dataTable.getPageUrl(i)}"
-         th:if="${i > 0}"
-         th:text="${i}"></a>
-      <em class="current selected" th:text="${currentPage}"></em>
-      <a th:each="i: ${#numbers.sequence(currentPage + 1, currentPage + 3)}"
-         th:href="${dataTable.getPageUrl(i)}"
-         th:if="${i <= totalPages}"
-         th:text="${i}"></a>
-      <span class="gap" th:if="${currentPage + 3 < totalPages}">…</span>
-
-      <a class="next_page" th:href="${dataTable.getPageUrl(currentPage + 1)}"
-         th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
-         th:text="#{pagination.next}">
-        pagination.next
-      </a>
-    </div>
-  </nav>
+  <div th:if="${dataTable.getNavPosition() == 'bot' or dataTable.getNavPosition() == 'both'}">
+    <nav th:replace="fragments/dataTable :: dataTableNavigation"></nav>
+  </div>
 </div>
+<nav class="paginate-container" th:fragment="dataTableNavigation" th:if="${totalPages > 1}"
+     th:with="currentPage = ${dataTable.getCurrentPage() + 1}">
+  <div class="pagination" th:with="start=${currentPage - 3}">
+    <a class="previous_page"
+       th:classappend="${currentPage} < 2 ? 'disabled' : ''"
+       th:href="${dataTable.getPageUrl(currentPage - 1)}"
+       th:text="#{pagination.previous}">
+      pagination.previous
+    </a>
+
+    <span class="gap" th:if="${start > 1}">…</span>
+    <a th:each="i: ${#numbers.sequence(start, currentPage - 1)}"
+       th:href="${dataTable.getPageUrl(i)}"
+       th:if="${i > 0}"
+       th:text="${i}"></a>
+    <em class="current selected" th:text="${currentPage}"></em>
+    <a th:each="i: ${#numbers.sequence(currentPage + 1, currentPage + 3)}"
+       th:href="${dataTable.getPageUrl(i)}"
+       th:if="${i <= totalPages}"
+       th:text="${i}"></a>
+    <span class="gap" th:if="${currentPage + 3 < totalPages}">…</span>
+
+    <a class="next_page" th:classappend="${currentPage < totalPages} ? '' : 'disabled'"
+       th:href="${dataTable.getPageUrl(currentPage + 1)}"
+       th:text="#{pagination.next}">
+      pagination.next
+    </a>
+  </div>
+</nav>
 </html>

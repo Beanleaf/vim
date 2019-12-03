@@ -4,9 +4,9 @@ import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
 import be.vizit.vim.app.utils.MessageType;
 import be.vizit.vim.app.utils.ToastMessage;
-import be.vizit.vim.app.utils.VimDataTable;
-import be.vizit.vim.app.utils.VimDataTableColumn;
 import be.vizit.vim.app.utils.WebUtils;
+import be.vizit.vim.app.utils.datatable.VimDataTable;
+import be.vizit.vim.app.utils.datatable.VimDataTableColumn;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
@@ -61,7 +61,7 @@ public class InventoryManagementController extends VimController {
       }
 
       @Override
-      protected List<VimDataTableColumn<InventoryItem>> getColumns() {
+      public List<VimDataTableColumn<InventoryItem>> getColumns() {
         return Arrays.asList(
             new VimDataTableColumn<InventoryItem>("inventory.item.id") {
               @Override
@@ -71,19 +71,19 @@ public class InventoryManagementController extends VimController {
             },
             new VimDataTableColumn<InventoryItem>("inventory.item.description") {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 return object.getDescription();
               }
             },
             new VimDataTableColumn<InventoryItem>("inventory.item.brand") {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 return object.getBrand();
               }
             },
             new VimDataTableColumn<InventoryItem>("inventory.item.active", "text-center", true) {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 return object.isActive()
                     ? WebUtils.icon("octicon octicon-check text-green")
                     : WebUtils.icon("octicon octicon-x");
@@ -91,20 +91,20 @@ public class InventoryManagementController extends VimController {
             },
             new VimDataTableColumn<InventoryItem>("inventory.item.addedBy") {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 return object.getAddedByUser().getShortName();
               }
             },
             new VimDataTableColumn<InventoryItem>("inventory.item.status") {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 return getLocaleString(
                     "inventory.item.status." + object.getCurrentStatus().getDescription());
               }
             },
             new VimDataTableColumn<InventoryItem>("actions", true) {
               @Override
-              protected String getText(InventoryItem object) {
+              public String getText(InventoryItem object) {
                 String pencilIcon = WebUtils.icon("octicon octicon-pencil");
                 String trashcanIcon = WebUtils.icon("octicon octicon-trashcan");
                 String deleteLink = WebUtils.link(URL_DELETE_ITEM + "/" + object.getId(),

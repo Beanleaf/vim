@@ -1,4 +1,4 @@
-package be.vizit.vim.app.utils;
+package be.vizit.vim.app.utils.datatable;
 
 public abstract class VimDataTableColumn<T> {
 
@@ -28,7 +28,7 @@ public abstract class VimDataTableColumn<T> {
     return rawHtml;
   }
 
-  protected String getText(T object) {
+  public String getText(T object) {
     final Object value = getValue(object);
     if (value == null) {
       return null;

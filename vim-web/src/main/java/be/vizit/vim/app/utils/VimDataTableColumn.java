@@ -4,10 +4,24 @@ public abstract class VimDataTableColumn<T> {
 
   private String title;
   private boolean rawHtml;
+  private String css;
 
   public VimDataTableColumn(String title) {
+    this(title, false);
+  }
+
+  public VimDataTableColumn(String title, boolean rawHtml) {
+    this(title, null, rawHtml);
+  }
+
+  public VimDataTableColumn(String title, String css) {
+    this(title, css, false);
+  }
+
+  public VimDataTableColumn(String title, String css, boolean rawHtml) {
     this.title = title;
-    this.rawHtml = false;
+    this.css = css;
+    this.rawHtml = rawHtml;
   }
 
   public boolean isRawHtml() {
@@ -29,5 +43,9 @@ public abstract class VimDataTableColumn<T> {
 
   public String getTitle() {
     return title;
+  }
+
+  public String getCss() {
+    return css;
   }
 }

@@ -56,12 +56,12 @@
         <input class="form-checkbox-details-trigger" name="#items"
                th:checked="${inventoryItemDto.getAmount() > 1}"
                type="radio"/>
-        <span th:text="#{inventory.multipleItems}">
+        <span th:text="#{inventory.multipleItems}"></span>
         <span class="form-checkbox-details text-normal">
-        <span class="d-block mb-1" th:text="#{inventory.amountOfItems}"></span>
-        <input class="form-control input-contrast" size="3" th:field="*{amount}" type="text"/>
-        <span class="text-small text-gray pl-2" th:text="#{inventory.items}"></span>
-      </span>
+          <span class="d-block mb-1" th:text="#{inventory.amountOfItems}"></span>
+          <input class="form-control input-contrast" size="3" th:field="*{amount}" type="text"/>
+          <span class="text-small text-gray pl-2" th:text="#{inventory.items}"></span>
+        </span>
       </label>
     </div>
 

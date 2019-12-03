@@ -14,7 +14,8 @@
       </thead>
       <tbody>
       <tr th:each="dataObject: ${dataTable.getData()}">
-        <td th:each="columnDto: ${dataTable.getColumnData(dataObject)}">
+        <td th:classappend="${columnDto.getCss()}"
+            th:each="columnDto: ${dataTable.getColumnData(dataObject)}">
           <span th:if="!${columnDto.isRawHtml()}" th:text="${columnDto.getContent()}"></span>
           <span th:if="${columnDto.isRawHtml()}" th:utext="${columnDto.getContent()}"></span>
         </td>

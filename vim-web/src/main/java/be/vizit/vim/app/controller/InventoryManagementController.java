@@ -82,12 +82,7 @@ public class InventoryManagementController extends VimController {
                 return object.getBrand();
               }
             },
-            new VimDataTableColumn<InventoryItem>("inventory.item.active") {
-              @Override
-              public boolean isRawHtml() {
-                return true;
-              }
-
+            new VimDataTableColumn<InventoryItem>("inventory.item.active", "text-center", true) {
               @Override
               protected String getText(InventoryItem object) {
                 return object.isActive()
@@ -108,13 +103,7 @@ public class InventoryManagementController extends VimController {
                     "inventory.item.status." + object.getCurrentStatus().getDescription());
               }
             },
-            new VimDataTableColumn<InventoryItem>("actions") {
-
-              @Override
-              public boolean isRawHtml() {
-                return true;
-              }
-
+            new VimDataTableColumn<InventoryItem>("actions", true) {
               @Override
               protected String getText(InventoryItem object) {
                 String pencilIcon = WebUtils.icon("octicon octicon-pencil");

@@ -54,7 +54,7 @@ public abstract class VimDataTable<T> {
   public List<ColumnDto> getColumnData(T object) {
     List<ColumnDto> columnData = new ArrayList<>();
     for (VimDataTableColumn<T> column : getColumns()) {
-      columnData.add(new ColumnDto(column.getText(object), column.isRawHtml()));
+      columnData.add(new ColumnDto(column.getText(object), column.isRawHtml(), column.getCss()));
     }
     return columnData;
   }

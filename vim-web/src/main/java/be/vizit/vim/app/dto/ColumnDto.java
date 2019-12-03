@@ -4,10 +4,12 @@ public class ColumnDto {
 
   private String content;
   private boolean rawHtml;
+  private String css;
 
-  public ColumnDto(String content, boolean rawHtml) {
+  public ColumnDto(String content, boolean rawHtml, String css) {
     this.content = content;
     this.rawHtml = rawHtml;
+    this.css = css;
   }
 
   public String getContent() {
@@ -16,5 +18,9 @@ public class ColumnDto {
 
   public boolean isRawHtml() {
     return rawHtml;
+  }
+
+  public String getCss() {
+    return css;
   }
 }

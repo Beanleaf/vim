@@ -37,7 +37,7 @@ public abstract class VimDataTable<T> {
     return (int) Math.ceil((double) getCount() / getPageSize());
   }
 
-  public abstract int getCount();
+  public abstract long getCount();
 
   public abstract List<T> getData();
 

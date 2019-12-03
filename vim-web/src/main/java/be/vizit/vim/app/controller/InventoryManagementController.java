@@ -15,7 +15,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,8 +51,8 @@ public class InventoryManagementController extends VimController {
   public String inventory(@RequestParam(required = false) Integer page, Model model) {
     VimDataTable<InventoryItem> table = new VimDataTable<InventoryItem>(page, 15, URL_OVERVIEW) {
       @Override
-      public int getCount() {
-        return inventoryItemService.findAll(Pageable.unpaged()).size(); //TODO: replace this
+      public long getCount() {
+        return inventoryItemService.countAllItems();
       }
 
       @Override

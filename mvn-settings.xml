@@ -20,32 +20,7 @@
           </snapshots>
           <url>https://repo1.maven.org/maven2</url>
         </repository>
-        <repository>
-          <!-- repo used for deployment -->
-          <id>github-beanleaf-vim</id>
-          <name>GitHub Beanleaf Apache Maven Packages</name>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-          <url>https://maven.pkg.github.com/Beanleaf/vim</url>
-        </repository>
-        <repository>
-          <id>github-beanleaf-datatable</id>
-          <name>GitHub Beanleaf Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/Beanleaf/datatable</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
       </repositories>
     </profile>
   </profiles>
-
-  <servers>
-    <server>
-      <id>github-beanleaf-vim</id>
-      <password>${env.GITHUB_TOKEN}</password>
-      <username>${env.GITHUB_USERNAME}</username>
-    </server>
-  </servers>
 </settings>

@@ -104,5 +104,16 @@
     <scss.path.target>src/main/resources/static/css/</scss.path.target>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>github-beanleaf-datatable</id>
+      <name>GitHub Beanleaf Apache Maven Packages</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>https://maven.pkg.github.com/Beanleaf/datatable</url>
+    </repository>
+  </repositories>
+
   <packaging>jar</packaging>
 </project>

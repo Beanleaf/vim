@@ -22,4 +22,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Build with Maven
+      env:
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mvn -B package --settings mvn-settings.xml --file pom.xml

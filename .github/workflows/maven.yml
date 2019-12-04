@@ -25,4 +25,4 @@ jobs:
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B package --settings mvn-settings.xml --file pom.xml
+      run: echo ${GITHUB_TOKEN} | echo ${GITHUB_USERNAME} | mvn -B package --settings mvn-settings.xml --file pom.xml

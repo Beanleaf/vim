@@ -23,6 +23,6 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Build with Maven
       env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_USERNAME: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: echo "token is ${GITHUB_TOKEN}" | echo "username = ${GITHUB_USERNAME}" | mvn -B package --settings mvn-settings.xml --file pom.xml
+      run: mvn -B package --settings mvn-settings.xml --file pom.xml

@@ -32,41 +32,6 @@
     <p th:text="#{home.loginSub}">home.loginSub</p>
     <a class="btn btn-primary my-3" th:href="@{/login}" th:text="#{navigation.login}">navigation.login</a>
   </div>
-
-
-  <div class="Box">
-    <div class="Box-header d-flex flex-justify-between">
-      <div class="mr-3">
-        <input autocomplete="off" data-check-all type="checkbox"/>
-      </div>
-      <div class="flex-auto">
-        <b>Table title goes here</b>
-      </div>
-      <div class="">
-        Filters go here
-      </div>
-    </div>
-    <div class="tableRows">
-      <div class="Box-row--focus-gray">
-        <div class="d-table table-fixed width-full">
-          <label class="float-left py-2 pl-3 mr-2">
-            <input type="checkbox"/>
-          </label>
-          <div class="float-left col-8 lh-condensed p-2">
-            <b class="v-align-middle">This is the item name</b>
-            <span class="labels lh-default">
-              <span class="Label Label--outline">Inactive</span>
-              <span class="Label Label--orange">Defect</span>
-            </span>
-            <div class="mt-1 text-small text-gray">
-              Here goes some information
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>

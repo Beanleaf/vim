@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="selectMenu">
+  <details class="details-reset details-overlay">
+    <summary aria-haspopup="true" class="btn-link text-gray-dark no-underline select-menu-button"
+             th:text="${selectActionText}+' '">
+      selectActionText
+    </summary>
+    <div class="SelectMenu">
+      <div class="SelectMenu-modal">
+        <header class="SelectMenu-header">
+          <h3 class="SelectMenu-title" th:text="${selectTitle}">selectTitle</h3>
+        </header>
+        <div class="SelectMenu-list" th:with="parameterName=${filter.getParameterName()}">
+
+          <!--/*@thymesVar id="filter" type="be.vizit.vim.app.utils.SelectFilter"*/-->
+          <a class="SelectMenu-item" th:text="#{}"
+          <a class="SelectMenu-item"
+             th:each="filterObject: ${filter.getObjectList()}"
+             th:href="@{''(${parameterName}=${filter.getValue(filterObject)})}"
+             th:text="${filter.getText(filterObject)}">
+            filterObject.getText()
+          </a>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+</html>

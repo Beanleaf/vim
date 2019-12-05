@@ -13,4 +13,6 @@ public interface InventoryitemRepository extends PagingAndSortingRepository<Inve
   InventoryItem findInventoryItemById(Long id);
 
   List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory, Pageable pageable);
+
+  long countAllByItemCategory(ItemCategory itemCategory);
 }

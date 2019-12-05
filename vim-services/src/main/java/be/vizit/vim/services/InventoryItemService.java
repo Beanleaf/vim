@@ -62,6 +62,11 @@ public class InventoryItemService {
     return inventoryitemRepository.count();
   }
 
+  @Transactional(readOnly = true)
+  public long countAllItemsInCategory(ItemCategory itemCategory) {
+    return inventoryitemRepository.countAllByItemCategory(itemCategory);
+  }
+
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
       String brand, User user) {
     InventoryItem item = new InventoryItem();

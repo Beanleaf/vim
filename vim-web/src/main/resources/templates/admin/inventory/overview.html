@@ -5,7 +5,10 @@
 <section th:replace="fragments/header :: baseElements"></section>
 <header th:replace="fragments/header :: topBar"></header>
 
+<!--/*@thymesVar id="dataTable" type="be.beanleaf.datatable.BeanleafDatatable"*/-->
+<!--/*@thymesVar id="dataObject" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
 <div class="container-lg p-3 p-responsive width-full">
+
   <div class="Subhead pb-1 my-2">
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
     <div class="Subhead-actions">
@@ -19,8 +22,70 @@
     </div>
   </div>
 
-  <div th:replace="fragments/dataTable :: dataTable"></div>
-</div>
+  <div class="Box">
+    <div class="Box-header d-flex flex-justify-between">
+      <div class="mr-3">
+        <input autocomplete="off" data-check-all type="checkbox"/>
+      </div>
+      <div class="flex-auto"><b>Select all items</b>
+      </div>
+      <div class="d-flex flex-justify-between">
+        <div id="dataTableFilters">
+          <div
+              th:include="fragments/htmlUtils :: selectMenu"
+              th:with="selectActionText=#{inventory.item.category},selectTitle='Filter by category',filter=${categoryFilter}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tableRows">
+      <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
+           th:each="dataObject: ${dataTable.getData()}">
+        <div class="d-table table-fixed width-full">
+          <label class="float-left pt-3 pl-3">
+            <input type="checkbox"/>
+          </label>
+          <div class="float-left col-8 lh-condensed p-2">
+            <a class="link-gray-dark v-align-middle no-underline h5"
+               th:href="@{/admin/inventory/edit/{id}(id=${dataObject.getId()})}"
+               th:text="${dataObject.getDescription()}">
+            </a>
+            <span class="labels lh-default">
+              <span class="Label Label--outline Label--gray"
+                    th:text="#{inventory.item.inactive}"
+                    th:unless="${dataObject.isActive()}">
+              </span>
+              <span class="Label Label--orange"
+                    th:if="${dataObject.getCurrentStatus().name() == 'DEFECT'}"
+                    th:text="#{inventory.item.status.defect}"></span>
+              <span class="Label bg-blue"
+                    th:if="${dataObject.getCurrentStatus().name() == 'LEND'}"
+                    th:text="#{inventory.item.status.lend}"></span>
+          </span>
+            <div class="mt-1 text-small text-gray">
+              <span th:text="#{inventory.item.addedBy}"></span>
+              <span th:text="${dataObject.getAddedByUser().getShortName()}"></span>
+              <a class="tooltipped tooltipped-n muted-link" href="#"
+                 th:attr="aria-label=#{inventory.item.brand}"
+                 th:unless="${#strings.isEmpty(dataObject.getBrand())}">
+                <i class="ml-2 octicon octicon-tag"></i>
+                <span th:text="${dataObject.getBrand()}"></span>
+              </a>
+            </div>
+          </div>
+          <div class="float-right col-3 pt-2 d-flex flex-justify-between">
+            <span class="col-6" th:text="${dataObject.getItemCategory().getDescription()}"></span>
+            <div class="col-6">
+              <a class="btn-octicon btn-octicon-danger"
+                 th:href="@{/admin/inventory/delete/{id}(id=${dataObject.getId()})}">
+                <i class="octicon octicon-trashcan"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="fragments/dataTable :: dataTableNavigation"></div>
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>
 </html>

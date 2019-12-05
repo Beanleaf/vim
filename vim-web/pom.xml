@@ -87,7 +87,7 @@
     <dependency>
       <artifactId>datatable</artifactId>
       <groupId>be.beanleaf</groupId>
-      <version>2.0.0</version>
+      <version>3.0.0</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-devtools</artifactId>

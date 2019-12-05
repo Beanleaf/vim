@@ -1,16 +1,16 @@
 package be.vizit.vim.app.controller;
 
-import be.beanleaf.datatable.BeanleafDatatable;
-import be.beanleaf.datatable.BeanleafDatatableColumn;
+import be.beanleaf.datatable.DataTable;
+import be.beanleaf.datatable.DataTableColumn;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
 import be.vizit.vim.app.utils.MessageType;
+import be.vizit.vim.app.utils.SelectFilter;
 import be.vizit.vim.app.utils.ToastMessage;
-import be.vizit.vim.app.utils.WebUtils;
 import be.vizit.vim.domain.entities.InventoryItem;
+import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
-import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,76 +48,44 @@ public class InventoryManagementController extends VimController {
   }
 
   @GetMapping(URL_OVERVIEW)
-  public String inventory(@RequestParam(required = false) Integer page, Model model) {
-    BeanleafDatatable<InventoryItem> table = new BeanleafDatatable<InventoryItem>(page, 15) {
+  public String inventory(@RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Long cat, Model model) {
+    DataTable<InventoryItem> table = new DataTable<InventoryItem>(page, 15) {
+
+      private ItemCategory itemCategory =
+          cat != null ? itemCategoryService.getItemCategory(cat) : null;
+
       @Override
       public long getCount() {
-        return inventoryItemService.countAllItems();
+        return itemCategory == null ? inventoryItemService.countAllItems()
+            : inventoryItemService.countAllItemsInCategory(itemCategory);
       }
 
       @Override
       public List<InventoryItem> getData() {
-        return inventoryItemService.findAll(PageRequest.of(getCurrentPage(), getPageSize()));
+        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize());
+        return itemCategory == null
+            ? inventoryItemService.findAll(page)
+            : inventoryItemService.findAllByItemCategory(itemCategory, page);
       }
 
       @Override
-      public List<BeanleafDatatableColumn<InventoryItem>> getColumns() {
-        return Arrays.asList(
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.id") {
-              @Override
-              protected Long getValue(InventoryItem object) {
-                return object.getId();
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.description") {
-              @Override
-              public String getText(InventoryItem object) {
-                return object.getDescription();
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.brand") {
-              @Override
-              public String getText(InventoryItem object) {
-                return object.getBrand();
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.active", "text-center",
-                true) {
-              @Override
-              public String getText(InventoryItem object) {
-                return object.isActive()
-                    ? WebUtils.icon("octicon octicon-check text-green")
-                    : WebUtils.icon("octicon octicon-x");
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.addedBy") {
-              @Override
-              public String getText(InventoryItem object) {
-                return object.getAddedByUser().getShortName();
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("inventory.item.status") {
-              @Override
-              public String getText(InventoryItem object) {
-                return getLocaleString(
-                    "inventory.item.status." + object.getCurrentStatus().getDescription());
-              }
-            },
-            new BeanleafDatatableColumn<InventoryItem>("actions", true) {
-              @Override
-              public String getText(InventoryItem object) {
-                String pencilIcon = WebUtils.icon("octicon octicon-pencil");
-                String trashcanIcon = WebUtils.icon("octicon octicon-trashcan");
-                String deleteLink = WebUtils.link(URL_DELETE_ITEM + "/" + object.getId(),
-                    "btn-octicon btn-octicon-danger", trashcanIcon);
-                String editLink = WebUtils
-                    .link(URL_EDIT_ITEM + "/" + object.getId(), "btn-octicon", pencilIcon);
-                return editLink + deleteLink;
-              }
-            }
-        );
+      public List<DataTableColumn<InventoryItem>> getColumns() {
+        return null;
       }
     };
+    List<ItemCategory> categories = itemCategoryService.findAllCategories();
+    model.addAttribute("categoryFilter", new SelectFilter<ItemCategory>("cat", categories) {
+      @Override
+      public String getValue(ItemCategory object) {
+        return object.getId().toString();
+      }
+
+      @Override
+      public String getText(ItemCategory object) {
+        return object.getDescription();
+      }
+    });
     model.addAttribute("dataTable", table);
     return VIEW_OVERVIEW;
   }

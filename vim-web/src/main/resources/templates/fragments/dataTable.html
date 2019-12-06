@@ -33,31 +33,32 @@
 </div>
 <nav class="paginate-container" th:fragment="dataTableNavigation"
      th:if="${dataTable.getTotalPages() > 1}"
-     th:with="currentPage = ${dataTable.getCurrentPage() + 1},queryString=${#httpServletRequest.queryString}">
+     th:with="currentPage = ${dataTable.getCurrentPage() + 1},queryString=${#httpServletRequest.queryString},
+      urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
   <div class="pagination"
-       th:with="start=${currentPage - 3},url=${#strings.isEmpty(queryString) ? '' : '?' + queryString}">
+       th:with="start=${currentPage - 3}">
     <a class="previous_page"
        th:classappend="${currentPage} < 2 ? 'disabled' : ''"
-       th:href="@{${url}(page=${currentPage - 1})}"
+       th:href="@{${urlBuilder.replaceQueryParam('page', currentPage - 1).build().toUriString()}}"
        th:text="#{pagination.previous}">
       pagination.previous
     </a>
 
     <span class="gap" th:if="${start > 1}">…</span>
     <a th:each="i: ${#numbers.sequence(start, currentPage - 1)}"
-       th:href="@{${url}(page=${i})}"
+       th:href="@{${urlBuilder.replaceQueryParam('page', i).build().toUriString()}}"
        th:if="${i > 0}"
        th:text="${i}"></a>
     <em class="current selected" th:text="${currentPage}"></em>
     <a th:each="i: ${#numbers.sequence(currentPage + 1, currentPage + 3)}"
-       th:href="@{${url}(page=${i})}"
+       th:href="@{${urlBuilder.replaceQueryParam('page', i).build().toUriString()}}"
        th:if="${i <= dataTable.getTotalPages()}"
        th:text="${i}"></a>
     <span class="gap" th:if="${currentPage + 3 < dataTable.getTotalPages()}">…</span>
 
     <a class="next_page"
        th:classappend="${currentPage < dataTable.getTotalPages()} ? '' : 'disabled'"
-       th:href="@{${url}(page=${currentPage+1})}"
+       th:href="@{${urlBuilder.replaceQueryParam('page', currentPage + 1).build().toUriString()}}"
        th:text="#{pagination.next}">
       pagination.next
     </a>

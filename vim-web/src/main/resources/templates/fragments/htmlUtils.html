@@ -4,7 +4,7 @@
 <div th:fragment="selectMenu">
   <details class="details-reset details-overlay"
            th:with="queryString=${#httpServletRequest.queryString},
-  urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+  urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
     <summary aria-haspopup="true" class="btn-link text-gray-dark no-underline select-menu-button"
              th:text="${selectActionText}+' '">
       selectActionText
@@ -19,7 +19,7 @@
              th:with="parameterName=${filter.getParameterName()}">
           <a class="SelectMenu-item"
              th:each="filterObject: ${filter.getObjectList()}"
-             th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam(filter.getParameterName(), filter.getValue(filterObject)).build().toUriString()}"
+             th:href="${urlBuilder.replaceQueryParam(filter.getParameterName(), filter.getValue(filterObject)).replaceQueryParam('page',null).build().toUriString()}"
              th:text="${filter.getText(filterObject)}">
             filterObject.getText()
           </a>

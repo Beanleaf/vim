@@ -67,6 +67,18 @@ public class InventoryItemService {
     return inventoryitemRepository.countAllByItemCategory(itemCategory);
   }
 
+  @Transactional(readOnly = true)
+  public long countAllItemsByStatus(ItemStatus status) {
+    return inventoryitemRepository.countAllByCurrentStatus(status);
+  }
+
+  @Transactional(readOnly = true)
+  public long countAllItemsByStatusAndCategory(ItemStatus status, ItemCategory category) {
+    return category != null
+        ? inventoryitemRepository.countAllByCurrentStatusAndItemCategory(status, category)
+        : countAllItemsByStatus(status);
+  }
+
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
       String brand, User user) {
     InventoryItem item = new InventoryItem();

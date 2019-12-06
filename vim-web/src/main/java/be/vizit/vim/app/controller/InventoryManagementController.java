@@ -7,6 +7,7 @@ import be.vizit.vim.app.dto.InventoryItemDto;
 import be.vizit.vim.app.utils.MessageType;
 import be.vizit.vim.app.utils.SelectFilter;
 import be.vizit.vim.app.utils.ToastMessage;
+import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.services.InventoryItemService;
@@ -50,10 +51,9 @@ public class InventoryManagementController extends VimController {
   @GetMapping(URL_OVERVIEW)
   public String inventory(@RequestParam(required = false) Integer page,
       @RequestParam(required = false) Long cat, Model model) {
+    ItemCategory itemCategory =
+        cat != null ? itemCategoryService.getItemCategory(cat) : null;
     DataTable<InventoryItem> table = new DataTable<InventoryItem>(page, 15) {
-
-      private ItemCategory itemCategory =
-          cat != null ? itemCategoryService.getItemCategory(cat) : null;
 
       @Override
       public long getCount() {
@@ -75,18 +75,25 @@ public class InventoryManagementController extends VimController {
       }
     };
     List<ItemCategory> categories = itemCategoryService.findAllCategories();
-    model.addAttribute("categoryFilter", new SelectFilter<ItemCategory>("cat", categories) {
-      @Override
-      public String getValue(ItemCategory object) {
-        return object.getId().toString();
-      }
+    model.addAttribute("categoryFilter",
+        new SelectFilter<ItemCategory>("cat", categories, itemCategory) {
+          @Override
+          public String getValue(ItemCategory object) {
+            return object.getId().toString();
+          }
 
-      @Override
-      public String getText(ItemCategory object) {
-        return object.getDescription();
-      }
-    });
+          @Override
+          public String getText(ItemCategory object) {
+            return object.getDescription();
+          }
+        });
     model.addAttribute("dataTable", table);
+    model.addAttribute("amountLend",
+        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.LEND, itemCategory));
+    model.addAttribute("amountDefect",
+        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.DEFECT, itemCategory));
+    model.addAttribute("amountAvailable",
+        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.AVAILABLE, itemCategory));
     return VIEW_OVERVIEW;
   }
 

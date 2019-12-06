@@ -47,14 +47,33 @@ public class InventoryItemService {
   }
 
   @Transactional(readOnly = true)
-  public List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory, Pageable pageable) {
-    return inventoryitemRepository.findAllByItemCategory(itemCategory, pageable);
-  }
-
-  @Transactional(readOnly = true)
   public List<InventoryItem> findAll(Pageable pageable) {
     Page<InventoryItem> all = inventoryitemRepository.findAll(pageable);
     return all.getContent();
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryItem> findAllByStatus(ItemStatus itemStatus, Pageable pageable) {
+    return inventoryitemRepository.findAllByCurrentStatus(itemStatus, pageable);
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryItem> findAllByCategory(ItemCategory itemCategory, Pageable pageable) {
+    return itemCategory != null
+        ? inventoryitemRepository.findAllByItemCategory(itemCategory, pageable)
+        : findAll(pageable);
+  }
+
+  public List<InventoryItem> findAllByCategoryAndStatus(ItemCategory itemCategory,
+      ItemStatus status, Pageable pageable) {
+
+    if (status != null) {
+      return itemCategory != null
+          ? inventoryitemRepository
+          .findAllByItemCategoryAndCurrentStatus(itemCategory, status, pageable)
+          : findAllByStatus(status, pageable);
+    }
+    return itemCategory != null ? findAllByCategory(itemCategory, pageable) : findAll(pageable);
   }
 
   @Transactional(readOnly = true)
@@ -63,20 +82,26 @@ public class InventoryItemService {
   }
 
   @Transactional(readOnly = true)
-  public long countAllItemsInCategory(ItemCategory itemCategory) {
-    return inventoryitemRepository.countAllByItemCategory(itemCategory);
+  public long countAllByCategory(ItemCategory itemCategory) {
+    return itemCategory != null
+        ? inventoryitemRepository.countAllByItemCategory(itemCategory)
+        : countAllItems();
   }
 
   @Transactional(readOnly = true)
-  public long countAllItemsByStatus(ItemStatus status) {
-    return inventoryitemRepository.countAllByCurrentStatus(status);
+  public long countAllByStatus(ItemStatus status) {
+    return status != null
+        ? inventoryitemRepository.countAllByCurrentStatus(status)
+        : countAllItems();
   }
 
   @Transactional(readOnly = true)
-  public long countAllItemsByStatusAndCategory(ItemStatus status, ItemCategory category) {
+  public long countAllByStatusAndCategory(ItemStatus status, ItemCategory category) {
     return category != null
+        ? status != null
         ? inventoryitemRepository.countAllByCurrentStatusAndItemCategory(status, category)
-        : countAllItemsByStatus(status);
+        : countAllByCategory(category)
+        : countAllByStatus(status);
   }
 
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,

@@ -18,6 +18,15 @@ public enum ItemStatus implements IntegerEnum {
     return id;
   }
 
+  public static ItemStatus forId(int id) {
+    for (ItemStatus value : values()) {
+      if (value.getId() == id) {
+        return value;
+      }
+    }
+    throw new IllegalArgumentException("No ItemStatus found for id = " + id);
+  }
+
   public String getDescription() {
     return description;
   }

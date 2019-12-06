@@ -22,7 +22,8 @@
     </div>
   </div>
 
-  <div class="mb-3 reset-query-wrapper" th:if="${categoryFilter.getSelectedObject() != null}">
+  <div class="mb-3 reset-query-wrapper"
+       th:if="${categoryFilter.getSelectedObject() != null or statusFilter.getSelectedObject() != null}">
     <a class="reset-query" th:href="@{/admin/inventory}">
       <span class="icon"><i class="octicon octicon-x"></i></span>
       <span th:text="#{form.clearFilters}">form.clearFilters</span>
@@ -32,30 +33,45 @@
   <div class="Box">
     <div class="Box-header d-flex flex-justify-between">
       <div class="flex-auto">
-        <b class="pl-2" th:if="${amountLend > 0}">
+        <b class="pl-2" th:if="${amountLEND > 0}">
           <i class="octicon octicon-info"></i>
-          <span th:text="${amountLend} + ' ' + #{inventory.item.status.lend}"># inventory.item.status.lend</span>
+          <span th:text="${amountLEND} + ' ' + #{inventory.item.status.lend}"># inventory.item.status.lend</span>
         </b>
-        <span class="pl-2" th:if="${amountAvailable > 0}">
+        <span class="pl-2" th:if="${amountAVAILABLE > 0}">
           <i class="octicon octicon-check"></i>
-          <span th:text="${amountAvailable} + ' ' + #{inventory.item.status.available}"># inventory.item.status.available</span>
+          <span th:text="${amountAVAILABLE} + ' ' + #{inventory.item.status.available}"># inventory.item.status.available</span>
         </span>
-        <span class="text-red pl-2" th:if="${amountDefect > 0}">
+        <span class="text-red pl-2" th:if="${amountDEFECT > 0}">
           <i class="octicon octicon-issue-opened"></i>
-          <span th:text="${amountDefect} + ' ' + #{inventory.item.status.defect}"># inventory.item.status.defect</span>
+          <span th:text="${amountDEFECT} + ' ' + #{inventory.item.status.defect}"># inventory.item.status.defect</span>
         </span>
       </div>
       <div class="d-flex flex-justify-between">
-        <div class="d-flex flex-justify-between" id="dataTableFilters">
+        <div class="d-flex flex-justify-between" id="dataTableFilters"
+             th:with="catTitle=#{inventory.item.category},statusTitle=#{inventory.item.status}">
           <div
               th:include="fragments/htmlUtils :: selectMenu"
-              th:with="selectActionText=#{inventory.item.category},selectTitle='Filter by category',filter=${categoryFilter}"></div>
+              th:with="selectActionText=#{inventory.item.category},
+              selectTitle=#{form.filterTitle(${#strings.toLowerCase(catTitle)})},
+              filter=${categoryFilter}"></div>
+          <div class="ml-5"
+               th:include="fragments/htmlUtils :: selectMenu"
+               th:with="selectActionText=#{inventory.item.status},
+              selectTitle=#{form.filterTitle(${#strings.toLowerCase(statusTitle)})},
+              filter=${statusFilter}"></div>
         </div>
       </div>
     </div>
-    <div class="tableRows">
+    <div class="tableRows" th:with="tableData=${dataTable.getData()}">
+      <div class="blankslate blankslate-spacious blankslate-large border-0"
+           th:unless="${tableData.size() > 0}">
+        <i class="octicon mega-octicon blankslate-icon octicon-issue-opened"></i>
+        <h3 th:text="#{form.noResults}">form.noResults</h3>
+        <p><a th:href="@{/admin/inventory}" th:text="#{form.clearFilters}"></a></p>
+      </div>
       <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
-           th:each="dataObject: ${dataTable.getData()}">
+           th:each="dataObject: ${tableData}"
+           th:if="${tableData.size() > 0}">
         <div class="d-table table-fixed width-full">
           <div class="float-left col-8 lh-condensed py-2 px-3">
             <a class="link-gray-dark v-align-middle no-underline h5"

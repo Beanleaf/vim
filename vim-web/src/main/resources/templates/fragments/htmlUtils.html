@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="selectMenu">
-  <details class="details-reset details-overlay">
+  <details class="details-reset details-overlay"
+           th:with="queryString=${#httpServletRequest.queryString},
+  urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
     <summary aria-haspopup="true" class="btn-link text-gray-dark no-underline select-menu-button"
              th:text="${selectActionText}+' '">
       selectActionText
@@ -12,12 +14,12 @@
         <header class="SelectMenu-header">
           <h3 class="SelectMenu-title" th:text="${selectTitle}">selectTitle</h3>
         </header>
-        <div class="SelectMenu-list" th:with="parameterName=${filter.getParameterName()}">
-
-          <!--/*@thymesVar id="filter" type="be.vizit.vim.app.utils.SelectFilter"*/-->
+        <!--/*@thymesVar id="filter" type="be.vizit.vim.app.utils.SelectFilter"*/-->
+        <div class="SelectMenu-list"
+             th:with="parameterName=${filter.getParameterName()}">
           <a class="SelectMenu-item"
              th:each="filterObject: ${filter.getObjectList()}"
-             th:href="@{''(${parameterName}=${filter.getValue(filterObject)})}"
+             th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam(filter.getParameterName(), filter.getValue(filterObject)).build().toUriString()}"
              th:text="${filter.getText(filterObject)}">
             filterObject.getText()
           </a>

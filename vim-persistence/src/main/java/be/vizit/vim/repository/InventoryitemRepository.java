@@ -15,6 +15,11 @@ public interface InventoryitemRepository extends PagingAndSortingRepository<Inve
 
   List<InventoryItem> findAllByItemCategory(ItemCategory itemCategory, Pageable pageable);
 
+  List<InventoryItem> findAllByCurrentStatus(ItemStatus currentSatus, Pageable pageable);
+
+  List<InventoryItem> findAllByItemCategoryAndCurrentStatus(ItemCategory itemCategory,
+      ItemStatus currentStatus, Pageable pageable);
+
   long countAllByItemCategory(ItemCategory itemCategory);
 
   long countAllByCurrentStatus(ItemStatus currentStatus);

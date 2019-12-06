@@ -12,6 +12,7 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
+import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class InventoryManagementController extends VimController {
@@ -50,23 +52,21 @@ public class InventoryManagementController extends VimController {
 
   @GetMapping(URL_OVERVIEW)
   public String inventory(@RequestParam(required = false) Integer page,
-      @RequestParam(required = false) Long cat, Model model) {
+      @RequestParam(required = false) Long cat, @RequestParam(required = false) Integer status,
+      Model model) {
     ItemCategory itemCategory =
         cat != null ? itemCategoryService.getItemCategory(cat) : null;
+    ItemStatus itemStatus = status != null ? ItemStatus.forId(status) : null;
     DataTable<InventoryItem> table = new DataTable<InventoryItem>(page, 15) {
-
       @Override
       public long getCount() {
-        return itemCategory == null ? inventoryItemService.countAllItems()
-            : inventoryItemService.countAllItemsInCategory(itemCategory);
+        return inventoryItemService.countAllByStatusAndCategory(itemStatus, itemCategory);
       }
 
       @Override
       public List<InventoryItem> getData() {
         PageRequest page = PageRequest.of(getCurrentPage(), getPageSize());
-        return itemCategory == null
-            ? inventoryItemService.findAll(page)
-            : inventoryItemService.findAllByItemCategory(itemCategory, page);
+        return inventoryItemService.findAllByCategoryAndStatus(itemCategory, itemStatus, page);
       }
 
       @Override
@@ -74,6 +74,7 @@ public class InventoryManagementController extends VimController {
         return null;
       }
     };
+    model.addAttribute("dataTable", table);
     List<ItemCategory> categories = itemCategoryService.findAllCategories();
     model.addAttribute("categoryFilter",
         new SelectFilter<ItemCategory>("cat", categories, itemCategory) {
@@ -87,13 +88,29 @@ public class InventoryManagementController extends VimController {
             return object.getDescription();
           }
         });
-    model.addAttribute("dataTable", table);
-    model.addAttribute("amountLend",
-        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.LEND, itemCategory));
-    model.addAttribute("amountDefect",
-        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.DEFECT, itemCategory));
-    model.addAttribute("amountAvailable",
-        inventoryItemService.countAllItemsByStatusAndCategory(ItemStatus.AVAILABLE, itemCategory));
+    model.addAttribute("statusFilter",
+        new SelectFilter<ItemStatus>("status", Arrays.asList(ItemStatus.values()), itemStatus) {
+          @Override
+          public String getValue(ItemStatus object) {
+            return Integer.toString(object.getId());
+          }
+
+          @Override
+          public String getText(ItemStatus object) {
+            return StringUtils
+                .capitalize(getLocaleString("inventory.item.status." + object.getDescription()));
+          }
+        });
+    model.addAttribute("amountLEND", 0);
+    model.addAttribute("amountDEFECT", 0);
+    model.addAttribute("amountAVAILABLE", 0);
+    for (ItemStatus statusEnum : ItemStatus.values()) {
+      if (itemStatus == null || itemStatus == statusEnum) {
+        model.addAttribute("amount" + statusEnum.name(),
+            inventoryItemService.countAllByStatusAndCategory(statusEnum, itemCategory)
+        );
+      }
+    }
     return VIEW_OVERVIEW;
   }
 

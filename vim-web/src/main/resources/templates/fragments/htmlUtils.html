@@ -5,7 +5,8 @@
   <details class="details-reset details-overlay"
            th:with="queryString=${#httpServletRequest.queryString},
   urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-    <summary aria-haspopup="true" class="btn-link text-gray-dark no-underline select-menu-button"
+    <summary aria-haspopup="true"
+             class="btn-link text-gray-dark no-underline select-menu-button outline-none"
              th:text="${selectActionText}+' '">
       selectActionText
     </summary>

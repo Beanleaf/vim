@@ -1,31 +1,51 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="recentLogs" type="java.util.List<be.vizit.vim.domain.entities.InventoryLog>"*/-->
+<!--/*@thymesVar id="log" type="be.vizit.vim.domain.entities.InventoryLog"*/-->
 <div th:fragment="recentLogs">
-  <h3 class="text-left mt-3 mb-1" th:text="#{inventory.recentlyLogged}">
-    inventory.recentlyLogged</h3>
-  <div class="rounded-border text-left">
-    <table class="vimTable">
-      <thead>
-      <tr>
-        <th th:text="#{dateTime}">dateTime</th>
-        <th>#</th>
-        <th th:text="#{inventory.item.description}">item.description</th>
-        <th th:text="#{inventory.item.category}">item.category</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!--/*@thymesVar id="recentLogs" type="java.util.List<be.vizit.vim.domain.entities.InventoryLog>"*/-->
-      <!--/*@thymesVar id="log" type="be.vizit.vim.domain.entities.InventoryLog"*/-->
-      <tr th:each="log: ${recentLogs}" th:with="item=${log.getInventoryItem()}">
-        <td th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}">
-          log.getTimestamp
-        </td>
-        <td th:text="${item.getId()}">inventoryItem.getId</td>
-        <td th:text="${item.getDescription()}">item.getDescription()</td>
-        <td th:text="${item.getItemCategory().getShortCode()}">item.getItemCategory()</td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="Box">
+    <div class="Box-header">
+      <b th:text="#{inventory.recentlyLogged}">
+        inventory.recentlyLogged</b>
+    </div>
+    <div class="tableRows">
+      <div class="blankslate blankslate-narrow blankslate-large border-0"
+           th:unless="${recentLogs.size() > 0}">
+        <i class="octicon mega-octicon blankslate-icon octicon-info"></i>
+        <h3 th:text="#{inventory.logs.none}">inventory.logs.none</h3>
+      </div>
+      <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
+           th:each="log: ${recentLogs}"
+           th:if="${recentLogs.size() > 0}"
+           th:with="item=${log.getInventoryItem()}">
+        <div class="d-table table-fixed width-full">
+          <div class="float-left col-8 lh-condensed py-2 px-3">
+          <span class="v-align-middle h5"
+                th:text="${item.getDescription()}">
+          </span>
+            <div class="mt-1 text-small text-gray">
+              <i class="octicon octicon-clock"></i>
+              <span th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}"></span>
+              <span class="tooltipped tooltipped-n"
+                    th:attr="aria-label=#{inventory.item.brand}"
+                    th:unless="${#strings.isEmpty(item.getBrand())}">
+              <i class="ml-2 octicon octicon-tag"></i>
+              <span th:text="${item.getBrand()}"></span>
+            </span>
+            </div>
+          </div>
+          <div class="float-right col-3 pt-2 d-flex flex-justify-between">
+            <span class="col-6" th:text="${item.getItemCategory().getDescription()}"></span>
+            <div class="col-6 pr-2">
+              <a class="btn-octicon btn-octicon-danger float-right"
+                 href="#">
+                <i class="octicon octicon-comment"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </html>

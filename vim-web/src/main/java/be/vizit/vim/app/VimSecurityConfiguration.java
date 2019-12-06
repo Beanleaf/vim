@@ -37,7 +37,6 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .and()
         .formLogin()
           .loginPage(SecurityController.URL_LOGIN)
-          .defaultSuccessUrl(HomeController.URL_HOME, true)
           .failureUrl(SecurityController.URL_LOGIN_ERROR)
           .and()
         .logout()

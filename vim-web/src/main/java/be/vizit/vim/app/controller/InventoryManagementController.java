@@ -17,6 +17,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,7 +66,7 @@ public class InventoryManagementController extends VimController {
 
       @Override
       public List<InventoryItem> getData() {
-        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize());
+        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("description"));
         return inventoryItemService.findAllByCategoryAndStatus(itemCategory, itemStatus, page);
       }
 
@@ -139,14 +140,16 @@ public class InventoryManagementController extends VimController {
         inventoryItem.getItemCategory(),
         inventoryItem.getDescription(),
         inventoryItem.isActive(),
-        inventoryItem.getBrand()
+        inventoryItem.getBrand(),
+        inventoryItem.getCurrentStatus()
     ), URL_EDIT_ITEM + "/" + id);
     return VIEW_EDIT_ITEM;
   }
 
   @PostMapping(URL_EDIT_ITEM + "/{id}")
   public String inventoryItemEditPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
-      BindingResult bindingResult, @PathVariable long id, Model model) {
+      BindingResult bindingResult, @PathVariable long id, Model model,
+      RedirectAttributes redirectAttributes) {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
@@ -155,9 +158,11 @@ public class InventoryManagementController extends VimController {
           inventoryItemDto.getItemCategory(),
           inventoryItemDto.getDescription(),
           inventoryItemDto.isActive(),
-          inventoryItemDto.getBrand());
-      model.addAttribute(new ToastMessage(MessageType.SUCCESS,
+          inventoryItemDto.getBrand(),
+          inventoryItemDto.getStatus());
+      redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.inventory.editItemSuccess", false));
+      return redirect(URL_OVERVIEW);
     }
     return VIEW_EDIT_ITEM;
   }
@@ -182,8 +187,6 @@ public class InventoryManagementController extends VimController {
         inventoryItemDto.getBrand(),
         getVimSession().getActiveUser()
     );
-    PageRequest paging = PageRequest.of(0, 50);
-    redirectAttributes.addFlashAttribute("itemsList", inventoryItemService.findAll(paging));
     redirectAttributes.addFlashAttribute(
         new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
             true));

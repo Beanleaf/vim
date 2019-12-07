@@ -119,12 +119,12 @@ public class InventoryItemService {
 
   @Transactional
   public void updateItem(InventoryItem item, ItemCategory itemCategory, String description,
-      boolean active,
-      String brand) {
+      boolean active, String brand, ItemStatus status) {
     item.setItemCategory(itemCategory);
     item.setDescription(description);
     item.setActive(active);
     item.setBrand(brand);
+    item.setCurrentStatus(status);
   }
 
   @Transactional

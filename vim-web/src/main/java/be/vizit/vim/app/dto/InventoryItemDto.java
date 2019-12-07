@@ -1,5 +1,6 @@
 package be.vizit.vim.app.dto;
 
+import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.ItemCategory;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,17 +16,20 @@ public class InventoryItemDto implements FormDto {
   @Length(max = 100, message = "{validations.length.100}")
   private String brand;
   private Integer amount;
+  private ItemStatus status;
 
   public InventoryItemDto() {
-    this(null, null, true, null);
+    this(null, null, true, null, ItemStatus.AVAILABLE);
   }
 
   public InventoryItemDto(
-      ItemCategory itemCategory, String description, boolean active, String brand) {
+      ItemCategory itemCategory, String description, boolean active, String brand,
+      ItemStatus status) {
     this.itemCategory = itemCategory;
     this.description = description;
     this.active = active;
     this.brand = brand;
+    this.status = status;
   }
 
   public ItemCategory getItemCategory() {
@@ -66,5 +70,13 @@ public class InventoryItemDto implements FormDto {
 
   public void setAmount(Integer amount) {
     this.amount = amount;
+  }
+
+  public ItemStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(ItemStatus status) {
+    this.status = status;
   }
 }

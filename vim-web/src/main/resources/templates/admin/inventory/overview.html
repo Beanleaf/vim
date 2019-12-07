@@ -5,8 +5,6 @@
 <section th:replace="fragments/header :: baseElements"></section>
 <header th:replace="fragments/header :: topBar"></header>
 
-<!--/*@thymesVar id="dataTable" type="be.beanleaf.datatable.BeanleafDatatable"*/-->
-<!--/*@thymesVar id="dataObject" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
 <div class="container-lg p-3 p-responsive width-full">
 
   <div class="Subhead pb-1 my-2">
@@ -72,14 +70,15 @@
       <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
            th:each="dataObject: ${tableData}"
            th:if="${tableData.size() > 0}">
-        <div class="d-table table-fixed width-full">
+        <!--/*@thymesVar id="dataObject" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
+        <div class="d-table table-fixed width-full"
+             th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
           <div class="float-left col-8 lh-condensed py-2 px-3">
             <a class="link-gray-dark v-align-middle no-underline h5"
                th:href="@{/admin/inventory/edit/{id}(id=${dataObject.getId()})}"
                th:text="${dataObject.getDescription()}">
             </a>
-            <span class="labels lh-default"
-                  th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
+            <span class="labels lh-default">
               <span class="Label Label--outline Label--gray"
                     th:text="#{inventory.item.inactive}"
                     th:unless="${dataObject.isActive()}">
@@ -116,6 +115,7 @@
     </div>
   </div>
   <div th:replace="fragments/dataTable :: dataTableNavigation"></div>
+</div>
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>
 </html>

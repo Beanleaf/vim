@@ -38,6 +38,20 @@
           th:if="${#fields.hasErrors('brand')}"></dd>
     </dl>
 
+    <dl class="form-group">
+      <dt><label for="item-status" th:text="#{inventory.item.status}"></label></dt>
+      <dd>
+        <select class="form-select" id="item-status" th:field="*{status}"
+                th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
+          <option th:each="status : ${ItemStatus.values()}"
+                  th:text="${#strings.capitalize(text)}"
+                  th:value="${status}"
+                  th:with="description=${status.getDescription()},text=#{inventory.item.status.__${status.getDescription()}__}">
+          </option>
+        </select>
+      </dd>
+    </dl>
+
     <div class="form-checkbox">
       <label><input th:checked="*{active}" type="checkbox"/> <span
           th:text="#{inventory.item.active}">inventory.item.active</span> </label>

@@ -36,4 +36,18 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(inventoryItemService.getInventoryItem(item.getId()).getCurrentStatus()).isEqualTo(
         ItemStatus.AVAILABLE);
   }
+
+  @Test
+  void logDefect() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
+    InventoryLog log = inventoryLogService
+        .log(item, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
+
+    inventoryLogService.logDefect(log, "defect");
+    assertThat(log.getComment()).isNotNull();
+    assertThat(item.getCurrentStatus()).isEqualTo(ItemStatus.DEFECT);
+  }
 }

@@ -25,6 +25,11 @@ public class InventoryLogService {
     this.inventoryLogRepository = inventoryLogRepository;
   }
 
+  @Transactional(readOnly = true)
+  public InventoryLog getInventoryLog(long id) {
+    return inventoryLogRepository.findInventoryLogById(id);
+  }
+
   @Transactional
   public void logIn(InventoryItem inventoryItem, User user) {
     log(inventoryItem, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
@@ -60,5 +65,11 @@ public class InventoryLogService {
         .findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(
             user, Date.from(yesterday), Date.from(now), direction
         );
+  }
+
+  @Transactional
+  public void logDefect(InventoryLog log, String comment) {
+    log.setComment(comment);
+    log.getInventoryItem().setCurrentStatus(ItemStatus.DEFECT);
   }
 }

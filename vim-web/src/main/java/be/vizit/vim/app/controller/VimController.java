@@ -3,7 +3,6 @@ package be.vizit.vim.app.controller;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.utils.FeedbackUtils;
 import be.vizit.vim.domain.utilities.ValidationException;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -39,12 +38,12 @@ public abstract class VimController {
   }
 
   @ExceptionHandler(Exception.class)
-  public void addException(Exception ex, Model model) {
+  public ModelAndView addException(Exception ex, Model model) {
     if (!(ex instanceof ValidationException)) {
       logger.error(ExceptionUtils.getStackTrace(ex));
     }
     model.addAttribute(FeedbackUtils.createMessage(ex));
-    render("/", model);
+    return render(HomeController.URL_HOME, model);
   }
 
   public String getLocaleString(String key) {
@@ -53,9 +52,6 @@ public abstract class VimController {
     return resourceBundle.getString(key);
   }
 
-  ModelAndView render(String view) {
-    return render(view, Collections.emptyMap());
-  }
 
   ModelAndView render(String view, Model model) {
     return render(view, model.asMap());

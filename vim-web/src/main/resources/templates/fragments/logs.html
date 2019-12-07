@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="recentLogs" type="java.util.List<be.vizit.vim.domain.entities.InventoryLog>"*/-->
 <!--/*@thymesVar id="log" type="be.vizit.vim.domain.entities.InventoryLog"*/-->
-<div th:fragment="recentLogs">
+<div th:fragment="recentLogs"
+     th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}, defectUrl=${T(be.vizit.vim.app.controller.InventoryController).URL_DEFECT}">
   <div class="Box">
     <div class="Box-header">
       <b th:text="#{inventory.recentlyLogged}">
@@ -22,6 +23,10 @@
           <div class="float-left col-8 lh-condensed py-2 px-3">
           <span class="v-align-middle h5"
                 th:text="${item.getDescription()}">
+          </span><span class="labels lh-default">
+            <span class="Label Label--orange"
+                  th:if="${item.getCurrentStatus().equals(ItemStatus.DEFECT)}"
+                  th:text="#{inventory.item.status.defect}"></span>
           </span>
             <div class="mt-1 text-small text-gray">
               <i class="octicon octicon-clock"></i>
@@ -37,15 +42,20 @@
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
             <span class="col-6" th:text="${item.getItemCategory().getDescription()}"></span>
             <div class="col-6 pr-2">
-              <a class="btn-octicon btn-octicon-danger float-right"
-                 href="#">
+              <button class="btn-octicon btn-octicon-danger float-right reportDefect"
+                      th:data-url="${defectUrl + '/' + log.getId()}"
+                      th:unless="${item.getCurrentStatus().equals(ItemStatus.DEFECT)}">
                 <i class="octicon octicon-comment"></i>
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="boxDefectForm">
+
   </div>
 </div>
 </html>

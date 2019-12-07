@@ -1,0 +1,40 @@
+<div class="dialog Box anim-fade-in fast box-shadow-large closable"
+     xmlns:th="http://www.thymeleaf.org">
+  <div class="Box-header d-flex flex-justify-between"
+       th:with="inventoryItem=${inventoryLog.getInventoryItem()}">
+    <div>
+      <h3 class="Box-title" th:text="#{inventory.actions.reportDefect}"></h3>
+      <span class="text-gray text-small">
+      <span th:text="${inventoryItem.getDescription()}">inventoryItem.getDescription()</span>
+      <span class="tooltipped tooltipped-n mx-2"
+            th:attr="aria-label=#{inventory.item.brand}"
+            th:unless="${#strings.isEmpty(inventoryItem.getBrand())}">
+              <i class="octicon octicon-tag"></i>
+              <span th:text="${inventoryItem.getBrand()}"></span>
+            </span>
+    </span>
+    </div>
+    <button class="Box-btn-octicon btn-octicon js-box-close">
+      <i class="octicon octicon-x"></i>
+    </button>
+  </div>
+  <div class="Box-body">
+    <form method="post" th:action="@{${frmAction}}" th:object="${defectDto}">
+      <dl class="form-group">
+        <dt><label for="comment" th:text="#{comment}">comment</label></dt>
+        <dd>
+          <textarea class="form-control" id="comment" maxlength="255" th:field="*{comment}"
+                    th:placeholder="#{commentPlaceholder}"></textarea>
+        </dd>
+      </dl>
+      <div class="form-actions">
+        <button class="btn btn-danger" th:text="#{inventory.actions.reportDefect}" type="submit">
+          reportDefect
+        </button>
+        <button class="btn btn-invisible js-box-close" th:text="#{form.cancel}" type="button">
+          cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

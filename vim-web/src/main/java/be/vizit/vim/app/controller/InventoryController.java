@@ -1,8 +1,10 @@
 package be.vizit.vim.app.controller;
 
 import be.vizit.vim.app.VimSession;
+import be.vizit.vim.app.dto.DefectDto;
 import be.vizit.vim.app.utils.FeedbackUtils;
 import be.vizit.vim.app.utils.MessageType;
+import be.vizit.vim.app.utils.ToastMessage;
 import be.vizit.vim.domain.InventoryDirection;
 import be.vizit.vim.domain.ItemStatus;
 import be.vizit.vim.domain.entities.InventoryItem;
@@ -14,16 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class InventoryController extends VimController {
 
-  private static final String URL_IN = "inventory/scan/in";
+  public static final String URL_DEFECT = "/inventory/defect";
   private static final String VIEW_IN = "in";
-  private static final String URL_OUT = "inventory/scan/out";
+  private static final String URL_IN = "/inventory/scan/in";
   private static final String VIEW_OUT = "out";
+  private static final String URL_OUT = "/inventory/scan/out";
+  private static final String VIEW_DEFECT = "admin/inventory/defectForm";
 
   private final InventoryLogService inventoryLogService;
   private final InventoryItemService inventoryItemService;
@@ -95,5 +102,23 @@ public class InventoryController extends VimController {
     }
     addRecentLogs(model, InventoryDirection.OUT);
     return VIEW_OUT;
+  }
+
+  @GetMapping(URL_DEFECT + "/{id}")
+  public String getDefectForm(@PathVariable long id, Model model) {
+    model.addAttribute("inventoryLog", inventoryLogService.getInventoryLog(id));
+    model.addAttribute("defectDto", new DefectDto());
+    model.addAttribute("frmAction", URL_DEFECT + "/" + id);
+    return VIEW_DEFECT;
+  }
+
+  @PostMapping(URL_DEFECT + "/{id}")
+  public String defectForm(@ModelAttribute DefectDto dto, @PathVariable long id,
+      RedirectAttributes redirectAttributes) {
+    InventoryLog log = inventoryLogService.getInventoryLog(id);
+    inventoryLogService.logDefect(log, dto.getComment());
+    redirectAttributes.addFlashAttribute(
+        new ToastMessage(MessageType.SUCCESS, "notifications.inventory.defectSuccess", true));
+    return redirect(URL_IN);
   }
 }

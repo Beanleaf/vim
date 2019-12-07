@@ -11,6 +11,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface InventoryLogRepository extends PagingAndSortingRepository<InventoryLog, Long> {
 
+  InventoryLog findInventoryLogById(long id);
+
   List<InventoryLog> findAllByInventoryItem(InventoryItem inventoryItem, Pageable pageable);
 
   List<InventoryLog> findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(

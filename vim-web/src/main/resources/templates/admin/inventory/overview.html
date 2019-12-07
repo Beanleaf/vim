@@ -78,16 +78,17 @@
                th:href="@{/admin/inventory/edit/{id}(id=${dataObject.getId()})}"
                th:text="${dataObject.getDescription()}">
             </a>
-            <span class="labels lh-default">
+            <span class="labels lh-default"
+                  th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
               <span class="Label Label--outline Label--gray"
                     th:text="#{inventory.item.inactive}"
                     th:unless="${dataObject.isActive()}">
               </span>
               <span class="Label Label--orange"
-                    th:if="${dataObject.getCurrentStatus().name() == 'DEFECT'}"
+                    th:if="${dataObject.getCurrentStatus().equals(ItemStatus.DEFECT)}"
                     th:text="#{inventory.item.status.defect}"></span>
               <span class="Label bg-blue"
-                    th:if="${dataObject.getCurrentStatus().name() == 'LEND'}"
+                    th:if="${dataObject.getCurrentStatus().equals(ItemStatus.LEND)}"
                     th:text="#{inventory.item.status.lend}"></span>
           </span>
             <div class="mt-1 text-small text-gray">

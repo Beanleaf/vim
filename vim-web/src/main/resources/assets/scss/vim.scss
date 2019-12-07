@@ -171,3 +171,7 @@ details:not([open]) > :not(summary) {
 .outline-none {
   outline: none;
 }
+
+.z-99 {
+  z-index: 99;
+}

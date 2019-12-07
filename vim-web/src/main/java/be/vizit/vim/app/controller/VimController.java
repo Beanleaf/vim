@@ -42,8 +42,8 @@ public abstract class VimController {
     if (!(ex instanceof ValidationException)) {
       logger.error(ExceptionUtils.getStackTrace(ex));
     }
-    model.addAttribute(FeedbackUtils.createMessage(ex));
-    return render(HomeController.URL_HOME, model);
+    model.addAttribute(FeedbackUtils.createMessage(ex).setCloseable(true));
+    return render(HomeController.VIEW_HOME, model);
   }
 
   public String getLocaleString(String key) {

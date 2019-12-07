@@ -34,4 +34,9 @@ public class Feedbackmessage {
   public boolean isCloseable() {
     return isCloseable;
   }
+
+  public Feedbackmessage setCloseable(boolean closeable) {
+    isCloseable = closeable;
+    return this;
+  }
 }

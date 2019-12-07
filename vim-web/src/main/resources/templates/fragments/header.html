@@ -28,11 +28,10 @@
   </div>
 
   <!--/*@thymesVar id="feedbackmessage" type="be.vizit.vim.app.utils.Feedbackmessage"*/-->
-  <div class="flash position-fixed top-0 m-3" th:if="${feedbackmessage}"
+  <div class="flash position-fixed top-0 m-3 z-99" th:if="${feedbackmessage}"
        th:classappend="'flash-' + ${feedbackmessage.getType().getCssClass()}">
     <button class="flash-close js-flash-close" th:if="${feedbackmessage.isCloseable()}"
-            type="button"><i
-        class="octicon octicon-x"></i></button>
+            type="button"><i class="octicon octicon-x"></i></button>
     <p>
       <i class="octicon"
          th:classappend="'octicon-' + ${feedbackmessage.getType().getIconClass()}"></i>

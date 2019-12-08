@@ -102,12 +102,11 @@ public class InventoryManagementController extends VimController {
                 .capitalize(getLocaleString("inventory.item.status." + object.getDescription()));
           }
         });
-    model.addAttribute("amountLEND", 0);
-    model.addAttribute("amountDEFECT", 0);
-    model.addAttribute("amountAVAILABLE", 0);
     for (ItemStatus statusEnum : ItemStatus.values()) {
+      String attributeName = "amount" + statusEnum.name();
+      model.addAttribute(attributeName, 0);
       if (itemStatus == null || itemStatus == statusEnum) {
-        model.addAttribute("amount" + statusEnum.name(),
+        model.addAttribute(attributeName,
             inventoryItemService.countAllByStatusAndCategory(statusEnum, itemCategory)
         );
       }

@@ -25,7 +25,7 @@ public abstract class VimController {
 
   @Autowired
   VimController(VimSession vimSession) {
-    this.vimSession = vimSession; //TODO: is this necessary?
+    this.vimSession = vimSession;
   }
 
   VimSession getVimSession() {

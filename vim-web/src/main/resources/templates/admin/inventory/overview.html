@@ -70,9 +70,9 @@
       <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
            th:each="dataObject: ${tableData}"
            th:if="${tableData.size() > 0}">
-        <!--/*@thymesVar id="dataObject" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
+        <!--/*@thymesVar id="dataObject" type="be.beanleaf.vim.domain.entities.InventoryItem"*/-->
         <div class="d-table table-fixed width-full"
-             th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
+             th:with="ItemStatus=${T(be.beanleaf.vim.domain.ItemStatus)}">
           <div class="float-left col-8 lh-condensed py-2 px-3">
             <a class="link-gray-dark v-align-middle no-underline h5"
                th:href="@{/admin/inventory/edit/{id}(id=${dataObject.getId()})}"

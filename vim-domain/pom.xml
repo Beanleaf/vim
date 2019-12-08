@@ -12,7 +12,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>vim</artifactId>
-    <groupId>be.vizit</groupId>
+    <groupId>be.beanleaf</groupId>
     <version>0.0.3-SNAPSHOT</version>
   </parent>
 

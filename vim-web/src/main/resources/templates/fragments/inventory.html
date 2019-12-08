@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="inventoryItemForm">
-  <!--/*@thymesVar id="inventoryItemDto" type="be.vizit.vim.app.dto.InventoryItemDto"*/-->
+  <!--/*@thymesVar id="inventoryItemDto" type="be.beanleaf.vim.app.dto.InventoryItemDto"*/-->
   <form method="post" th:action="@{${frmAction}}" th:object="${inventoryItemDto}">
     <dl class="form-group" th:classappend="${#fields.hasErrors('itemCategory')} ? 'errored'">
       <dt><label for="item-category" th:text="#{inventory.item.category}">item.category</label>
@@ -9,7 +9,7 @@
       <dd>
         <select class="form-select" id="item-category" th:field="*{itemCategory}">
           <option th:text="#{form.select.default}" value="">form.select.default</option>
-          <!--/*@thymesVar id="itemCategories" type="java.util.List<be.vizit.vim.domain.entities.ItemCategory>"*/-->
+          <!--/*@thymesVar id="itemCategories" type="java.util.List<be.beanleaf.vim.domain.entities.ItemCategory>"*/-->
           <option th:each="category: ${itemCategories}"
                   th:text="${category.getDescription()}"
                   th:value="${category.getId()}">
@@ -55,7 +55,7 @@
       <dt><label for="item-status" th:text="#{inventory.item.status}"></label></dt>
       <dd>
         <select class="form-select" id="item-status" th:field="*{status}"
-                th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}">
+                th:with="ItemStatus=${T(be.beanleaf.vim.domain.ItemStatus)}">
           <option th:each="status : ${ItemStatus.values()}"
                   th:text="${#strings.capitalize(text)}"
                   th:value="${status}"

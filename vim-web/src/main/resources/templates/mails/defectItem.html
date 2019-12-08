@@ -9,7 +9,7 @@
     <p th:text="#{mail.defect.body(${reporter}, ${#dates.format(time, 'dd MMMM YYYY, HH:mm')})}">
       mail.defect.body</p>
     <p>
-      <!--/*@thymesVar id="defectItem" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
+      <!--/*@thymesVar id="defectItem" type="be.beanleaf.vim.domain.entities.InventoryItem"*/-->
       <b th:text="${defectItem.getDescription()}">defectItem.getDescription()</b><br/>
       <span th:text="${defectItem.getItemCategory().getDescription()}"></span>
     </p>

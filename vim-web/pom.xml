@@ -3,42 +3,10 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>vim-web</artifactId>
-  <parent>
-    <artifactId>vim</artifactId>
-    <groupId>be.vizit</groupId>
-    <version>0.0.3-SNAPSHOT</version>
-  </parent>
-  <build>
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <artifactId>libsass-maven-plugin</artifactId>
-        <configuration>
-          <generateSourceMap>false</generateSourceMap>
-          <inputPath>${scss.path.source}</inputPath>
-          <outputPath>${scss.path.target}</outputPath>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <phase>generate-resources</phase>
-          </execution>
-        </executions>
-        <groupId>com.github.warmuuh</groupId>
-        <version>0.2.10-libsass_3.5.3</version>
-      </plugin>
-      <plugin>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <groupId>org.springframework.boot</groupId>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <artifactId>vim-services</artifactId>
-      <groupId>be.vizit</groupId>
+      <groupId>be.beanleaf</groupId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -96,6 +64,38 @@
     </dependency>
 
   </dependencies>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>libsass-maven-plugin</artifactId>
+        <configuration>
+          <generateSourceMap>false</generateSourceMap>
+          <inputPath>${scss.path.source}</inputPath>
+          <outputPath>${scss.path.target}</outputPath>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+        </executions>
+        <groupId>com.github.warmuuh</groupId>
+        <version>0.2.10-libsass_3.5.3</version>
+      </plugin>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+    </plugins>
+  </build>
+  <parent>
+    <artifactId>vim</artifactId>
+    <groupId>be.beanleaf</groupId>
+    <version>0.0.3-SNAPSHOT</version>
+  </parent>
 
   <modelVersion>4.0.0</modelVersion>
 

@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="recentLogs" type="java.util.List<be.vizit.vim.domain.entities.InventoryLog>"*/-->
-<!--/*@thymesVar id="log" type="be.vizit.vim.domain.entities.InventoryLog"*/-->
+<!--/*@thymesVar id="recentLogs" type="java.util.List<be.beanleaf.vim.domain.entities.InventoryLog>"*/-->
+<!--/*@thymesVar id="log" type="be.beanleaf.vim.domain.entities.InventoryLog"*/-->
 <div th:fragment="recentLogs"
-     th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}, defectUrl=${T(be.vizit.vim.app.controller.InventoryController).URL_DEFECT},
-          InventoryDirection=${T(be.vizit.vim.domain.InventoryDirection)}">
+     th:with="ItemStatus=${T(be.beanleaf.vim.domain.ItemStatus)}, defectUrl=${T(be.beanleaf.vim.app.controller.InventoryController).URL_DEFECT},
+          InventoryDirection=${T(be.beanleaf.vim.domain.InventoryDirection)}">
   <div class="Box">
     <div class="Box-header">
       <b th:text="#{inventory.recentlyLogged}">

@@ -5,7 +5,7 @@
   <dependencies>
     <dependency>
       <artifactId>vim-persistence</artifactId>
-      <groupId>be.vizit</groupId>
+      <groupId>be.beanleaf</groupId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -58,7 +58,7 @@
 
   <parent>
     <artifactId>vim</artifactId>
-    <groupId>be.vizit</groupId>
+    <groupId>be.beanleaf</groupId>
     <version>0.0.3-SNAPSHOT</version>
   </parent>
 </project>

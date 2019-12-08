@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="activeUser" type="be.vizit.vim.domain.entities.User"*/-->
+<!--/*@thymesVar id="activeUser" type="be.beanleaf.vim.domain.entities.User"*/-->
 <head th:fragment="htmlHead" th:remove="tag">
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -15,7 +15,7 @@
 </head>
 
 <section th:fragment="baseElements">
-  <!--/*@thymesVar id="toastMessage" type="be.vizit.vim.app.utils.ToastMessage"*/-->
+  <!--/*@thymesVar id="toastMessage" type="be.beanleaf.vim.app.utils.ToastMessage"*/-->
   <div th:if="${toastMessage}" class="p-1 position-fixed bottom-0 left-0 mb-3 ml-3">
     <div class="Toast Toast--animateIn"
          th:classappend="'Toast--' + ${toastMessage.getType().getCssClass()}">
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <!--/*@thymesVar id="feedbackmessage" type="be.vizit.vim.app.utils.Feedbackmessage"*/-->
+  <!--/*@thymesVar id="feedbackmessage" type="be.beanleaf.vim.app.utils.Feedbackmessage"*/-->
   <div class="flash position-fixed top-0 m-3 z-99" th:if="${feedbackmessage}"
        th:classappend="'flash-' + ${feedbackmessage.getType().getCssClass()}">
     <button class="flash-close js-flash-close" th:if="${feedbackmessage.isCloseable()}"

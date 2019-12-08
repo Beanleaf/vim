@@ -32,10 +32,14 @@ public abstract class VimController {
     return vimSession;
   }
 
-  @ModelAttribute
-  public void addModelAttributes(Model model) {
+  private void addDefaultModelAttibutes(Model model) {
     model.addAttribute("htmlLang", LocaleContextHolder.getLocale().getLanguage());
     model.addAttribute("activeUser", vimSession.getActiveUser());
+  }
+
+  @ModelAttribute
+  public void addModelAttributes(Model model) {
+    addDefaultModelAttibutes(model);
   }
 
   @ExceptionHandler(Exception.class)
@@ -43,16 +47,19 @@ public abstract class VimController {
     if (!(ex instanceof ValidationException)) {
       logger.error(ExceptionUtils.getStackTrace(ex));
     }
+    addDefaultModelAttibutes(model);
     model.addAttribute(FeedbackUtils.createMessage(ex).setCloseable(true));
     return render(HomeController.VIEW_HOME, model);
   }
 
   public String getLocaleString(String key) {
-    Locale locale = LocaleContextHolder.getLocale();
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages", locale);
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages", getLocale());
     return resourceBundle.getString(key);
   }
 
+  public Locale getLocale() {
+    return LocaleContextHolder.getLocale();
+  }
 
   ModelAndView render(String view, Model model) {
     return render(view, model.asMap());

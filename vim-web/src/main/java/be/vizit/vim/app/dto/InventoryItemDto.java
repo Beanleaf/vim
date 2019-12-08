@@ -17,18 +17,20 @@ public class InventoryItemDto implements FormDto {
   private String brand;
   private Integer amount;
   private ItemStatus status;
+  private String value;
 
   public InventoryItemDto() {
-    this(null, null, true, null, ItemStatus.AVAILABLE);
+    this(null, null, true, null, null, ItemStatus.AVAILABLE);
   }
 
   public InventoryItemDto(
-      ItemCategory itemCategory, String description, boolean active, String brand,
+      ItemCategory itemCategory, String description, boolean active, String brand, String value,
       ItemStatus status) {
     this.itemCategory = itemCategory;
     this.description = description;
     this.active = active;
     this.brand = brand;
+    this.value = value;
     this.status = status;
   }
 
@@ -78,5 +80,13 @@ public class InventoryItemDto implements FormDto {
 
   public void setStatus(ItemStatus status) {
     this.status = status;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
   }
 }

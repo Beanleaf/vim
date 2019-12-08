@@ -27,28 +27,16 @@ $(document).keyup(function (e) {
   }
 });
 
-function removeOverlay() {
-  const overlay = $("#overlay");
-  if (overlay.length) {
-    overlay.remove();
-  }
-}
-
-function addOverlay() {
-  let overlay = document.createElement("div");
-  overlay.setAttribute("id", "overlay");
-  $("body").prepend(overlay);
-}
-
 $('.reportDefect').click(function () {
   const url = $(this).attr("data-url");
   loadAndOpen(url, $("#boxDefectForm"));
 });
 
-function loadAndOpen(url, target, overlay = true) {
-  if (overlay) {
-    addOverlay();
+$("input[data-type='currency']").on({
+  keyup: function () {
+    formatDecimal($(this), false, $(this).attr("data-currency-divider"));
+  },
+  blur: function () {
+    formatDecimal($(this), true, $(this).attr("data-currency-divider"));
   }
-  target.load(url);
-  target.show();
-}
+});

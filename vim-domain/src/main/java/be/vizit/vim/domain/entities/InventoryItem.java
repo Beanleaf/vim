@@ -28,6 +28,7 @@ public class InventoryItem {
   private ItemStatus currentStatus;
   @Column(length = 100)
   private String brand;
+  private Double value;
 
   public InventoryItem() {
   }
@@ -94,5 +95,13 @@ public class InventoryItem {
 
   public void setBrand(String brand) {
     this.brand = brand;
+  }
+
+  public Double getValue() {
+    return value;
+  }
+
+  public void setValue(Double value) {
+    this.value = value;
   }
 }

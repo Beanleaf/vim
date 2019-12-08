@@ -38,6 +38,19 @@
           th:if="${#fields.hasErrors('brand')}"></dd>
     </dl>
 
+    <dl>
+      <dt><label for="item-value" th:text="#{inventory.item.value}"></label></dt>
+      <dd><span th:text="#{currency.symbol}"></span>
+        <input class="form-control" data-type="currency" id="item-value" size="10"
+               th:attr="data-currency-divider=${divider}"
+               th:field="*{value}"
+               th:placeholder="'0' + #{currency.decimalSymbol} + '00'"
+               th:with="divider=#{currency.divider}"
+               type="text"
+        />
+      </dd>
+    </dl>
+
     <dl class="form-group">
       <dt><label for="item-status" th:text="#{inventory.item.status}"></label></dt>
       <dd>

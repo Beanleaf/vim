@@ -19,6 +19,7 @@ public class VimWebApp extends SpringBootServletInitializer {
   public MessageSource messageSource() {
     ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
     messageSource.setBasenames("classpath:/messages/messages", "classpath:/messages/messages.mail");
+    messageSource.setDefaultEncoding("UTF-8");
     return messageSource;
   }
 

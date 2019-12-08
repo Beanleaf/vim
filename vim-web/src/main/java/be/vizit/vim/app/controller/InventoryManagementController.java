@@ -4,6 +4,7 @@ import be.beanleaf.datatable.DataTable;
 import be.beanleaf.datatable.DataTableColumn;
 import be.vizit.vim.app.VimSession;
 import be.vizit.vim.app.dto.InventoryItemDto;
+import be.vizit.vim.app.utils.LocaleUtils;
 import be.vizit.vim.app.utils.MessageType;
 import be.vizit.vim.app.utils.SelectFilter;
 import be.vizit.vim.app.utils.ToastMessage;
@@ -12,6 +13,7 @@ import be.vizit.vim.domain.entities.InventoryItem;
 import be.vizit.vim.domain.entities.ItemCategory;
 import be.vizit.vim.services.InventoryItemService;
 import be.vizit.vim.services.ItemCategoryService;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
@@ -140,6 +142,7 @@ public class InventoryManagementController extends VimController {
         inventoryItem.getDescription(),
         inventoryItem.isActive(),
         inventoryItem.getBrand(),
+        LocaleUtils.getLocalNumberString(getLocale(), inventoryItem.getValue()),
         inventoryItem.getCurrentStatus()
     ), URL_EDIT_ITEM + "/" + id);
     return VIEW_EDIT_ITEM;
@@ -148,7 +151,7 @@ public class InventoryManagementController extends VimController {
   @PostMapping(URL_EDIT_ITEM + "/{id}")
   public String inventoryItemEditPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
       BindingResult bindingResult, @PathVariable long id, Model model,
-      RedirectAttributes redirectAttributes) {
+      RedirectAttributes redirectAttributes) throws ParseException {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
@@ -158,6 +161,7 @@ public class InventoryManagementController extends VimController {
           inventoryItemDto.getDescription(),
           inventoryItemDto.isActive(),
           inventoryItemDto.getBrand(),
+          LocaleUtils.getLocalDouble(getLocale(), inventoryItemDto.getValue()),
           inventoryItemDto.getStatus());
       redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.inventory.editItemSuccess", false));

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/mail :: mailHtmlHead"></head>
+<body>
+<div class="container">
+  <div class="header" th:replace="fragments/mail :: mailHeader"></div>
+  <div class="body">
+    <p th:text="#{mail.salutation(${recipientName})}"></p>
+    <p th:text="#{mail.defect.body(${reporter}, ${#dates.format(time, 'dd MMMM YYYY, HH:mm')})}">
+      mail.defect.body</p>
+    <p>
+      <!--/*@thymesVar id="defectItem" type="be.vizit.vim.domain.entities.InventoryItem"*/-->
+      <b th:text="${defectItem.getDescription()}">defectItem.getDescription()</b><br/>
+      <span th:text="${defectItem.getItemCategory().getDescription()}"></span>
+    </p>
+    <div th:if="${comment}">
+      <b th:text="#{comment}"></b>
+      <p class="monoBlock" th:text="${comment}"></p>
+    </div>
+    <p th:text="#{mail.defect.subBody}">mail.defect.subBody</p>
+  </div>
+  <div class="footer" th:replace="fragments/mail :: mailFooter"></div>
+</div>
+</body>
+</html>

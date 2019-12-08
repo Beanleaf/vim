@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="inventoryItemForm">
   <!--/*@thymesVar id="inventoryItemDto" type="be.vizit.vim.app.dto.InventoryItemDto"*/-->
   <form method="post" th:action="@{${frmAction}}" th:object="${inventoryItemDto}">

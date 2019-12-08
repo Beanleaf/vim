@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: htmlHead"></head>
 <body>
@@ -23,7 +23,6 @@
       <a class="btn-link" th:href="@{/admin/inventory}" th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
     </p>
   </div>
-
   <div class="blankslate mt-3" th:unless="${activeUser}">
     <i class="octicon mega-octicon octicon-key blankslate-icon"></i>
     <i class="octicon mega-octicon octicon-sign-in blankslate-icon"></i>

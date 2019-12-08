@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
 
 <!--/*@thymesVar id="dataTable" type="be.beanleaf.datatable.DataTable"*/-->
 <div th:fragment="dataTable" th:with="totalPages=${dataTable.getTotalPages()}">

@@ -123,6 +123,11 @@ public class User {
 
   @Transient
   public String getShortName() {
-    return getFirstName() + ' ' + getLastName().substring(0, 1) + '.';
+    String shortName = getFirstName();
+    if (getLastName() != null) {
+      return (shortName + ' ' + getLastName().substring(0, 1) + '.').trim();
+    }
+
+    return shortName != null ? shortName : getUsername();
   }
 }

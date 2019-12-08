@@ -2,8 +2,11 @@ package be.vizit.vim.services;
 
 import be.vizit.vim.domain.UserRole;
 import be.vizit.vim.domain.entities.User;
+import be.vizit.vim.domain.utilities.ValidationException;
 import be.vizit.vim.repository.UserRepository;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,5 +62,13 @@ public class UserService {
       user = getUserByUsername(uuidOrUsername);
     }
     return user != null && user.isActive() ? user : null;
+  }
+
+  public InternetAddress getInternetAddress(User user) {
+    try {
+      return new InternetAddress(user.getEmailAddress(), user.getShortName());
+    } catch (UnsupportedEncodingException e) {
+      throw new ValidationException(e.getMessage());
+    }
   }
 }

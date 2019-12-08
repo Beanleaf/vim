@@ -25,7 +25,7 @@ public abstract class VimController {
 
   @Autowired
   VimController(VimSession vimSession) {
-    this.vimSession = vimSession;
+    this.vimSession = vimSession; //TODO: is this necessary?
   }
 
   VimSession getVimSession() {
@@ -34,6 +34,7 @@ public abstract class VimController {
 
   @ModelAttribute
   public void addModelAttributes(Model model) {
+    model.addAttribute("htmlLang", LocaleContextHolder.getLocale().getLanguage());
     model.addAttribute("activeUser", vimSession.getActiveUser());
   }
 
@@ -48,7 +49,7 @@ public abstract class VimController {
 
   public String getLocaleString(String key) {
     Locale locale = LocaleContextHolder.getLocale();
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", locale);
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages", locale);
     return resourceBundle.getString(key);
   }
 

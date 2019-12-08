@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import be.vizit.vim.domain.entities.User;
 import be.vizit.vim.fixtures.UserFixture;
+import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,14 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(userService.login("uuid")).isNotNull();
     store(UserFixture.newUser("tom", "uuid2", false));
     assertThat(userService.login("tom")).isNull();
+  }
+
+  @Test
+  void getInternetAddress() {
+    User user = UserFixture.newUser("bob", "uuid");
+    user.setEmailAddress("bob@comp.com");
+    InternetAddress internetAddressForUser = userService.getInternetAddress(user);
+    assertThat(internetAddressForUser.getPersonal()).isEqualTo("bob");
+    assertThat(internetAddressForUser.getAddress()).isEqualTo("bob@comp.com");
   }
 }

@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="recentLogs" type="java.util.List<be.vizit.vim.domain.entities.InventoryLog>"*/-->
 <!--/*@thymesVar id="log" type="be.vizit.vim.domain.entities.InventoryLog"*/-->
 <div th:fragment="recentLogs"
-     th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}, defectUrl=${T(be.vizit.vim.app.controller.InventoryController).URL_DEFECT}">
+     th:with="ItemStatus=${T(be.vizit.vim.domain.ItemStatus)}, defectUrl=${T(be.vizit.vim.app.controller.InventoryController).URL_DEFECT},
+          InventoryDirection=${T(be.vizit.vim.domain.InventoryDirection)}">
   <div class="Box">
     <div class="Box-header">
       <b th:text="#{inventory.recentlyLogged}">
@@ -41,7 +42,8 @@
           </div>
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
             <span class="col-6" th:text="${item.getItemCategory().getDescription()}"></span>
-            <div class="col-6 pr-2">
+            <div class="col-6 pr-2"
+                 th:if="${log.getInventoryDirection().equals(InventoryDirection.IN)}">
               <button class="btn-octicon btn-octicon-danger float-right reportDefect"
                       th:data-url="${defectUrl + '/' + log.getId()}"
                       th:unless="${item.getCurrentStatus().equals(ItemStatus.DEFECT)}">

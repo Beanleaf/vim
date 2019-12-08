@@ -13,7 +13,7 @@
       <b th:text="${defectItem.getDescription()}">defectItem.getDescription()</b><br/>
       <span th:text="${defectItem.getItemCategory().getDescription()}"></span>
     </p>
-    <div th:if="${comment}">
+    <div th:unless="${#strings.isEmpty(comment)}">
       <b th:text="#{comment}"></b>
       <p class="monoBlock" th:text="${comment}"></p>
     </div>

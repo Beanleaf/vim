@@ -33,7 +33,7 @@ footer a.icon {
     }
 
     &:not(:last-child) {
-      margin-right: 16px; // .mr-3
+      @extend .mr-3;
     }
   }
 

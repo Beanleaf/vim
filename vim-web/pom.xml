@@ -73,6 +73,7 @@
           <generateSourceMap>false</generateSourceMap>
           <inputPath>${scss.path.source}</inputPath>
           <outputPath>${scss.path.target}</outputPath>
+          <outputStyle>compressed</outputStyle>
         </configuration>
         <executions>
           <execution>

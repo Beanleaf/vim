@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="activeUser" type="be.beanleaf.vim.domain.entities.User"*/-->
 <head th:fragment="htmlHead" th:remove="tag">
+  <!--/*@thymesVar id="defaultEncoding" type="java.lang.String"*/-->
   <meta th:charset="${defaultEncoding}">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="ie=edge" http-equiv="X-UA-Compatible">
@@ -45,15 +46,8 @@
 <!-- Navigation -->
 <header class="topbar p-responsive d-flex flex-justify-between flex-items-center"
         th:fragment="topBar">
-  <div class="text-white">
+  <div class="text-white mr-3">
     <i class="logo octicon octicon-repo-clone"></i>
-  </div>
-  <div class="search mx-3">
-    <form>
-      <input class="form-control input-block input-sm"
-             th:placeholder="#{navigation.search.placeholder}"
-             type="text"/>
-    </form>
   </div>
   <nav class="navigation flex-auto text-left">
     <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>

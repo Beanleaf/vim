@@ -6,6 +6,7 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
 import java.util.List;
+import java.util.UUID;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,20 @@ public class UserService {
     return userRepository.findUserByEmailAddress(emailAddress);
   }
 
+  public User createNewUser(boolean active, String emailAddress, String firstName, String lastName,
+      String phonenumber, UserRole role, String username) {
+    User user = new User();
+    user.setActive(active);
+    user.setEmailAddress(emailAddress);
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setPhonenumber(phonenumber);
+    user.setUserRole(role);
+    user.setUsername(username);
+    user.setUuid(UUID.randomUUID().toString());
+    return user;
+  }
+
   @Transactional
   public void updateUser(User user, String email, boolean active, String firstName, String lastName,
       String phonenumber, UserRole userRole) {
@@ -89,6 +104,11 @@ public class UserService {
   public boolean isDeletable(User user) {
     List<InventoryLog> logs = inventoryLogService.findAllLogsForUser(user);
     return CollectionUtils.isEmpty(logs) && !user.isActive();
+  }
+
+  @Transactional
+  public User save(User user) {
+    return userRepository.save(user);
   }
 
   @Transactional

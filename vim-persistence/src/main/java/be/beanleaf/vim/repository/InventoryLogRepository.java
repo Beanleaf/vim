@@ -17,4 +17,6 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
 
   List<InventoryLog> findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(
       User user, Date startDate, Date endDate, InventoryDirection direction);
+
+  List<InventoryLog> findAllByUser(User user, Pageable pageable);
 }

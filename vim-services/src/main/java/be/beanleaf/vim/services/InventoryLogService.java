@@ -72,4 +72,9 @@ public class InventoryLogService {
     log.setComment(comment);
     log.getInventoryItem().setCurrentStatus(ItemStatus.DEFECT);
   }
+
+  @Transactional(readOnly = true)
+  public List<InventoryLog> findAllLogsForUser(User user) {
+    return inventoryLogRepository.findAllByUser(user, Pageable.unpaged());
+  }
 }

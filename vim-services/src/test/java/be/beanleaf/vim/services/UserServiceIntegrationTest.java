@@ -2,9 +2,14 @@ package be.beanleaf.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.beanleaf.vim.domain.ItemStatus;
+import be.beanleaf.vim.domain.entities.InventoryItem;
+import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
+import be.beanleaf.vim.fixtures.InventoryItemFixture;
+import be.beanleaf.vim.fixtures.InventoryLogFixture;
+import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
-import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   void deactivateUser() {
     User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
     assertThat(user.isActive()).isTrue();
-    userService.deactivateUser(user.getId());
+    userService.deactivateUser(user);
     assertThat(user.isActive()).isFalse();
   }
 
@@ -46,11 +51,19 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   }
 
   @Test
-  void getInternetAddress() {
-    User user = UserFixture.newUser("bob", "uuid");
-    user.setEmailAddress("bob@comp.com");
-    InternetAddress internetAddressForUser = userService.getInternetAddress(user);
-    assertThat(internetAddressForUser.getPersonal()).isEqualTo("bob");
-    assertThat(internetAddressForUser.getAddress()).isEqualTo("bob@comp.com");
+  void delete() {
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
+    userService.delete(user);
+    assertThat(userService.getUser(user.getId()).isActive()).isFalse();
+    User user1 = createAndStore(UserFixture.newUser("babs", "uuid2", false));
+    userService.delete(user1);
+    assertThat(userService.getUser(user1.getId())).isNull();
+    User user2 = createAndStore(UserFixture.newUser("bobette", "uuid3", true));
+    ItemCategory category = createAndStore(ItemCategoryFixture.newItemCategory("CAT"));
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", category, user2, ItemStatus.AVAILABLE));
+    store(InventoryLogFixture.newInventoryLog(item, user2));
+    userService.delete(user2);
+    assertThat(userService.getUser(user2.getId()).isActive()).isFalse();
   }
 }

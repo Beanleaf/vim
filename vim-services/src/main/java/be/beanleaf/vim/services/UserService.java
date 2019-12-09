@@ -1,25 +1,26 @@
 package be.beanleaf.vim.services;
 
 import be.beanleaf.vim.domain.UserRole;
+import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
-import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-import javax.mail.internet.InternetAddress;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class UserService {
 
   private final UserRepository userRepository;
+  private final InventoryLogService inventoryLogService;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, InventoryLogService inventoryLogService) {
     this.userRepository = userRepository;
+    this.inventoryLogService = inventoryLogService;
   }
 
   @Transactional(readOnly = true)
@@ -43,8 +44,7 @@ public class UserService {
   }
 
   @Transactional
-  public void deactivateUser(long id) {
-    User user = getUser(id);
+  public void deactivateUser(User user) {
     user.setActive(false);
   }
 
@@ -64,11 +64,18 @@ public class UserService {
     return user != null && user.isActive() ? user : null;
   }
 
-  public InternetAddress getInternetAddress(User user) {
-    try {
-      return new InternetAddress(user.getEmailAddress(), user.getShortName());
-    } catch (UnsupportedEncodingException e) {
-      throw new ValidationException(e.getMessage());
+  @Transactional(readOnly = true)
+  public boolean isDeletable(User user) {
+    List<InventoryLog> logs = inventoryLogService.findAllLogsForUser(user);
+    return CollectionUtils.isEmpty(logs) && !user.isActive();
+  }
+
+  @Transactional
+  public void delete(User user) {
+    if (isDeletable(user)) {
+      userRepository.delete(user);
+    } else {
+      deactivateUser(user);
     }
   }
 }

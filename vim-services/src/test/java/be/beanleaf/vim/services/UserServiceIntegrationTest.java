@@ -1,13 +1,11 @@
 package be.beanleaf.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
-import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.InventoryLogFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
@@ -67,15 +65,5 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     store(InventoryLogFixture.newInventoryLog(item, user2));
     userService.delete(user2);
     assertThat(userService.getUser(user2.getId()).isActive()).isFalse();
-  }
-
-  @Test
-  void updateUser() {
-    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail", true));
-    userService.updateUser(user, "mail", true, "bobette", null, null, null);
-    assertThat(user.getFirstName()).isEqualTo("bobette");
-    User user2 = createAndStore(UserFixture.newUser("bea", "uuid2", "mail2", true));
-    assertThatExceptionOfType(ValidationException.class).isThrownBy(
-        () -> userService.updateUser(user2, "mail", true, null, null, null, null));
   }
 }

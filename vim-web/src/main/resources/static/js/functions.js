@@ -91,3 +91,22 @@ function formatDecimal(input, blur, divider = ",") {
   caret_pos = updated_len - original_len + caret_pos;
   input[0].setSelectionRange(caret_pos, caret_pos);
 }
+
+function debounce(func, wait, immediate) {
+  let timeout;
+  return function () {
+    let context = this, args = arguments;
+    let later = function () {
+      timeout = null;
+      if (!immediate) {
+        func.apply(context, args);
+      }
+    };
+    let callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}

@@ -1,15 +1,13 @@
 package be.beanleaf.vim.domain;
 
 public enum UserRole implements IntegerEnum {
-  ADMIN(99, "administrator"),
-  STANDARD(1, "standard user");
+  ADMIN(99),
+  STANDARD(1);
 
   private int id;
-  private String description;
 
-  UserRole(int id, String description) {
+  UserRole(int id) {
     this.id = id;
-    this.description = description;
   }
 
   @Override
@@ -17,7 +15,4 @@ public enum UserRole implements IntegerEnum {
     return id;
   }
 
-  public String getDescription() {
-    return description;
-  }
 }

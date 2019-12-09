@@ -3,12 +3,12 @@ package be.beanleaf.vim.services;
 import be.beanleaf.vim.domain.UserRole;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
-import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -45,6 +45,21 @@ public class UserService {
     return userRepository.findAllByUserRole(role);
   }
 
+  @Transactional(readOnly = true)
+  public List<User> findAll(Pageable pageable) {
+    return userRepository.findAll(pageable).getContent();
+  }
+
+  @Transactional(readOnly = true)
+  public long countAllUsers() {
+    return userRepository.count();
+  }
+
+  @Transactional(readOnly = true)
+  public long countAllUsersByActive(boolean active) {
+    return userRepository.countAllByActive(active);
+  }
+
   @Transactional
   public void deactivateUser(User user) {
     user.setActive(false);
@@ -78,17 +93,14 @@ public class UserService {
 
   @Transactional
   public void updateUser(User user, String email, boolean active, String firstName, String lastName,
-      String phonenumber, UserRole userRole) {
-    User userByEmailAddress = findUserByEmailAddress(email);
-    if (userByEmailAddress != null && userByEmailAddress != user) {
-      throw new ValidationException("The user's email address already exists.");
-    }
+      String phonenumber, UserRole userRole, String username) {
     user.setEmailAddress(email);
     user.setActive(active);
     user.setFirstName(firstName);
     user.setLastName(lastName);
     user.setPhonenumber(phonenumber);
     user.setUserRole(userRole);
+    user.setUsername(username);
   }
 
   @Transactional(readOnly = true)
@@ -107,8 +119,8 @@ public class UserService {
   }
 
   @Transactional
-  public User save(User user) {
-    return userRepository.save(user);
+  public void save(User user) {
+    userRepository.save(user);
   }
 
   @Transactional

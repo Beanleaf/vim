@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg p-3 p-responsive width-full">
+
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{users.overview}"></div>
+    <div class="Subhead-actions">
+      <a class="btn btn-sm btn-primary" th:href="@{/admin/users/new}" type="button">
+        <i class="octicon octicon-plus text-white"></i>
+        <span th:text="#{users.newUser}"></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="Box">
+    <div class="Box-header d-flex flex-justify-between">
+      <div class="flex-auto">
+        <b class="pl-2" th:if="${amountActive > 0}">
+          <i class="octicon octicon-info"></i>
+          <span th:text="${amountActive} + ' ' + #{inventory.item.active}"></span>
+        </b>
+        <span class="text-red pl-2" th:if="${amountInactive > 0}">
+          <i class="octicon octicon-issue-opened"></i>
+          <span th:text="${amountInactive} + ' ' + #{inventory.item.inactive}"></span>
+        </span>
+      </div>
+      <div class="d-flex flex-justify-between">
+        <div class="d-flex flex-justify-between" id="dataTableFilters"></div>
+      </div>
+    </div>
+    <div class="tableRows" th:with="tableData=${dataTable.getData()}">
+      <div class="blankslate blankslate-spacious blankslate-large border-0"
+           th:unless="${tableData.size() > 0}">
+        <i class="octicon mega-octicon blankslate-icon octicon-issue-opened"></i>
+        <h3 th:text="#{form.noResults}">form.noResults</h3>
+        <p><a th:href="@{/admin/users}" th:text="#{form.clearFilters}"></a></p>
+      </div>
+      <div class="Box-row Box-row Box-row--hover-gray p-0 mt-0"
+           th:each="dataObject: ${tableData}"
+           th:if="${tableData.size() > 0}">
+        <div class="d-table table-fixed width-full"
+             th:with="UserRole=${T(be.beanleaf.vim.domain.UserRole)}">
+          <div class="float-left col-8 lh-condensed py-2 px-3">
+            <a class="link-gray-dark v-align-middle no-underline h5"
+               th:href="@{/admin/users/edit/{id}(id=${dataObject.getId()})}"
+               th:text="${dataObject.getFirstName() + ' ' + dataObject.getLastName()}">
+            </a>
+            <span class="labels lh-default">
+              <span class="Label Label--outline Label--gray"
+                    th:text="#{inventory.item.inactive}"
+                    th:unless="${dataObject.isActive()}">
+              </span>
+              <span class="Label Label--orange"
+                    th:if="${dataObject.getUserRole().equals(UserRole.ADMIN)}"
+                    th:text="#{user.role.ADMIN}"></span>
+          </span>
+            <div class="mt-1 text-small text-gray">
+              <i class="ml-2 octicon octicon-tag"></i>
+              <span th:text="${dataObject.getUsername()}"></span>
+            </div>
+          </div>
+          <div class="float-right col-3 pt-2 d-flex flex-justify-between">
+            <span class="col-6"
+                  th:text="#{user.role.__${dataObject.getUserRole().name()}__}"></span>
+            <div class="col-6 pr-2">
+              <a class="btn-octicon btn-octicon-danger float-right"
+                 th:href="@{/admin/users/delete/{id}(id=${dataObject.getId()})}">
+                <i class="octicon octicon-trashcan"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="fragments/dataTable :: dataTableNavigation"></div>
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

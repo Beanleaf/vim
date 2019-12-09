@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findUserByUuid(String uuid);
 
   User findUserByEmailAddress(String emailAddress);
+
+  long countAllByActive(boolean active);
 }

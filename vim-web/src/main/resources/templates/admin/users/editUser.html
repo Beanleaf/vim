@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg px-3 p-responsive width-full"
+     th:with="frmAction=${originalUser == null ? '/admin/users/new' : '/admin/users/edit/' + originalUser.getId()}"
+>
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{users.newUser}" th:unless="${originalUser}"></div>
+    <div class="Subhead-heading" th:if="${originalUser}">
+      <span th:text="#{users.editUser}"></span>
+      <span th:text="${originalUser.getShortName()}"></span>
+    </div>
+  </div>
+
+  <form id="userForm" method="post" th:action="@{${frmAction}}" th:object="${userDto}">
+    <input id="userId" th:if="${originalUser != null}" th:value="${originalUser.getId()}"
+           type="hidden">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'errored'">
+      <dt><label for="firstName" th:text="#{user.firstName}"></label></dt>
+      <dd>
+        <input class="form-control" id="firstName" th:field="*{firstName}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{firstName}">First name error</dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? 'errored'">
+      <dt><label for="lastName" th:text="#{user.lastName}"></label></dt>
+      <dd>
+        <input class="form-control" id="lastName" th:field="*{lastName}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{lastName}">Firstname error</dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'errored'">
+      <dt><label for="username" th:text="#{user.username}"></label></dt>
+      <dd>
+        <input class="form-control" id="username" maxlength="10" th:field="*{username}"
+               type="text"/>
+      </dd>
+      <dd class="success" th:text="#{users.usernameAvailable}"></dd>
+      <dd class="error" th:errors="*{username}"></dd>
+      <dd class="error" th:text="#{users.usernameInUse}"
+          th:unless="${#fields.hasErrors('username')}"></dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'errored'">
+      <dt><label for="email" th:text="#{user.email}"></label></dt>
+      <dd>
+        <input class="form-control" id="email" th:field="*{email}" type="text"/>
+      </dd>
+      <dd class="success" th:text="#{users.emailAvailable}"></dd>
+      <dd class="error" th:errors="*{email}"></dd>
+      <dd class="error" th:text="#{users.emailInUse}"
+          th:unless="${#fields.hasErrors('email')}"></dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('phonenumber')} ? 'errored'">
+      <dt><label for="phonenumber" th:text="#{user.phonenumber}"></label></dt>
+      <dd>
+        <input class="form-control" id="phonenumber" th:field="*{phonenumber}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{phonenumber}">Phonenumber error</dd>
+    </dl>
+    <dl class="form-group">
+      <dt><label for="userRole" th:text="#{user.role}"></label></dt>
+      <dd>
+        <select class="form-select" id="userRole" th:field="*{userRole}"
+                th:with="UserRole=${T(be.beanleaf.vim.domain.UserRole)}">
+          <option th:each="role : ${UserRole.values()}"
+                  th:text="${#strings.capitalize(text)}"
+                  th:value="${role}"
+                  th:with="description=${role.name()},text=#{user.role.__${role.name()}__}">
+          </option>
+        </select>
+      </dd>
+    </dl>
+    <div class="form-checkbox">
+      <label><input checked="checked" th:checked="*{active}" type="checkbox"/> <span
+          th:text="#{inventory.item.active}"></span></label>
+      <p class="note" th:text="#{user.markAsActive}">Mark user as active.</p>
+    </div>
+    <div class="form-checkbox" th:unless="${originalUser}">
+      <label><input checked="checked" th:checked="*{notifyMail}" type="checkbox"/> <span
+          th:text="#{user.sendWelcomMail}">Send email</span></label>
+      <p class="note" th:text="#{user.sendWelcomMail.description}">Send the user a welcome
+        email.</p>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" th:text="#{form.save}" type="submit">form.save</button>
+      <a class="btn btn-invisible" th:href="@{/admin/users}"
+         th:text="#{form.cancel}">form.cancel</a>
+    </div>
+  </form>
+
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+<script type="text/javascript">
+  const usernameCheckUrl = "/admin/user/usernameCheck";
+  const emailCheckUrl = "/admin/user/emailCheck";
+  const successClass = "successful";
+  const errorClass = "errored";
+
+  function check(url, htmlElement) {
+    const value = htmlElement.val();
+    const formGroup = htmlElement.closest(".form-group");
+    const userIdElement = $("#userId");
+    const originalId = userIdElement.length ? userIdElement.val() : null;
+    formGroup.removeClass(successClass);
+    formGroup.removeClass(errorClass);
+    if (value.length) {
+      $.ajax({
+        url: url,
+        method: "GET",
+        data: {"toCheck": value, "id": originalId},
+        success: function (result) {
+          formGroup.addClass(result ? successClass : errorClass);
+        }
+      });
+    }
+  }
+
+  $("#username").on({
+    keyup: debounce(function () {
+      check(usernameCheckUrl, $("#username"))
+    }, 500),
+    blur: function () {
+      check(usernameCheckUrl, $("#username"))
+    }
+  });
+  $("#email").on({
+    keyup: debounce(function () {
+      check(emailCheckUrl, $("#email"))
+    }, 500),
+    blur: function () {
+      check(emailCheckUrl, $("#email"))
+    }
+  });
+</script>
+</html>

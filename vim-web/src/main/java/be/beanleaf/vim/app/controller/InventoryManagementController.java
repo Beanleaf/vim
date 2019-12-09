@@ -120,8 +120,6 @@ public class InventoryManagementController extends VimController {
   public String deleteInventoryItem(@PathVariable long id, RedirectAttributes redirectAttributes) {
     InventoryItem item = inventoryItemService.getInventoryItem(id);
     inventoryItemService.delete(item);
-    redirectAttributes
-        .addFlashAttribute("itemsList", inventoryItemService.findAll(PageRequest.of(0, 50)));
     redirectAttributes.addFlashAttribute(
         new ToastMessage(MessageType.SUCCESS, "notifications.inventory.deleteSuccess"));
     return redirect(URL_OVERVIEW);
@@ -138,9 +136,7 @@ public class InventoryManagementController extends VimController {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, new InventoryItemDto(
-        inventoryItem.getItemCategory(),
-        inventoryItem.getDescription(),
-        inventoryItem.isActive(),
+        inventoryItem.getItemCategory(), inventoryItem.getDescription(), inventoryItem.isActive(),
         inventoryItem.getBrand(),
         LocaleUtils.getLocalNumberString(getLocale(), inventoryItem.getValue()),
         inventoryItem.getCurrentStatus()
@@ -157,14 +153,13 @@ public class InventoryManagementController extends VimController {
     setupItemForm(model, inventoryItemDto, URL_EDIT_ITEM + "/" + id);
     if (!bindingResult.hasErrors()) {
       inventoryItemService.updateItem(inventoryItem,
-          inventoryItemDto.getItemCategory(),
-          inventoryItemDto.getDescription(),
-          inventoryItemDto.isActive(),
-          inventoryItemDto.getBrand(),
+          inventoryItemDto.getItemCategory(), inventoryItemDto.getDescription(),
+          inventoryItemDto.isActive(), inventoryItemDto.getBrand(),
           LocaleUtils.getLocalDouble(getLocale(), inventoryItemDto.getValue()),
-          inventoryItemDto.getStatus());
+          inventoryItemDto.getStatus()
+      );
       redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
-          "notifications.inventory.editItemSuccess", false));
+          "notifications.inventory.editItemSuccess", true));
       return redirect(URL_OVERVIEW);
     }
     return VIEW_EDIT_ITEM;
@@ -184,11 +179,8 @@ public class InventoryManagementController extends VimController {
       return VIEW_NEW_ITEM;
     }
     inventoryItemService.saveItemMultipleTimes(inventoryItemDto.getAmount(),
-        inventoryItemDto.getItemCategory(),
-        inventoryItemDto.getDescription(),
-        inventoryItemDto.isActive(),
-        inventoryItemDto.getBrand(),
-        getVimSession().getActiveUser()
+        inventoryItemDto.getItemCategory(), inventoryItemDto.getDescription(),
+        inventoryItemDto.isActive(), inventoryItemDto.getBrand(), getVimSession().getActiveUser()
     );
     redirectAttributes.addFlashAttribute(
         new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",

@@ -21,7 +21,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void deactivateUser() {
-    User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail", true));
     assertThat(user.isActive()).isTrue();
     userService.deactivateUser(user);
     assertThat(user.isActive()).isFalse();
@@ -29,7 +29,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void changePassword() {
-    User user = UserFixture.newUser("bob", "uuid");
+    User user = UserFixture.newUser("bob", "uuid", "mail");
     byte[] byte16 = new byte[16];
     user.setPasswordSalt(byte16);
     byte[] byte8 = new byte[8];
@@ -42,23 +42,23 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void login() {
-    store(UserFixture.newUser("bob", "uuid", true));
+    store(UserFixture.newUser("bob", "uuid", "mail", true));
     assertThat(userService.login("tom")).isNull();
     assertThat(userService.login("bob")).isNotNull();
     assertThat(userService.login("uuid")).isNotNull();
-    store(UserFixture.newUser("tom", "uuid2", false));
+    store(UserFixture.newUser("tom", "uuid2", "mail2", false));
     assertThat(userService.login("tom")).isNull();
   }
 
   @Test
   void delete() {
-    User user = createAndStore(UserFixture.newUser("bob", "uuid", true));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail", true));
     userService.delete(user);
     assertThat(userService.getUser(user.getId()).isActive()).isFalse();
-    User user1 = createAndStore(UserFixture.newUser("babs", "uuid2", false));
+    User user1 = createAndStore(UserFixture.newUser("babs", "uuid2", "mail2", false));
     userService.delete(user1);
     assertThat(userService.getUser(user1.getId())).isNull();
-    User user2 = createAndStore(UserFixture.newUser("bobette", "uuid3", true));
+    User user2 = createAndStore(UserFixture.newUser("bobette", "uuid3", "mail3", true));
     ItemCategory category = createAndStore(ItemCategoryFixture.newItemCategory("CAT"));
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", category, user2, ItemStatus.AVAILABLE));

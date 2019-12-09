@@ -21,6 +21,7 @@ public class User {
   private boolean active;
   private byte[] passwordSalt;
   private byte[] passwordHash;
+  @Column(unique = true, nullable = false)
   private String emailAddress;
   private String phonenumber;
   private String firstName;

@@ -24,7 +24,7 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void log() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
     InventoryLog log = inventoryLogService
@@ -40,7 +40,7 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void logDefect() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
     InventoryLog log = inventoryLogService

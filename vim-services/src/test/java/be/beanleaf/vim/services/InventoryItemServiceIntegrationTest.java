@@ -24,7 +24,7 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void findAll() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
-    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
     createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory, user));
     createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user));
     createAndStore(InventoryItemFixture.newInventoryItem("uuid3", itemCategory, user));
@@ -43,7 +43,7 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
             "description",
             false,
             null,
-            createAndStore(UserFixture.newUser("bob", "uuid")));
+            createAndStore(UserFixture.newUser("bob", "uuid", "mail")));
 
     List<InventoryItem> items = inventoryItemService.findAll(Pageable.unpaged());
     assertThat(items).hasSize(2);
@@ -52,7 +52,7 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void delete() {
-    User user = createAndStore(UserFixture.newUser("bob", "uuid"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
     ItemCategory category = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", category, user);
     item.setActive(true);

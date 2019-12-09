@@ -3,6 +3,7 @@ package be.beanleaf.vim.services;
 import be.beanleaf.vim.domain.UserRole;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
+import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
@@ -53,6 +54,26 @@ public class UserService {
     User user = getUser(userId);
     user.setPasswordHash(hashSalt.getLeft());
     user.setPasswordSalt(hashSalt.getRight());
+  }
+
+  @Transactional(readOnly = true)
+  public User findUserByEmailAddress(String emailAddress) {
+    return userRepository.findUserByEmailAddress(emailAddress);
+  }
+
+  @Transactional
+  public void updateUser(User user, String email, boolean active, String firstName, String lastName,
+      String phonenumber, UserRole userRole) {
+    User userByEmailAddress = findUserByEmailAddress(email);
+    if (userByEmailAddress != null && userByEmailAddress != user) {
+      throw new ValidationException("The user's email address already exists.");
+    }
+    user.setEmailAddress(email);
+    user.setActive(active);
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setPhonenumber(phonenumber);
+    user.setUserRole(userRole);
   }
 
   @Transactional(readOnly = true)

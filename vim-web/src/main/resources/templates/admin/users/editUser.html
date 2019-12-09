@@ -75,8 +75,9 @@
       </dd>
     </dl>
     <div class="form-checkbox">
-      <label><input checked="checked" th:checked="*{active}" type="checkbox"/> <span
-          th:text="#{inventory.item.active}"></span></label>
+      <label><input checked="checked" th:checked="*{active}" th:field="*{active}" type="checkbox"/>
+        <span
+            th:text="#{inventory.item.active}"></span></label>
       <p class="note" th:text="#{user.markAsActive}">Mark user as active.</p>
     </div>
     <div class="form-checkbox" th:unless="${originalUser}">

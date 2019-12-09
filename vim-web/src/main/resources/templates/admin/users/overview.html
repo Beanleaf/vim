@@ -21,11 +21,11 @@
     <div class="Box-header d-flex flex-justify-between">
       <div class="flex-auto">
         <b class="pl-2" th:if="${amountActive > 0}">
-          <i class="octicon octicon-info"></i>
+          <i class="octicon octicon-primitive-dot"></i>
           <span th:text="${amountActive} + ' ' + #{inventory.item.active}"></span>
         </b>
-        <span class="text-red pl-2" th:if="${amountInactive > 0}">
-          <i class="octicon octicon-issue-opened"></i>
+        <span class="pl-2" th:if="${amountInactive > 0}">
+          <i class="octicon octicon-dash"></i>
           <span th:text="${amountInactive} + ' ' + #{inventory.item.inactive}"></span>
         </span>
       </div>
@@ -55,11 +55,22 @@
                     th:text="#{inventory.item.inactive}"
                     th:unless="${dataObject.isActive()}">
               </span>
-              <span class="Label Label--orange"
+              <span class="Label bg-blue"
                     th:if="${dataObject.getUserRole().equals(UserRole.ADMIN)}"
                     th:text="#{user.role.ADMIN}"></span>
           </span>
             <div class="mt-1 text-small text-gray">
+              <a class="tooltipped tooltipped-n muted-link"
+                 th:attr="aria-label=#{user.email}"
+                 th:href="'mailto:'+${dataObject.getEmailAddress()}"
+                 th:if="!${#strings.isEmpty(dataObject.getEmailAddress())}">
+                <i class="octicon octicon-mail"></i>
+                <span th:text="${dataObject.getEmailAddress()}"></span>
+              </a>
+              <span th:if="!${#strings.isEmpty(dataObject.getPhonenumber())}">
+                <i class="ml-2 octicon octicon-device-mobile"></i>
+                <span th:text="${dataObject.getPhonenumber()}"></span>
+              </span>
               <i class="ml-2 octicon octicon-tag"></i>
               <span th:text="${dataObject.getUsername()}"></span>
             </div>
@@ -70,7 +81,7 @@
             <div class="col-6 pr-2">
               <a class="btn-octicon btn-octicon-danger float-right"
                  th:href="@{/admin/users/delete/{id}(id=${dataObject.getId()})}">
-                <i class="octicon octicon-trashcan"></i>
+                <i class="octicon octicon-trashcan"></i><!-- TODO: change based on status -->
               </a>
             </div>
           </div>

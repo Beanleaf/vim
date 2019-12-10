@@ -1,11 +1,13 @@
 package be.beanleaf.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
+import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.InventoryLogFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
@@ -53,8 +55,8 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void delete() {
     User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail", true));
-    userService.delete(user);
-    assertThat(userService.getUser(user.getId()).isActive()).isFalse();
+    assertThatThrownBy(() -> userService.delete(user)).isInstanceOf(ValidationException.class)
+        .hasMessage("error.user.notDeletable");
     User user1 = createAndStore(UserFixture.newUser("babs", "uuid2", "mail2", false));
     userService.delete(user1);
     assertThat(userService.getUser(user1.getId())).isNull();
@@ -63,7 +65,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", category, user2, ItemStatus.AVAILABLE));
     store(InventoryLogFixture.newInventoryLog(item, user2));
-    userService.delete(user2);
-    assertThat(userService.getUser(user2.getId()).isActive()).isFalse();
+    assertThatThrownBy(() -> userService.delete(user2)).isInstanceOf(ValidationException.class)
+        .hasMessage("error.user.notDeletable");
   }
 }

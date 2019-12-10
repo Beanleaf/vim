@@ -33,6 +33,7 @@ public class UserController extends VimController {
   private static final String VIEW_EDIT_USER = "admin/users/editUser";
   private static final String URL_DELETE_USER = "/admin/users/delete";
   private static final String URL_EDIT_USER = "/admin/users/edit";
+  private static final String URL_INACTIVATE_USER = "/admin/users/inactivate";
 
   private final UserService userService;
 
@@ -103,9 +104,19 @@ public class UserController extends VimController {
     return redirect(URL_OVERVIEW);
   }
 
+  @GetMapping(URL_INACTIVATE_USER + "/{id}")
+  public String inactivateUser(@PathVariable long id, RedirectAttributes redirectAttributes) {
+    User user = userService.getUser(id);
+    userService.deactivateUser(user);
+    redirectAttributes.addFlashAttribute(
+        new ToastMessage(MessageType.SUCCESS, "notifications.user.inactivateSuccess"));
+    return redirect(URL_OVERVIEW);
+  }
+
   @GetMapping(URL_EDIT_USER + "/{id}")
   public String editUser(@PathVariable long id, Model model) {
     User user = userService.getUser(id);
+    model.addAttribute("isDeletable", userService.isDeletable(user));
     model.addAttribute("originalUser", user);
     model.addAttribute(new UserDto(
         user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmailAddress(),

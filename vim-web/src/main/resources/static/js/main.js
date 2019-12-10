@@ -12,6 +12,11 @@ $(".js-box-open").click(function () {
   $("#" + boxId).show();
 });
 
+$(document).on("click", ".disabled", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+});
+
 $(document).on("click", ".js-box-close", function () {
   $(this).closest(".Box").hide();
   removeOverlay();

@@ -87,8 +87,14 @@
         email.</p>
     </div>
     <div class="form-actions">
-      <button class="btn btn-primary" th:text="#{form.save}" type="submit">form.save</button>
-      <a class="btn btn-invisible" th:href="@{/admin/users}"
+      <a class="btn btn-danger"
+         th:classappend="${isDeletable ? '' : 'disabled'}"
+         th:href="@{/admin/users/delete/{id}(id=${originalUser.getId()})}"
+         th:if="${originalUser}"
+         th:text="#{user.delete}">delete</a>
+      <button class="btn btn-primary float-left" th:text="#{form.save}" type="submit">form.save
+      </button>
+      <a class="btn btn-invisible float-left" th:href="@{/admin/users}"
          th:text="#{form.cancel}">form.cancel</a>
     </div>
   </form>

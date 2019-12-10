@@ -10,8 +10,9 @@ public abstract class FeedbackUtils {
 
   private final static Logger logger = LoggerFactory.getLogger(FeedbackUtils.class);
 
-  public static Feedbackmessage createMessage(MessageType type, String message) {
-    return new Feedbackmessage(type, message, true);
+  public static Feedbackmessage createMessage(MessageType type, String message,
+      boolean isValidation) {
+    return new Feedbackmessage(type, message, isValidation, true);
   }
 
   public static Feedbackmessage createMessage(Exception e) {
@@ -31,7 +32,7 @@ public abstract class FeedbackUtils {
         isValidationException ? MessageType.WARNING : MessageType.ERROR,
         getMessage(e, rootCause, isValidationException),
         isValidationException ? null : fullStacktrace ? stack : StringUtils.abbreviate(stack, 500),
-        false);
+        isValidationException, false);
   }
 
   private static Throwable getRootCause(Throwable t) {

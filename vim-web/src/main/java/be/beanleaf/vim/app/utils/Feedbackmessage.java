@@ -6,17 +6,20 @@ public class Feedbackmessage {
   private String message;
   private String stackTrace;
   private boolean isCloseable;
+  private boolean isValidation;
 
-  public Feedbackmessage(MessageType type, String message, String stackTrace,
+  public Feedbackmessage(MessageType type, String message, String stackTrace, boolean isValidation,
       boolean isCloseable) {
     this.type = type;
     this.message = message;
     this.stackTrace = stackTrace;
+    this.isValidation = isValidation;
     this.isCloseable = isCloseable;
   }
 
-  public Feedbackmessage(MessageType type, String message, boolean isCloseable) {
-    this(type, message, null, isCloseable);
+  public Feedbackmessage(MessageType type, String message, boolean isValidation,
+      boolean isCloseable) {
+    this(type, message, null, isValidation, isCloseable);
   }
 
   public MessageType getType() {
@@ -38,5 +41,9 @@ public class Feedbackmessage {
   public Feedbackmessage setCloseable(boolean closeable) {
     isCloseable = closeable;
     return this;
+  }
+
+  public boolean isValidation() {
+    return isValidation;
   }
 }

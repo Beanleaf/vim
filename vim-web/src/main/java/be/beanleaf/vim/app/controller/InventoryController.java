@@ -74,16 +74,16 @@ public class InventoryController extends VimController {
     InventoryItem inventoryItem = inventoryItemService.findByUuidOrId(itemUuid.replace("#", ""));
     if (inventoryItem == null || !inventoryItem.isActive()) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.ERROR, "notifications.inventory.noActiveItemFound"
+          MessageType.ERROR, "notifications.inventory.noActiveItemFound", true
       ));
     } else if (inventoryItem.getCurrentStatus() == ItemStatus.AVAILABLE) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.WARNING, "notifications.inventory.itemAlreadyAvailable"
+          MessageType.WARNING, "notifications.inventory.itemAlreadyAvailable", true
       ));
     } else {
       inventoryLogService.logIn(inventoryItem, getVimSession().getActiveUser());
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.SUCCESS, "notifications.inventory.successfullLogIn"
+          MessageType.SUCCESS, "notifications.inventory.successfullLogIn", true
       ));
     }
     addRecentLogs(model, InventoryDirection.IN);
@@ -101,16 +101,16 @@ public class InventoryController extends VimController {
     InventoryItem inventoryItem = inventoryItemService.findByUuidOrId(itemUuid.replace("#", ""));
     if (inventoryItem == null || !inventoryItem.isActive()) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.ERROR, "notifications.inventory.noActiveItemFound"
+          MessageType.ERROR, "notifications.inventory.noActiveItemFound", true
       ));
     } else if (inventoryItem.getCurrentStatus() == ItemStatus.LEND) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.WARNING, "notifications.inventory.itemAlreadyLend"
+          MessageType.WARNING, "notifications.inventory.itemAlreadyLend", true
       ));
     } else {
       inventoryLogService.logOut(inventoryItem, getVimSession().getActiveUser());
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
-          MessageType.SUCCESS, "notifications.inventory.successfullLogOut"
+          MessageType.SUCCESS, "notifications.inventory.successfullLogOut", true
       ));
     }
     addRecentLogs(model, InventoryDirection.OUT);

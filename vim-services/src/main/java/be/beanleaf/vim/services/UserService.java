@@ -3,6 +3,7 @@ package be.beanleaf.vim.services;
 import be.beanleaf.vim.domain.UserRole;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
+import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;
@@ -128,7 +129,7 @@ public class UserService {
     if (isDeletable(user)) {
       userRepository.delete(user);
     } else {
-      deactivateUser(user);
+      throw new ValidationException("error.user.notDeletable");
     }
   }
 }

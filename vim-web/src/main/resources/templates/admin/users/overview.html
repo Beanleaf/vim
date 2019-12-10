@@ -78,10 +78,11 @@
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
             <span class="col-6"
                   th:text="#{user.role.__${dataObject.getUserRole().name()}__}"></span>
-            <div class="col-6 pr-2">
-              <a class="btn-octicon btn-octicon-danger float-right"
-                 th:href="@{/admin/users/delete/{id}(id=${dataObject.getId()})}">
-                <i class="octicon octicon-trashcan"></i><!-- TODO: change based on status -->
+            <div class="col-6 pr-2" th:if="${dataObject.isActive()}">
+              <a class="btn-octicon btn-octicon-danger float-right muted-link tooltipped tooltipped-n"
+                 th:attr="aria-label=#{user.inactivate}"
+                 th:href="@{/admin/users/inactivate/{id}(id=${dataObject.getId()})}">
+                <i class="octicon octicon-circle-slash"></i>
               </a>
             </div>
           </div>

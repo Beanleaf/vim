@@ -8,7 +8,8 @@
   <p class="f3 text-center" th:text="#{application.subtitle}">application.subtitle</p>
 
 
-  <form class="box-shadow-medium p-3 my-3 bg-white" method="post" th:action="@{/login}">
+  <form autocomplete="off" class="box-shadow-medium p-3 my-3 bg-white" method="post"
+        th:action="@{/login}">
     <div class="flash mb-3 flash-warn" th:if="${error}">
       <button class="flash-close js-flash-close" type="button"><i class="octicon octicon-x"></i>
       </button>
@@ -18,7 +19,7 @@
 
     <div class="input-group">
       <input autofocus class="form-control" id="username" name="username"
-             th:placeholder="#{login.placeholder}" type="password"/>
+             autocomplete="new-password" th:placeholder="#{login.placeholder}" type="password"/>
       <span class="input-group-button">
         <button class="btn" type="submit" th:text="#{navigation.login}">
           navigation.login

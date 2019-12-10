@@ -34,9 +34,9 @@
     <button class="flash-close js-flash-close" th:if="${feedbackmessage.isCloseable()}"
             type="button"><i class="octicon octicon-x"></i></button>
     <p>
-      <i class="octicon"
-         th:classappend="'octicon-' + ${feedbackmessage.getType().getIconClass()}"></i>
-      <span th:text="${feedbackmessage.getMessage()}">Feedback message</span>
+      <span th:text="${feedbackmessage.getMessage()}" th:unless="${feedbackmessage.isValidation()}">Feedback message</span>
+      <span th:if="${feedbackmessage.isValidation()}"
+            th:text="#{__${feedbackmessage.getMessage()}__}">Feedback message</span>
     </p>
     <pre th:if="${feedbackmessage.getStackTrace()}"><code
         th:text="${feedbackmessage.getStackTrace()}"></code></pre>

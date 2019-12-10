@@ -2,10 +2,13 @@ package be.beanleaf.vim.app.controller;
 
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.utils.FeedbackUtils;
+import be.beanleaf.vim.app.utils.Feedbackmessage;
+import be.beanleaf.vim.app.utils.LocaleUtils;
 import be.beanleaf.vim.domain.utilities.ValidationException;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public abstract class VimController {
@@ -35,30 +39,33 @@ public abstract class VimController {
     return vimSession;
   }
 
-  private void addDefaultModelAttibutes(Model model) {
-    model.addAttribute("defaultEncoding", defaultEncoding);
-    model.addAttribute("htmlLang", LocaleContextHolder.getLocale().getLanguage());
-    model.addAttribute("activeUser", vimSession.getActiveUser());
+  private Map<String, Object> getDefaultModelAttributes() {
+    Map<String, Object> attributes = new HashMap<>();
+    attributes.put("defaultEncoding", defaultEncoding);
+    attributes.put("htmlLang", LocaleContextHolder.getLocale().getLanguage());
+    attributes.put("activeUser", vimSession.getActiveUser());
+    return attributes;
   }
 
   @ModelAttribute
   public void addModelAttributes(Model model) {
-    addDefaultModelAttibutes(model);
+    model.addAllAttributes(getDefaultModelAttributes());
   }
 
   @ExceptionHandler(Exception.class)
-  public ModelAndView addException(Exception ex, Model model) {
+  public String addException(Exception ex, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
     if (!(ex instanceof ValidationException)) {
       logger.error(ExceptionUtils.getStackTrace(ex));
     }
-    addDefaultModelAttibutes(model);
-    model.addAttribute(FeedbackUtils.createMessage(ex).setCloseable(true));
-    return render(HomeController.VIEW_HOME, model);
+    Feedbackmessage feedbackMessage = FeedbackUtils.createMessage(ex).setCloseable(true);
+    redirectAttributes.addFlashAttribute(feedbackMessage);
+    String referer = request.getHeader("Referer");
+    return redirect(referer == null ? HomeController.URL_HOME : referer);
   }
 
   public String getLocaleString(String key) {
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages", getLocale());
-    return resourceBundle.getString(key);
+    return LocaleUtils.getLocalString(getLocale(), "messages/messages", key);
   }
 
   public Locale getLocale() {

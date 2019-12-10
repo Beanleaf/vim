@@ -3,6 +3,7 @@ package be.beanleaf.vim.app.utils;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public abstract class LocaleUtils {
 
@@ -19,5 +20,10 @@ public abstract class LocaleUtils {
       return null;
     }
     return NumberFormat.getNumberInstance(locale).format(number);
+  }
+
+  public static String getLocalString(Locale locale, String resourceBundle, String key) {
+    ResourceBundle bundle = ResourceBundle.getBundle(resourceBundle, locale);
+    return bundle.getString(key);
   }
 }

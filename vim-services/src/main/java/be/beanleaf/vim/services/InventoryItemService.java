@@ -65,12 +65,14 @@ public class InventoryItemService {
     return inventoryitemRepository.count(buildSpec(description, cat, status));
   }
 
-  private Specification<InventoryItem> buildSpec(String description, ItemCategory cat,
+  private Specification<InventoryItem> buildSpec(String descOrBrand, ItemCategory cat,
       ItemStatus status) {
     List<Specification<InventoryItem>> specs = new ArrayList<>();
-    if (!StringUtils.isEmpty(description)) {
-      specs.add((item, cq, cb) -> cb
-          .like(cb.upper(item.get("description")), "%" + description.toUpperCase() + "%"));
+    if (!StringUtils.isEmpty(descOrBrand)) {
+      Specification<InventoryItem> descSpec = (item, cq, cb) -> cb
+          .like(cb.upper(item.get("description")), "%" + descOrBrand.toUpperCase() + "%");
+      specs.add(descSpec.or((item, cq, cb) -> cb
+          .like(cb.upper(item.get("brand")), "%" + descOrBrand.toUpperCase() + "%")));
     }
     if (cat != null) {
       specs.add((item, cq, cb) -> cb.equal(item.get("itemCategory"), cat));
@@ -78,7 +80,6 @@ public class InventoryItemService {
     if (status != null) {
       specs.add((item, cq, cb) -> cb.equal(item.get("currentStatus"), status));
     }
-
     if (CollectionUtils.isEmpty(specs)) {
       return null;
     }

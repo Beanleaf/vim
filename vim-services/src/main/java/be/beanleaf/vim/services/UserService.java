@@ -61,6 +61,11 @@ public class UserService {
     return userRepository.countAllByActive(active);
   }
 
+  @Transactional(readOnly = true)
+  public List<User> findAllUsersByActive(boolean active, Pageable pageable) {
+    return userRepository.findAllByActive(active, pageable);
+  }
+
   @Transactional
   public void deactivateUser(User user) {
     user.setActive(false);

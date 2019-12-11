@@ -44,18 +44,19 @@ public class UserController extends VimController {
   }
 
   @GetMapping(URL_OVERVIEW)
-  public String users(@RequestParam(required = false) Integer page, Model model) {
+  public String users(@RequestParam(required = false) Integer page,
+      @RequestParam(required = false) boolean inactive, Model model) {
     DataTable<User> table = new DataTable<User>(page, 15) {
       @Override
       public long getCount() {
-        return userService.countAllUsers();
+        return userService.countAllUsersByActive(!inactive);
       }
 
       @Override
       public List<User> getData() {
         PageRequest page = PageRequest
             .of(getCurrentPage(), getPageSize(), Sort.by("firstName", "lastName"));
-        return userService.findAll(page);
+        return userService.findAllUsersByActive(!inactive, page);
       }
 
       @Override
@@ -64,6 +65,7 @@ public class UserController extends VimController {
       }
     };
     model.addAttribute("dataTable", table);
+    model.addAttribute("inactiveShown", inactive);
     model.addAttribute("amountActive", userService.countAllUsersByActive(true));
     model.addAttribute("amountInactive", userService.countAllUsersByActive(false));
     return VIEW_OVERVIEW;

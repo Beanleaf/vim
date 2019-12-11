@@ -175,3 +175,7 @@ details:not([open]) > :not(summary) {
 .z-99 {
   z-index: 99;
 }
+
+.text-body {
+  color: $gray-900;
+}

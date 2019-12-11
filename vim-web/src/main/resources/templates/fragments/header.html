@@ -38,6 +38,10 @@
       <span th:if="${feedbackmessage.isValidation()}"
             th:text="#{__${feedbackmessage.getMessage()}__}">Feedback message</span>
     </p>
+    <p th:if="${!feedbackmessage.isValidation() and !#strings.isEmpty(feedbackFooter)}"
+       th:text="${feedbackFooter}"
+       th:with="feedbackFooter=#{error.footer}">
+    </p>
     <pre th:if="${feedbackmessage.getStackTrace()}"><code
         th:text="${feedbackmessage.getStackTrace()}"></code></pre>
   </div>

@@ -5,11 +5,14 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -42,28 +45,56 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public List<User> findUsersByRole(UserRole role) {
-    return userRepository.findAllByUserRole(role);
+  public List<User> findActiveUsersByRole(UserRole role) {
+    return userRepository.findAll(
+        buildSpec(null, null, null, true, null, role),
+        Pageable.unpaged()).getContent();
   }
 
   @Transactional(readOnly = true)
-  public List<User> findAll(Pageable pageable) {
-    return userRepository.findAll(pageable).getContent();
+  public User findUserByEmailAddress(String emailAddress) {
+    return userRepository.findUserByEmailAddress(emailAddress);
   }
 
   @Transactional(readOnly = true)
-  public long countAllUsers() {
-    return userRepository.count();
+  public List<User> findUsers(String name, boolean active, UserRole userRole, Pageable page) {
+    return userRepository.findAll(buildSpec(name, name, name, active, name, userRole), page)
+        .getContent();
   }
 
   @Transactional(readOnly = true)
-  public long countAllUsersByActive(boolean active) {
-    return userRepository.countAllByActive(active);
+  public long countUsers(String name, boolean active, UserRole userRole) {
+    return userRepository.count(buildSpec(name, name, name, active, name, userRole));
   }
 
-  @Transactional(readOnly = true)
-  public List<User> findAllUsersByActive(boolean active, Pageable pageable) {
-    return userRepository.findAllByActive(active, pageable);
+  private Specification<User> buildSpec(String name, String firstName, String lastName,
+      Boolean active, String emailAddress, UserRole userRole) {
+    List<Specification<User>> specs = new ArrayList<>();
+    if (!StringUtils.isEmpty(name)) {
+      String searchString = "%" + name.toUpperCase() + "%";
+      Specification<User> nameSpec = (user, cq, cb) -> cb
+          .like(cb.upper(user.get("username")), searchString);
+      nameSpec = nameSpec
+          .or((user, cq, cb) -> cb.like(cb.upper(user.get("firstName")), searchString));
+      nameSpec = nameSpec != null ? nameSpec
+          .or((user, cq, cb) -> cb.like(cb.upper(user.get("lastName")), searchString)) : null;
+      specs.add(nameSpec);
+    }
+
+    if (userRole != null) {
+      specs.add((user, cq, cb) -> cb.equal(user.get("userRole"), userRole));
+    }
+    if (active != null) {
+      specs.add((user, cq, cb) -> cb.equal(user.get("active"), active));
+    }
+
+    Specification<User> resultSpec = Specification.where(null);
+    for (Specification<User> spec : specs) {
+      if (resultSpec != null) {
+        resultSpec = resultSpec.and(spec);
+      }
+    }
+    return resultSpec;
   }
 
   @Transactional
@@ -76,11 +107,6 @@ public class UserService {
     User user = getUser(userId);
     user.setPasswordHash(hashSalt.getLeft());
     user.setPasswordSalt(hashSalt.getRight());
-  }
-
-  @Transactional(readOnly = true)
-  public User findUserByEmailAddress(String emailAddress) {
-    return userRepository.findUserByEmailAddress(emailAddress);
   }
 
   public User createNewUser(boolean active, String emailAddress, String firstName, String lastName,

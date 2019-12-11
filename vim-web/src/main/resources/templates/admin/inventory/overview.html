@@ -5,7 +5,9 @@
 <section th:replace="fragments/header :: baseElements"></section>
 <header th:replace="fragments/header :: topBar"></header>
 
-<div class="container-lg p-3 p-responsive width-full">
+<div class="container-lg p-3 p-responsive width-full"
+     th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+>
 
   <div class="Subhead pb-1 my-2">
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
@@ -15,9 +17,9 @@
   </div>
 
   <div class="d-flex flex-justify-start flex-auto width-full mb-3">
-    <form class="subnav-search width-full ml-0" method="get" th:action="@{/admin/inventory/}">
+    <form class="subnav-search width-full ml-0" method="get" th:action="@{''}">
       <input class="form-control subnav-search-input input-contrast width-full" name="q"
-             th:placeholder="#{search.byName}"
+             th:placeholder="#{search.itemByName}"
              th:value="${nameFilter}"
              type="text"/>
       <i class="octicon octicon-search subnav-search-icon"></i>

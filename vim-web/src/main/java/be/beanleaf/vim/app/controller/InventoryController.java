@@ -136,7 +136,7 @@ public class InventoryController extends VimController {
       variables.put("comment", log.getComment());
       variables.put("reporter", getVimSession().getActiveUser().getShortName());
       variables.put("time", log.getTimestamp());
-      List<User> administrators = userService.findUsersByRole(UserRole.ADMIN);
+      List<User> administrators = userService.findActiveUsersByRole(UserRole.ADMIN);
       if (CollectionUtils.isEmpty(administrators)) {
         throw new IllegalStateException("There should be at least one administrator");
       }

@@ -33,7 +33,7 @@
 </div>
 <nav class="paginate-container" th:fragment="dataTableNavigation"
      th:if="${dataTable.getTotalPages() > 1}"
-     th:with="currentPage = ${dataTable.getCurrentPage() + 1},queryString=${#httpServletRequest.queryString},
+     th:with="currentPage = ${dataTable.getCurrentPage() + 1},
       urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
   <div class="pagination"
        th:with="start=${currentPage - 3}">

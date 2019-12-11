@@ -82,14 +82,12 @@ public class InventoryItemService {
     if (CollectionUtils.isEmpty(specs)) {
       return null;
     }
-
     Specification<InventoryItem> resultSpec = Specification.where(null);
     for (Specification<InventoryItem> spec : specs) {
       if (resultSpec != null) {
         resultSpec = resultSpec.and(spec);
       }
     }
-
     return resultSpec;
   }
 

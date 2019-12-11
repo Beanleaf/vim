@@ -9,19 +9,27 @@
 
   <div class="Subhead pb-1 my-2">
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
-    <div class="Subhead-actions">
-      <a th:href="@{/admin/inventory/new}" type="button" class="btn btn-sm btn-primary">
-        <i class="octicon octicon-plus text-white"></i>
-        <span th:text="#{inventory.newItem}">inventory.newItem</span>
-      </a>
-    </div>
     <div class="Subhead-description" th:text="#{inventory.allItems.description}">
       inventory.allItems.description
     </div>
   </div>
 
+  <div class="d-flex flex-justify-start flex-auto width-full mb-3">
+    <form class="subnav-search width-full ml-0" method="get" th:action="@{/admin/inventory/}">
+      <input class="form-control subnav-search-input input-contrast width-full" name="q"
+             th:placeholder="#{search.byName}"
+             th:value="${nameFilter}"
+             type="text"/>
+      <i class="octicon octicon-search subnav-search-icon"></i>
+    </form>
+    <a class="ml-3 btn btn-primary" th:href="@{/admin/inventory/new}" type="button">
+      <i class="octicon octicon-plus text-white"></i>
+      <span th:text="#{inventory.newItem}">inventory.newItem</span>
+    </a>
+  </div>
+
   <div class="mb-3 reset-query-wrapper"
-       th:if="${categoryFilter.getSelectedObject() != null or statusFilter.getSelectedObject() != null}">
+       th:if="${categoryFilter.getSelectedObject() != null or statusFilter.getSelectedObject() != null or !#strings.isEmpty(nameFilter)}">
     <a class="reset-query" th:href="@{/admin/inventory}">
       <span class="icon"><i class="octicon octicon-x"></i></span>
       <span th:text="#{form.clearFilters}">form.clearFilters</span>

@@ -56,20 +56,21 @@ public class InventoryManagementController extends VimController {
   @GetMapping(URL_OVERVIEW)
   public String inventory(@RequestParam(required = false) Integer page,
       @RequestParam(required = false) Long cat, @RequestParam(required = false) Integer status,
-      Model model) {
+      @RequestParam(required = false) String q, Model model) {
     ItemCategory itemCategory =
         cat != null ? itemCategoryService.getItemCategory(cat) : null;
     ItemStatus itemStatus = status != null ? ItemStatus.forId(status) : null;
+    model.addAttribute("nameFilter", q);
     DataTable<InventoryItem> table = new DataTable<InventoryItem>(page, 15) {
       @Override
       public long getCount() {
-        return inventoryItemService.countAllByStatusAndCategory(itemStatus, itemCategory);
+        return inventoryItemService.countItems(q, itemCategory, itemStatus);
       }
 
       @Override
       public List<InventoryItem> getData() {
         PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("description"));
-        return inventoryItemService.findAllByCategoryAndStatus(itemCategory, itemStatus, page);
+        return inventoryItemService.findItems(q, itemCategory, itemStatus, page);
       }
 
       @Override
@@ -109,7 +110,7 @@ public class InventoryManagementController extends VimController {
       model.addAttribute(attributeName, 0);
       if (itemStatus == null || itemStatus == statusEnum) {
         model.addAttribute(attributeName,
-            inventoryItemService.countAllByStatusAndCategory(statusEnum, itemCategory)
+            inventoryItemService.countItems(q, itemCategory, statusEnum)
         );
       }
     }

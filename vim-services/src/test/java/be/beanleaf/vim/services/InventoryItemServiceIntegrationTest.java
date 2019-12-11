@@ -2,6 +2,7 @@ package be.beanleaf.vim.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
@@ -32,6 +33,30 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     List<InventoryItem> byUuid = inventoryItemService
         .findAll(PageRequest.of(0, 1, Sort.by("uuid").descending()));
     assertThat(byUuid.get(0).getUuid()).isEqualTo("uuid3");
+  }
+
+  @Test
+  void findItems() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", itemCategory, user);
+    item.setDescription("someDescription");
+    store(item);
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid3", itemCategory, user));
+    List<InventoryItem> result = inventoryItemService
+        .findItems(null, null, null, Pageable.unpaged());
+    assertThat(result.size()).isEqualTo(3);
+    assertThat(inventoryItemService.findItems(null, itemCategory, null, Pageable.unpaged()).size())
+        .isEqualTo(3);
+    assertThat(
+        inventoryItemService.findItems(null, null, ItemStatus.AVAILABLE, Pageable.unpaged()).size())
+        .isEqualTo(3);
+    assertThat(
+        inventoryItemService.findItems(null, null, ItemStatus.LEND, Pageable.unpaged()).size())
+        .isEqualTo(0);
+    assertThat(inventoryItemService.findItems("descr", null, null, Pageable.unpaged()).size())
+        .isEqualTo(1);
   }
 
   @Test

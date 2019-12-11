@@ -50,10 +50,17 @@
 <!-- Navigation -->
 <header class="topbar p-responsive d-flex flex-justify-between flex-items-center"
         th:fragment="topBar">
-  <div class="text-white mr-3">
+  <div class="text-white">
     <i class="logo octicon octicon-repo-clone"></i>
   </div>
-  <nav class="navigation flex-auto text-left">
+  <div class="search ml-3" sec:authorize="hasAuthority('ADMIN')">
+    <form method="get" th:action="@{/admin/inventory/}">
+      <input class="form-control input-block input-sm" name="q"
+             th:placeholder="#{navigation.search.placeholder}"
+             type="text"/>
+    </form>
+  </div>
+  <nav class="navigation flex-auto text-left ml-3">
     <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
     <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
        th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>

@@ -6,13 +6,16 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryitemRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class InventoryItemService {
@@ -48,60 +51,46 @@ public class InventoryItemService {
 
   @Transactional(readOnly = true)
   public List<InventoryItem> findAll(Pageable pageable) {
-    Page<InventoryItem> all = inventoryitemRepository.findAll(pageable);
-    return all.getContent();
+    return inventoryitemRepository.findAll(pageable).getContent();
   }
 
   @Transactional(readOnly = true)
-  public List<InventoryItem> findAllByStatus(ItemStatus itemStatus, Pageable pageable) {
-    return inventoryitemRepository.findAllByCurrentStatus(itemStatus, pageable);
+  public List<InventoryItem> findItems(String description, ItemCategory cat, ItemStatus status,
+      Pageable page) {
+    return inventoryitemRepository.findAll(buildSpec(description, cat, status), page).getContent();
   }
 
-  @Transactional(readOnly = true)
-  public List<InventoryItem> findAllByCategory(ItemCategory itemCategory, Pageable pageable) {
-    return itemCategory != null
-        ? inventoryitemRepository.findAllByItemCategory(itemCategory, pageable)
-        : findAll(pageable);
+  @Transactional
+  public long countItems(String description, ItemCategory cat, ItemStatus status) {
+    return inventoryitemRepository.count(buildSpec(description, cat, status));
   }
 
-  public List<InventoryItem> findAllByCategoryAndStatus(ItemCategory itemCategory,
-      ItemStatus status, Pageable pageable) {
-
-    if (status != null) {
-      return itemCategory != null
-          ? inventoryitemRepository
-          .findAllByItemCategoryAndCurrentStatus(itemCategory, status, pageable)
-          : findAllByStatus(status, pageable);
+  private Specification<InventoryItem> buildSpec(String description, ItemCategory cat,
+      ItemStatus status) {
+    List<Specification<InventoryItem>> specs = new ArrayList<>();
+    if (!StringUtils.isEmpty(description)) {
+      specs.add((item, cq, cb) -> cb
+          .like(cb.upper(item.get("description")), "%" + description.toUpperCase() + "%"));
     }
-    return itemCategory != null ? findAllByCategory(itemCategory, pageable) : findAll(pageable);
-  }
+    if (cat != null) {
+      specs.add((item, cq, cb) -> cb.equal(item.get("itemCategory"), cat));
+    }
+    if (status != null) {
+      specs.add((item, cq, cb) -> cb.equal(item.get("currentStatus"), status));
+    }
 
-  @Transactional(readOnly = true)
-  public long countAllItems() {
-    return inventoryitemRepository.count();
-  }
+    if (CollectionUtils.isEmpty(specs)) {
+      return null;
+    }
 
-  @Transactional(readOnly = true)
-  public long countAllByCategory(ItemCategory itemCategory) {
-    return itemCategory != null
-        ? inventoryitemRepository.countAllByItemCategory(itemCategory)
-        : countAllItems();
-  }
+    Specification<InventoryItem> resultSpec = Specification.where(null);
+    for (Specification<InventoryItem> spec : specs) {
+      if (resultSpec != null) {
+        resultSpec = resultSpec.and(spec);
+      }
+    }
 
-  @Transactional(readOnly = true)
-  public long countAllByStatus(ItemStatus status) {
-    return status != null
-        ? inventoryitemRepository.countAllByCurrentStatus(status)
-        : countAllItems();
-  }
-
-  @Transactional(readOnly = true)
-  public long countAllByStatusAndCategory(ItemStatus status, ItemCategory category) {
-    return category != null
-        ? status != null
-        ? inventoryitemRepository.countAllByCurrentStatusAndItemCategory(status, category)
-        : countAllByCategory(category)
-        : countAllByStatus(status);
+    return resultSpec;
   }
 
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,

@@ -47,7 +47,7 @@ public class UserService {
   @Transactional(readOnly = true)
   public List<User> findActiveUsersByRole(UserRole role) {
     return userRepository.findAll(
-        buildSpec(null, null, null, true, null, role),
+        buildSpec(null, true, role),
         Pageable.unpaged()).getContent();
   }
 
@@ -58,17 +58,16 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public List<User> findUsers(String name, boolean active, UserRole userRole, Pageable page) {
-    return userRepository.findAll(buildSpec(name, name, name, active, name, userRole), page)
+    return userRepository.findAll(buildSpec(name, active, userRole), page)
         .getContent();
   }
 
   @Transactional(readOnly = true)
   public long countUsers(String name, boolean active, UserRole userRole) {
-    return userRepository.count(buildSpec(name, name, name, active, name, userRole));
+    return userRepository.count(buildSpec(name, active, userRole));
   }
 
-  private Specification<User> buildSpec(String name, String firstName, String lastName,
-      Boolean active, String emailAddress, UserRole userRole) {
+  private Specification<User> buildSpec(String name, boolean active, UserRole userRole) {
     List<Specification<User>> specs = new ArrayList<>();
     if (!StringUtils.isEmpty(name)) {
       String searchString = "%" + name.toUpperCase() + "%";
@@ -84,9 +83,7 @@ public class UserService {
     if (userRole != null) {
       specs.add((user, cq, cb) -> cb.equal(user.get("userRole"), userRole));
     }
-    if (active != null) {
-      specs.add((user, cq, cb) -> cb.equal(user.get("active"), active));
-    }
+    specs.add((user, cq, cb) -> cb.equal(user.get("active"), active));
 
     Specification<User> resultSpec = Specification.where(null);
     for (Specification<User> spec : specs) {

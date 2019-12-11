@@ -4,11 +4,15 @@ import be.beanleaf.datatable.DataTable;
 import be.beanleaf.datatable.DataTableColumn;
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.dto.UserDto;
+import be.beanleaf.vim.app.services.VimMailService;
 import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.services.UserService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -36,11 +40,14 @@ public class UserController extends VimController {
   private static final String URL_INACTIVATE_USER = "/admin/users/inactivate";
 
   private final UserService userService;
+  private final VimMailService vimMailService;
 
   @Autowired
-  public UserController(VimSession vimSession, UserService userService) {
+  public UserController(VimSession vimSession, UserService userService,
+      VimMailService vimMailService) {
     super(vimSession);
     this.userService = userService;
+    this.vimMailService = vimMailService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -79,7 +86,7 @@ public class UserController extends VimController {
 
   @PostMapping(URL_NEW_USER)
   public String newUserPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult,
-      Model model, RedirectAttributes redirectAttributes) {
+      Model model, RedirectAttributes redirectAttributes) throws MessagingException {
     model.addAttribute(userDto);
     if (bindingResult.hasErrors()) {
       return VIEW_EDIT_USER;
@@ -90,7 +97,10 @@ public class UserController extends VimController {
     );
     userService.save(user);
     if (userDto.isNotifyMail()) {
-      //TODO: send welcome email
+      Map<String, Object> mailVariables = new HashMap<>();
+      mailVariables.put("newUser", user);
+      vimMailService.sendMail("mails/welcomeMail", getLocaleString("mail.welcome.subject"),
+          user.getEmailAddress(), mailVariables);
     }
     redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
         "notifications.users.newUserSuccess", true));

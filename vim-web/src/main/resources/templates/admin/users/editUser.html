@@ -16,7 +16,8 @@
     </div>
   </div>
 
-  <form id="userForm" method="post" th:action="@{${frmAction}}" th:object="${userDto}">
+  <form autocomplete="off" id="userForm" method="post" th:action="@{${frmAction}}"
+        th:object="${userDto}">
     <input id="userId" th:if="${originalUser != null}" th:value="${originalUser.getId()}"
            type="hidden">
     <dl class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'errored'">

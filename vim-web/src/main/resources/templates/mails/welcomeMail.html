@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/mail :: mailHtmlHead"></head>
+<body>
+<div class="container">
+  <div class="header" th:replace="fragments/mail :: mailHeader"></div>
+  <!--/*@thymesVar id="newUser" type="be.beanleaf.vim.domain.entities.User"*/-->
+  <div class="body">
+    <p th:text="#{mail.salutation(${newUser.getShortName()})}"></p>
+    <p th:utext="#{mail.welcome.body}">
+    </p>
+    <ul>
+      <li>
+        <span th:text="#{user.username}"></span>:
+        <b><span th:text="${newUser.getUsername()}"></span></b>
+      </li>
+      <li>
+        <span th:text="#{websiteUrl}"></span>:
+        <a href="#">http://somwhereOnlyWeKnow.be</a>
+      </li>
+    </ul>
+  </div>
+  <div class="footer" th:replace="fragments/mail :: mailFooter"></div>
+</div>
+</body>
+</html>

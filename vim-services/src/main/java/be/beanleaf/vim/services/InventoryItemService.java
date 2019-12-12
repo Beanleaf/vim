@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 @Service
 public class InventoryItemService {
@@ -80,9 +79,8 @@ public class InventoryItemService {
     if (status != null) {
       specs.add((item, cq, cb) -> cb.equal(item.get("currentStatus"), status));
     }
-    if (CollectionUtils.isEmpty(specs)) {
-      return null;
-    }
+
+    specs.add((item, cq, cb) -> cb.equal(item.get("isDeleted"), false));
     Specification<InventoryItem> resultSpec = Specification.where(null);
     for (Specification<InventoryItem> spec : specs) {
       if (resultSpec != null) {
@@ -102,6 +100,7 @@ public class InventoryItemService {
     item.setAddedByUser(user);
     item.setCurrentStatus(ItemStatus.AVAILABLE);
     item.setBrand(brand);
+    item.setDeleted(false);
     return item;
   }
 
@@ -121,6 +120,7 @@ public class InventoryItemService {
     List<InventoryLog> logs = inventoryLogService.findForItem(inventoryitem, Pageable.unpaged());
     if (!logs.isEmpty()) {
       inventoryitem.setActive(false);
+      inventoryitem.setDeleted(true);
     } else {
       inventoryitemRepository.delete(inventoryitem);
     }

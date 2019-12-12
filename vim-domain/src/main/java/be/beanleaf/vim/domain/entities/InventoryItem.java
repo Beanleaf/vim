@@ -29,6 +29,7 @@ public class InventoryItem {
   @Column(length = 100)
   private String brand;
   private Double value;
+  private boolean isDeleted;
 
   public InventoryItem() {
   }
@@ -103,5 +104,13 @@ public class InventoryItem {
 
   public void setValue(Double value) {
     this.value = value;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }

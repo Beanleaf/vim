@@ -11,6 +11,9 @@ $(".js-box-open").click(function () {
   const boxId = $(this).attr('data-box-id');
   $("#" + boxId).show();
 });
+$("#deleteTrigger").click(function () {
+  $("#deleteConfirm").show();
+});
 
 $(document).on("click", ".disabled", function (e) {
   e.preventDefault();

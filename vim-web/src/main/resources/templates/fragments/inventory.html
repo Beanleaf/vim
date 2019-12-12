@@ -97,6 +97,17 @@
       </button>
       <a class="btn btn-invisible float-left" th:href="@{/admin/inventory}"
          th:text="#{form.cancel}">form.cancel</a>
+      <button class="btn btn-danger float-right" id="deleteTrigger" th:if="${originalItem}"
+              th:text="#{inventory.item.delete}"
+              type="button">
+      </button>
+    </div>
+    <div class="flash flash-error hidden mt-3" id="deleteConfirm" th:if="${originalItem}">
+      <a class="btn btn-sm primary btn-danger flash-action"
+         th:href="@{/admin/inventory/delete/{id}(id=${originalItem.getId()})}"
+         th:text="#{inventory.item.delete}"
+      ></a>
+      <span th:text="#{inventory.item.deleteConfirm}"></span>
     </div>
   </form>
 </div>

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class InventoryItemService {
@@ -118,12 +119,10 @@ public class InventoryItemService {
   @Transactional
   public void delete(InventoryItem inventoryitem) {
     List<InventoryLog> logs = inventoryLogService.findForItem(inventoryitem, Pageable.unpaged());
-    if (!logs.isEmpty()) {
-      inventoryitem.setActive(false);
-      inventoryitem.setDeleted(true);
-    } else {
-      inventoryitemRepository.delete(inventoryitem);
+    if (!CollectionUtils.isEmpty(logs)) {
+      inventoryLogService.deleteLogs(logs);
     }
+    inventoryitemRepository.delete(inventoryitem);
   }
 
   @Transactional

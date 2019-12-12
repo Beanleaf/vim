@@ -84,7 +84,6 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     store(item);
     createAndStore(InventoryLogFixture.newInventoryLog(item, user));
     inventoryItemService.delete(item);
-    assertThat(item.isActive()).isFalse();
 
     InventoryItem item2 = createAndStore(InventoryItemFixture.newInventoryItem("uuid2", category, user));
     inventoryItemService.delete(item2);

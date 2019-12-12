@@ -77,4 +77,9 @@ public class InventoryLogService {
   public List<InventoryLog> findAllLogsForUser(User user) {
     return inventoryLogRepository.findAllByUser(user, Pageable.unpaged());
   }
+
+  @Transactional
+  public void deleteLogs(List<InventoryLog> logs) {
+    inventoryLogRepository.deleteAll(logs);
+  }
 }

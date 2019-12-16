@@ -1,0 +1,14 @@
+<div class="dialog Box anim-fade-in fast box-shadow-large closable"
+     xmlns:th="http://www.thymeleaf.org">
+  <div class="Box-header d-flex flex-justify-between">
+    <div>
+      <h3 class="Box-title">QR Code</h3>
+    </div>
+    <button class="Box-btn-octicon btn-octicon js-box-close">
+      <i class="octicon octicon-x"></i>
+    </button>
+  </div>
+  <div class="Box-body text-center">
+    <img alt="QR Code" th:src="${qrPngSrc}"/>
+  </div>
+</div>

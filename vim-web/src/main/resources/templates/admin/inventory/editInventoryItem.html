@@ -9,11 +9,19 @@
   <div class="Subhead pb-1 my-2">
     <!--/*@thymesVar id="originalItem" type="be.beanleaf.vim.domain.entities.InventoryItem"*/-->
     <div class="Subhead-heading" th:text="#{inventory.editItem}"></div>
+    <div class="Subhead-actions">
+      <button class="btn btn-sm btn-blue openBoxForm"
+              th:attr="data-url=${'/admin/qrCode?id=' + originalItem.getId() + '&width=150&height=150'}">
+        <i class="octicon octicon-circuit-board"></i>
+        Generate QR code
+      </button>
+    </div>
     <div class="Subhead-description" th:text="${originalItem.getDescription()}">
       originalItem.getDescription
     </div>
-  </div>
 
+  </div>
+  <div id="boxForm"></div>
   <div th:replace="fragments/inventory :: inventoryItemForm"></div>
 </div>
 </body>

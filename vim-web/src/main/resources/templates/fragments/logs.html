@@ -44,7 +44,7 @@
             <span class="col-6" th:text="${item.getItemCategory().getDescription()}"></span>
             <div class="col-6 pr-2"
                  th:if="${log.getInventoryDirection().equals(InventoryDirection.IN)}">
-              <button class="btn-octicon btn-octicon-danger float-right reportDefect"
+              <button class="btn-octicon btn-octicon-danger float-right openBoxForm"
                       th:data-url="${defectUrl + '/' + log.getId()}"
                       th:unless="${item.getCurrentStatus().equals(ItemStatus.DEFECT)}">
                 <i class="octicon octicon-comment"></i>
@@ -56,6 +56,6 @@
     </div>
   </div>
 
-  <div id="boxDefectForm"></div>
+  <div id="boxForm"></div>
 </div>
 </html>

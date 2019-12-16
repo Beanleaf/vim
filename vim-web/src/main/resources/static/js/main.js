@@ -35,9 +35,9 @@ $(document).keyup(function (e) {
   }
 });
 
-$('.reportDefect').click(function () {
+$('.openBoxForm').click(function () {
   const url = $(this).attr("data-url");
-  loadAndOpen(url, $("#boxDefectForm"));
+  loadAndOpen(url, $("#boxForm"));
 });
 
 $("input[data-type='currency']").on({

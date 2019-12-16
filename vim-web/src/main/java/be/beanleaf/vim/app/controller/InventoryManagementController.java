@@ -13,6 +13,7 @@ import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.services.InventoryItemService;
 import be.beanleaf.vim.services.ItemCategoryService;
+import be.beanleaf.vim.services.QrService;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -41,14 +42,18 @@ public class InventoryManagementController extends VimController {
   private static final String VIEW_OVERVIEW = "/admin/inventory/overview";
   private static final String URL_OVERVIEW = "/admin/inventory";
   private static final String URL_DELETE_ITEM = "/admin/inventory/delete";
+  private static final String URL_QR = "/admin/qrCode";
+  private static final String VIEW_QR = "/admin/inventory/qrCode";
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
+  private final QrService qrService;
 
   @Autowired
-  public InventoryManagementController(VimSession vimSession,
+  public InventoryManagementController(VimSession vimSession, QrService qrService,
       InventoryItemService inventoryItemService, ItemCategoryService itemCategoryService) {
     super(vimSession);
+    this.qrService = qrService;
     this.inventoryItemService = inventoryItemService;
     this.itemCategoryService = itemCategoryService;
   }
@@ -187,6 +192,14 @@ public class InventoryManagementController extends VimController {
         new ToastMessage(MessageType.SUCCESS, "notifications.inventory.newItemSuccess",
             true));
     return redirect(URL_OVERVIEW);
+  }
+
+  @GetMapping(URL_QR)
+  public String getQrString(@RequestParam("id") long id,
+      @RequestParam("width") int width, @RequestParam("height") int height, Model model) {
+    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    model.addAttribute("qrPngSrc", qrService.getQrPngSrc(inventoryItem.getUuid(), width, height));
+    return VIEW_QR;
   }
 
 }

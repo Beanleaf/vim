@@ -65,9 +65,12 @@ public class InventoryManagementController extends VimController {
   }
 
   @GetMapping(URL_OVERVIEW)
-  public String inventory(@RequestParam(required = false) Integer page,
-      @RequestParam(required = false) Long cat, @RequestParam(required = false) Integer status,
-      @RequestParam(required = false) String q, Model model) {
+  public String inventory(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Long cat,
+      @RequestParam(required = false) Integer status,
+      @RequestParam(required = false) String q,
+      Model model) {
     ItemCategory itemCategory =
         cat != null ? itemCategoryService.getItemCategory(cat) : null;
     ItemStatus itemStatus = status != null ? ItemStatus.forId(status) : null;
@@ -129,7 +132,9 @@ public class InventoryManagementController extends VimController {
   }
 
   @GetMapping(URL_DELETE_ITEM + "/{id}")
-  public String deleteInventoryItem(@PathVariable long id, RedirectAttributes redirectAttributes) {
+  public String deleteInventoryItem(
+      @PathVariable long id,
+      RedirectAttributes redirectAttributes) {
     InventoryItem item = inventoryItemService.getInventoryItem(id);
     inventoryItemService.delete(item);
     redirectAttributes.addFlashAttribute(
@@ -144,7 +149,9 @@ public class InventoryManagementController extends VimController {
   }
 
   @GetMapping(URL_EDIT_ITEM + "/{id}")
-  public String inventoryItemEdit(@PathVariable long id, Model model) {
+  public String inventoryItemEdit(
+      @PathVariable long id,
+      Model model) {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
     setupItemForm(model, new InventoryItemDto(
@@ -157,8 +164,11 @@ public class InventoryManagementController extends VimController {
   }
 
   @PostMapping(URL_EDIT_ITEM + "/{id}")
-  public String inventoryItemEditPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
-      BindingResult bindingResult, @PathVariable long id, Model model,
+  public String inventoryItemEditPost(
+      @Valid @ModelAttribute InventoryItemDto inventoryItemDto,
+      BindingResult bindingResult,
+      @PathVariable long id,
+      Model model,
       RedirectAttributes redirectAttributes) throws ParseException {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
     model.addAttribute("originalItem", inventoryItem);
@@ -184,8 +194,11 @@ public class InventoryManagementController extends VimController {
   }
 
   @PostMapping(URL_NEW_ITEM)
-  public String inventoryItemNewPost(@Valid @ModelAttribute InventoryItemDto inventoryItemDto,
-      BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+  public String inventoryItemNewPost(
+      @Valid @ModelAttribute InventoryItemDto inventoryItemDto,
+      BindingResult bindingResult,
+      Model model,
+      RedirectAttributes redirectAttributes) {
     setupItemForm(model, inventoryItemDto, URL_NEW_ITEM);
     if (bindingResult.hasErrors()) {
       return VIEW_NEW_ITEM;

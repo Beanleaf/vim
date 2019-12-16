@@ -70,7 +70,9 @@ public class InventoryController extends VimController {
   }
 
   @PostMapping(URL_IN)
-  public String scanInPost(@RequestParam(value = "itemUuid") String itemUuid, Model model) {
+  public String scanInPost(
+      @RequestParam(value = "itemUuid") String itemUuid,
+      Model model) {
     InventoryItem inventoryItem = inventoryItemService.findByUuidOrId(itemUuid.replace("#", ""));
     if (inventoryItem == null || !inventoryItem.isActive()) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
@@ -97,7 +99,9 @@ public class InventoryController extends VimController {
   }
 
   @PostMapping(URL_OUT)
-  public String scanOutPost(@RequestParam(value = "itemUuid") String itemUuid, Model model) {
+  public String scanOutPost(
+      @RequestParam(value = "itemUuid") String itemUuid,
+      Model model) {
     InventoryItem inventoryItem = inventoryItemService.findByUuidOrId(itemUuid.replace("#", ""));
     if (inventoryItem == null || !inventoryItem.isActive()) {
       model.addAttribute("frmFeedback", FeedbackUtils.createMessage(
@@ -118,7 +122,9 @@ public class InventoryController extends VimController {
   }
 
   @GetMapping(URL_DEFECT + "/{id}")
-  public String getDefectForm(@PathVariable long id, Model model) {
+  public String getDefectForm(
+      @PathVariable long id,
+      Model model) {
     model.addAttribute("inventoryLog", inventoryLogService.getInventoryLog(id));
     model.addAttribute("defectDto", new DefectDto());
     model.addAttribute("frmAction", URL_DEFECT + "/" + id);
@@ -126,7 +132,9 @@ public class InventoryController extends VimController {
   }
 
   @PostMapping(URL_DEFECT + "/{id}")
-  public String defectForm(@ModelAttribute DefectDto dto, @PathVariable long id,
+  public String defectForm(
+      @ModelAttribute DefectDto dto,
+      @PathVariable long id,
       RedirectAttributes redirectAttributes) {
     InventoryLog log = inventoryLogService.getInventoryLog(id);
     inventoryLogService.logDefect(log, dto.getComment());

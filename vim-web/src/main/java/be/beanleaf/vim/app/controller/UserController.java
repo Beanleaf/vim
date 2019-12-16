@@ -51,8 +51,10 @@ public class UserController extends VimController {
   }
 
   @GetMapping(URL_OVERVIEW)
-  public String users(@RequestParam(required = false) Integer page,
-      @RequestParam(required = false) boolean inactive, @RequestParam(required = false) String q,
+  public String users(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) boolean inactive,
+      @RequestParam(required = false) String q,
       Model model) {
     DataTable<User> table = new DataTable<User>(page, 15) {
       @Override
@@ -87,8 +89,11 @@ public class UserController extends VimController {
   }
 
   @PostMapping(URL_NEW_USER)
-  public String newUserPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult,
-      Model model, RedirectAttributes redirectAttributes) throws MessagingException {
+  public String newUserPost(
+      @Valid @ModelAttribute UserDto userDto,
+      BindingResult bindingResult,
+      Model model,
+      RedirectAttributes redirectAttributes) throws MessagingException {
     model.addAttribute(userDto);
     if (bindingResult.hasErrors()) {
       return VIEW_EDIT_USER;
@@ -110,7 +115,9 @@ public class UserController extends VimController {
   }
 
   @GetMapping(URL_DELETE_USER + "/{id}")
-  public String deleteUser(@PathVariable long id, RedirectAttributes redirectAttributes) {
+  public String deleteUser(
+      @PathVariable long id,
+      RedirectAttributes redirectAttributes) {
     User user = userService.getUser(id);
     userService.delete(user);
     redirectAttributes.addFlashAttribute(
@@ -119,7 +126,9 @@ public class UserController extends VimController {
   }
 
   @GetMapping(URL_INACTIVATE_USER + "/{id}")
-  public String inactivateUser(@PathVariable long id, RedirectAttributes redirectAttributes) {
+  public String inactivateUser(
+      @PathVariable long id,
+      RedirectAttributes redirectAttributes) {
     User user = userService.getUser(id);
     userService.deactivateUser(user);
     redirectAttributes.addFlashAttribute(
@@ -128,7 +137,9 @@ public class UserController extends VimController {
   }
 
   @GetMapping(URL_EDIT_USER + "/{id}")
-  public String editUser(@PathVariable long id, Model model) {
+  public String editUser(
+      @PathVariable long id,
+      Model model) {
     User user = userService.getUser(id);
     model.addAttribute("isDeletable", userService.isDeletable(user));
     model.addAttribute("originalUser", user);
@@ -140,8 +151,12 @@ public class UserController extends VimController {
   }
 
   @PostMapping(URL_EDIT_USER + "/{id}")
-  public String editUserPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult,
-      @PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
+  public String editUserPost(
+      @Valid @ModelAttribute UserDto userDto,
+      BindingResult bindingResult,
+      @PathVariable long id,
+      Model model,
+      RedirectAttributes redirectAttributes) {
     User user = userService.getUser(id);
     model.addAttribute("originalUser", user);
     model.addAttribute(userDto);
@@ -166,7 +181,8 @@ public class UserController extends VimController {
 
   @GetMapping(value = "admin/user/usernameCheck")
   public @ResponseBody
-  boolean ajaxCheckUsernameAvailability(@RequestParam("toCheck") String username,
+  boolean ajaxCheckUsernameAvailability(
+      @RequestParam("toCheck") String username,
       @RequestParam(value = "id", required = false) Long id) {
     User originalUser = id != null ? userService.getUser(id) : null;
     User userByUsername = userService.getUserByUsername(username);
@@ -175,7 +191,8 @@ public class UserController extends VimController {
 
   @GetMapping(value = "admin/user/emailCheck")
   public @ResponseBody
-  boolean ajaxCheckEmailAvailability(@RequestParam("toCheck") String email,
+  boolean ajaxCheckEmailAvailability(
+      @RequestParam("toCheck") String email,
       @RequestParam(value = "id", required = false) Long id) {
     User originalUser = id != null ? userService.getUser(id) : null;
     User userByEmailAddress = userService.findUserByEmailAddress(email);

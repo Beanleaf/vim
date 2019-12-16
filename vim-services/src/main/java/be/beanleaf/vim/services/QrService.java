@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QrService {
 
-  byte[] generateQr(String input, String imageType, int width, int height) {
+  public byte[] generateQr(String input, String imageType, int width, int height) {
     if (StringUtils.isEmpty(input)) {
       throw new IllegalArgumentException("The input while generating the QR code was not set.");
     }

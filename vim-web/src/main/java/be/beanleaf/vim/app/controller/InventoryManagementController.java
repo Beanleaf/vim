@@ -21,6 +21,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +49,7 @@ public class InventoryManagementController extends VimController {
   private static final String URL_DELETE_ITEM = "/admin/inventory/delete";
   private static final String URL_QR = "/admin/qrCode";
   private static final String VIEW_QR = "/admin/inventory/qrCode";
+  private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
 
   private final InventoryItemService inventoryItemService;
   private final ItemCategoryService itemCategoryService;
@@ -195,11 +201,32 @@ public class InventoryManagementController extends VimController {
   }
 
   @GetMapping(URL_QR)
-  public String getQrString(@RequestParam("id") long id,
-      @RequestParam("width") int width, @RequestParam("height") int height, Model model) {
+  public String getQrString(
+      @RequestParam("id") long id,
+      @RequestParam("width") int width,
+      @RequestParam("height") int height,
+      Model model) {
     InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    model.addAttribute("itemId", id);
     model.addAttribute("qrPngSrc", qrService.getQrPngSrc(inventoryItem.getUuid(), width, height));
     return VIEW_QR;
+  }
+
+  @GetMapping(URL_QR_DOWNLOAD)
+  public ResponseEntity<byte[]> getQrDownloadEntity(
+      @RequestParam("id") long id,
+      @RequestParam("width") int width,
+      @RequestParam("height") int height
+  ) {
+    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    byte[] imageSrc = qrService.generateQr(inventoryItem.getUuid(), "png", width, height);
+    String filename =
+        "qr_" + inventoryItemService.getShortCode(inventoryItem).toLowerCase() + ".png";
+    HttpHeaders headers = new HttpHeaders();
+    headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+    headers
+        .setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
+    return new ResponseEntity<>(imageSrc, headers, HttpStatus.OK);
   }
 
 }

@@ -85,9 +85,19 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     createAndStore(InventoryLogFixture.newInventoryLog(item, user));
     inventoryItemService.delete(item);
 
-    InventoryItem item2 = createAndStore(InventoryItemFixture.newInventoryItem("uuid2", category, user));
+    InventoryItem item2 = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid2", category, user));
     inventoryItemService.delete(item2);
     assertThat(inventoryItemService.findByUuid("uuid2")).isNull();
+  }
+
+  @Test
+  void getShortCode() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", itemCategory, user);
+    item.setDescription("Description");
+    assertThat(inventoryItemService.getShortCode(item)).isEqualTo("CODE_DESCR");
   }
 
 }

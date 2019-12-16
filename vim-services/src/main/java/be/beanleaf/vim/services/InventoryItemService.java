@@ -140,4 +140,12 @@ public class InventoryItemService {
   void save(InventoryItem inventoryItem) {
     inventoryitemRepository.save(inventoryItem);
   }
+
+  public String getShortCode(InventoryItem inventoryItem) {
+    return StringUtils.join(
+        inventoryItem.getItemCategory().getShortCode().toUpperCase(),
+        "_",
+        inventoryItem.getDescription().toUpperCase().substring(0, 5)
+    );
+  }
 }

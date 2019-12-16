@@ -2,13 +2,18 @@
      xmlns:th="http://www.thymeleaf.org">
   <div class="Box-header d-flex flex-justify-between">
     <div>
-      <h3 class="Box-title">QR Code</h3>
+      <h3 class="Box-title" th:text="#{qrCode}">QR Code</h3>
     </div>
     <button class="Box-btn-octicon btn-octicon js-box-close">
       <i class="octicon octicon-x"></i>
     </button>
   </div>
   <div class="Box-body text-center">
-    <img alt="QR Code" th:src="${qrPngSrc}"/>
+    <p><img alt="QR Code" th:src="${qrPngSrc}"/></p>
+    <a target="_blank"
+       th:href="@{/admin/downloadQr(id=${itemId},width=200,height=200)}"
+       th:text="#{qrCode.download}"
+    >
+    </a>
   </div>
 </div>

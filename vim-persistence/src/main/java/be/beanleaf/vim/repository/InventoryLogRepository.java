@@ -19,4 +19,6 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
       User user, Date startDate, Date endDate, InventoryDirection direction);
 
   List<InventoryLog> findAllByUser(User user, Pageable pageable);
+
+  long countAllByInventoryItem(InventoryItem item);
 }

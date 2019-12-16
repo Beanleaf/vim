@@ -82,4 +82,9 @@ public class InventoryLogService {
   public void deleteLogs(List<InventoryLog> logs) {
     inventoryLogRepository.deleteAll(logs);
   }
+
+  @Transactional(readOnly = true)
+  public long countLogs(InventoryItem inventoryItem) {
+    return inventoryLogRepository.countAllByInventoryItem(inventoryItem);
+  }
 }

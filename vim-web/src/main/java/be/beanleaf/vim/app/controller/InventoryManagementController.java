@@ -10,8 +10,10 @@ import be.beanleaf.vim.app.utils.SelectFilter;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
+import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.services.InventoryItemService;
+import be.beanleaf.vim.services.InventoryLogService;
 import be.beanleaf.vim.services.ItemCategoryService;
 import be.beanleaf.vim.services.QrService;
 import java.text.ParseException;
@@ -50,17 +52,22 @@ public class InventoryManagementController extends VimController {
   private static final String URL_QR = "/admin/qrCode";
   private static final String VIEW_QR = "/admin/inventory/qrCode";
   private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
+  private static final String URL_HISTORY = "/admin/inventory/history";
+  private static final String VIEW_HISTORY = "/admin/inventory/history";
 
   private final InventoryItemService inventoryItemService;
+  private final InventoryLogService inventoryLogService;
   private final ItemCategoryService itemCategoryService;
   private final QrService qrService;
 
   @Autowired
   public InventoryManagementController(VimSession vimSession, QrService qrService,
-      InventoryItemService inventoryItemService, ItemCategoryService itemCategoryService) {
+      InventoryItemService inventoryItemService, InventoryLogService inventoryLogService,
+      ItemCategoryService itemCategoryService) {
     super(vimSession);
     this.qrService = qrService;
     this.inventoryItemService = inventoryItemService;
+    this.inventoryLogService = inventoryLogService;
     this.itemCategoryService = itemCategoryService;
   }
 
@@ -240,6 +247,37 @@ public class InventoryManagementController extends VimController {
     headers
         .setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
     return new ResponseEntity<>(imageSrc, headers, HttpStatus.OK);
+  }
+
+  @GetMapping(URL_HISTORY + "/{id}")
+  public String getHistory(
+      @PathVariable long id,
+      @RequestParam(required = false) Integer page,
+      Model model
+  ) {
+    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+    model.addAttribute("inventoryItem", inventoryItem);
+    DataTable<InventoryLog> dataTable = new DataTable<InventoryLog>(page, 15) {
+      @Override
+      public long getCount() {
+        return inventoryLogService.countLogs(inventoryItem);
+      }
+
+      @Override
+      public List<InventoryLog> getData() {
+        PageRequest page = PageRequest
+            .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
+        return inventoryLogService.findForItem(inventoryItem, page);
+      }
+
+      @Override
+      public List<DataTableColumn<InventoryLog>> getColumns() {
+        return null;
+      }
+    };
+
+    model.addAttribute("dataTable", dataTable);
+    return VIEW_HISTORY;
   }
 
 }

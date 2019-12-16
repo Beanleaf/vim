@@ -11,9 +11,8 @@
     <div class="Subhead-heading" th:text="#{inventory.editItem}"></div>
     <div class="Subhead-actions">
       <button class="btn btn-sm btn-blue openBoxForm"
-              th:attr="data-url=${'/admin/qrCode?id=' + originalItem.getId() + '&width=150&height=150'}">
-        <i class="octicon octicon-circuit-board"></i>
-        Generate QR code
+              th:attr="data-url=${'/admin/qrCode?id=' + originalItem.getId() + '&width=150&height=150'}"
+              th:text="#{qrCode}">
       </button>
     </div>
     <div class="Subhead-description" th:text="${originalItem.getDescription()}">

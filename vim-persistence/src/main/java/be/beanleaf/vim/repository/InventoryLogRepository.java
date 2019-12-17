@@ -21,4 +21,6 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
   List<InventoryLog> findAllByUser(User user, Pageable pageable);
 
   long countAllByInventoryItem(InventoryItem item);
+
+  long countAllByUser(User user);
 }

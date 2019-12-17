@@ -12,10 +12,12 @@ import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
+import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.services.InventoryItemService;
 import be.beanleaf.vim.services.InventoryLogService;
 import be.beanleaf.vim.services.ItemCategoryService;
 import be.beanleaf.vim.services.QrService;
+import be.beanleaf.vim.services.UserService;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -59,16 +61,18 @@ public class InventoryManagementController extends VimController {
   private final InventoryLogService inventoryLogService;
   private final ItemCategoryService itemCategoryService;
   private final QrService qrService;
+  private final UserService userService;
 
   @Autowired
   public InventoryManagementController(VimSession vimSession, QrService qrService,
       InventoryItemService inventoryItemService, InventoryLogService inventoryLogService,
-      ItemCategoryService itemCategoryService) {
+      ItemCategoryService itemCategoryService, UserService userService) {
     super(vimSession);
     this.qrService = qrService;
     this.inventoryItemService = inventoryItemService;
     this.inventoryLogService = inventoryLogService;
     this.itemCategoryService = itemCategoryService;
+    this.userService = userService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -249,25 +253,36 @@ public class InventoryManagementController extends VimController {
     return new ResponseEntity<>(imageSrc, headers, HttpStatus.OK);
   }
 
-  @GetMapping(URL_HISTORY + "/{id}")
+  @GetMapping(URL_HISTORY + "/{type}/{id}")
   public String getHistory(
+      @PathVariable String type,
       @PathVariable long id,
       @RequestParam(required = false) Integer page,
       Model model
   ) {
-    InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
-    model.addAttribute("inventoryItem", inventoryItem);
+    final boolean isItemHistory = type.equalsIgnoreCase("item");
+    if (isItemHistory) {
+      InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
+      model.addAttribute("historyItem", inventoryItem.getDescription());
+    } else {
+      User user = userService.getUser(id);
+      model.addAttribute("historyItem", user.getShortName());
+    }
     DataTable<InventoryLog> dataTable = new DataTable<InventoryLog>(page, 15) {
       @Override
       public long getCount() {
-        return inventoryLogService.countLogs(inventoryItem);
+        return isItemHistory
+            ? inventoryLogService.countLogs(inventoryItemService.getInventoryItem(id))
+            : inventoryLogService.countLogs(userService.getUser(id));
       }
 
       @Override
       public List<InventoryLog> getData() {
         PageRequest page = PageRequest
             .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
-        return inventoryLogService.findForItem(inventoryItem, page);
+        return isItemHistory
+            ? inventoryLogService.findForItem(inventoryItemService.getInventoryItem(id), page)
+            : inventoryLogService.findAllLogsForUser(userService.getUser(id));
       }
 
       @Override

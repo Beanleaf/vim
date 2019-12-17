@@ -19,7 +19,7 @@
 
   <div class="Box">
     <div class="Box-header d-flex flex-justify-between">
-      <b th:text="${inventoryItem.getDescription()}"></b>
+      <b th:text="${historyItem}"></b>
     </div>
     <!--/*@thymesVar id="dataTable" type="be.beanleaf.datatable.DataTable<be.beanleaf.vim.domain.entities.InventoryLog>"*/-->
     <div class="tableRows" th:with="tableData=${dataTable.getData()}">
@@ -32,7 +32,6 @@
         <div th:each="log: ${tableData}"
              th:if="${tableData.size() > 0}"
              th:with="InventoryDirection=${T(be.beanleaf.vim.domain.InventoryDirection)}">
-          <div class="TimelineItem-break ml-0" th:if="${log.isDefect()}"></div>
           <div class="TimelineItem">
             <div class="TimelineItem-badge text-white"
                  th:classappend="${log.getInventoryDirection().equals(InventoryDirection.IN) ? 'bg-green' : 'bg-orange-5'}"

@@ -105,8 +105,14 @@
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
             <span class="col-6"
                   th:text="#{user.role.__${dataObject.getUserRole().name()}__}"></span>
-            <div class="col-6 pr-2" th:if="${dataObject.isActive()}">
+            <div class="col-6 pr-2">
+              <a
+                  class="btn-octicon float-right muted-link"
+                  th:href="@{/admin/inventory/history/user/{id}(id=${dataObject.getId()})}">
+                <i class="octicon octicon-history"></i>
+              </a>
               <a class="btn-octicon btn-octicon-danger float-right muted-link tooltipped tooltipped-n"
+                 th:if="${dataObject.isActive()}"
                  th:attr="aria-label=#{user.inactivate}"
                  th:href="@{/admin/users/inactivate/{id}(id=${dataObject.getId()})}">
                 <i class="octicon octicon-circle-slash"></i>

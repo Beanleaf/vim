@@ -89,4 +89,9 @@ public class InventoryLogService {
   public long countLogs(InventoryItem inventoryItem) {
     return inventoryLogRepository.countAllByInventoryItem(inventoryItem);
   }
+
+  @Transactional(readOnly = true)
+  public long countLogs(User user) {
+    return inventoryLogRepository.countAllByUser(user);
+  }
 }

@@ -116,7 +116,7 @@
             <span class="col-6" th:text="${dataObject.getItemCategory().getDescription()}"></span>
             <div class="col-6 pr-2">
               <a class="btn-octicon float-right"
-                 th:href="@{/admin/inventory/history/{id}(id=${dataObject.getId()})}">
+                 th:href="@{/admin/inventory/history/item/{id}(id=${dataObject.getId()})}">
                 <i class="octicon octicon-history"></i>
               </a>
             </div>

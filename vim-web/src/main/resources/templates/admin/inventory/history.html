@@ -32,6 +32,7 @@
         <div th:each="log: ${tableData}"
              th:if="${tableData.size() > 0}"
              th:with="InventoryDirection=${T(be.beanleaf.vim.domain.InventoryDirection)}">
+          <div class="TimelineItem-break ml-0" th:if="${log.isDefect()}"></div>
           <div class="TimelineItem">
             <div class="TimelineItem-badge text-white"
                  th:classappend="${log.getInventoryDirection().equals(InventoryDirection.IN) ? 'bg-green' : 'bg-orange-5'}"
@@ -43,9 +44,11 @@
                  th:with="user=${log.getUser()},item=${log.getInventoryItem()}">
               <span
                   th:utext="#{inventory.history.in(${user.getShortName()},${item.getDescription()},${#dates.format(log.getTimestamp(), 'dd/MM/YYYY, HH:mm')})}"></span>
+              <span class="Label Label--orange"
+                    th:if="${log.isDefect()}"
+                    th:text="#{inventory.item.status.defect}"></span>
             </div>
           </div>
-          <div class="TimelineItem-break ml-0" th:if="!${#strings.isEmpty(log.comment)}"></div>
         </div>
       </div>
     </div>

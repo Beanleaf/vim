@@ -48,6 +48,7 @@ public class InventoryLogService {
     log.setInventoryDirection(direction);
     log.setUser(user);
     log.setTimestamp(new Date());
+    log.setDefect(false);
     inventoryItem.setCurrentStatus(status);
     return inventoryLogRepository.save(log);
   }
@@ -69,6 +70,7 @@ public class InventoryLogService {
 
   @Transactional
   public void logDefect(InventoryLog log, String comment) {
+    log.setDefect(true);
     log.setComment(comment);
     log.getInventoryItem().setCurrentStatus(ItemStatus.DEFECT);
   }

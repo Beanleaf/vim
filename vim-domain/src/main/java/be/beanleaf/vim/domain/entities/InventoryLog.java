@@ -26,6 +26,7 @@ public class InventoryLog {
   @Column(nullable = false)
   private InventoryDirection inventoryDirection;
   private String comment;
+  private boolean defect;
 
   public InventoryLog() {
   }
@@ -76,5 +77,13 @@ public class InventoryLog {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+  public boolean isDefect() {
+    return defect;
+  }
+
+  public void setDefect(boolean defect) {
+    this.defect = defect;
   }
 }

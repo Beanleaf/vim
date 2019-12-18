@@ -6,6 +6,7 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryitemRepository;
+import be.beanleaf.vim.utils.SpecificationUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -82,13 +83,7 @@ public class InventoryItemService {
     }
 
     specs.add((item, cq, cb) -> cb.equal(item.get("isDeleted"), false));
-    Specification<InventoryItem> resultSpec = Specification.where(null);
-    for (Specification<InventoryItem> spec : specs) {
-      if (resultSpec != null) {
-        resultSpec = resultSpec.and(spec);
-      }
-    }
-    return resultSpec;
+    return SpecificationUtils.combineAnd(specs);
   }
 
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,

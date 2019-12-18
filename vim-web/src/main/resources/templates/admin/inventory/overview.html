@@ -11,6 +11,12 @@
 
   <div class="Subhead pb-1 my-2">
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
+    <div class="Subhead-actions">
+      <a class="btn btn-sm"
+         th:href="@{/admin/inventory/history}"
+         th:text="#{inventory.history}">
+      </a>
+    </div>
     <div class="Subhead-description" th:text="#{inventory.allItems.description}">
       inventory.allItems.description
     </div>

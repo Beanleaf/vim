@@ -6,12 +6,17 @@ import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryLogRepository;
+import be.beanleaf.vim.utils.SpecificationUtils;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.criteria.Join;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,5 +98,54 @@ public class InventoryLogService {
   @Transactional(readOnly = true)
   public long countLogs(User user) {
     return inventoryLogRepository.countAllByUser(user);
+  }
+
+  @Transactional(readOnly = true)
+  public long countLogs(String search, Date from, Date to) {
+    return inventoryLogRepository.count(buildSearchSpecification(search, from, to));
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryLog> searchLogs(String search, Date from, Date to, Pageable page) {
+    return inventoryLogRepository.findAll(buildSearchSpecification(search, from, to), page)
+        .getContent();
+  }
+
+  private Specification<InventoryLog> buildSearchSpecification(String search, Date from, Date to) {
+    List<Specification<InventoryLog>> specs = new ArrayList<>();
+    if (!StringUtils.isEmpty(search)) {
+      String upperCased = search.toUpperCase();
+      specs.add(Specification.where(
+          (root, query, builder) -> {
+            final Join<InventoryLog, User> users = root.join("user");
+            final Join<InventoryLog, InventoryItem> items = root.join("inventoryItem");
+            return builder.or(
+                builder.like(builder.upper(users.get("firstName")), upperCased),
+                builder.like(builder.upper(users.get("lastName")), upperCased),
+                builder.like(builder.upper(items.get("description")), upperCased)
+            );
+          }));
+    }
+
+    if (from != null) {
+      specs.add(Specification.where(
+          (root, query, builder) -> builder.greaterThanOrEqualTo(root.get("timestamp"), from)));
+    }
+    if (to != null) {
+      specs.add(Specification.where(
+          (root, query, builder) -> builder.lessThanOrEqualTo(root.get("timestamp"), to)));
+    }
+    return SpecificationUtils.combineAnd(specs);
+  }
+
+  public List<User> getUniqueUsers(List<InventoryLog> logs) {
+    List<User> users = new ArrayList<>();
+    for (InventoryLog log : logs) {
+      User user = log.getUser();
+      if (!users.contains(user)) {
+        users.add(user);
+      }
+    }
+    return users;
   }
 }

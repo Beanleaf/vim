@@ -7,9 +7,11 @@ import be.beanleaf.vim.domain.entities.User;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface InventoryLogRepository extends PagingAndSortingRepository<InventoryLog, Long> {
+public interface InventoryLogRepository extends PagingAndSortingRepository<InventoryLog, Long>,
+    JpaSpecificationExecutor<InventoryLog> {
 
   InventoryLog findInventoryLogById(long id);
 

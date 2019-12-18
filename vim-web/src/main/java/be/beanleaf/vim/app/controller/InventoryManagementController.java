@@ -20,10 +20,14 @@ import be.beanleaf.vim.services.QrService;
 import be.beanleaf.vim.services.UserService;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ContentDisposition;
@@ -37,9 +41,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class InventoryManagementController extends VimController {
@@ -56,6 +60,7 @@ public class InventoryManagementController extends VimController {
   private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
   private static final String URL_HISTORY = "/admin/inventory/history";
   private static final String VIEW_HISTORY = "/admin/inventory/history";
+  private static final String VIEW_LOGS = "/admin/inventory/logs";
 
   private final InventoryItemService inventoryItemService;
   private final InventoryLogService inventoryLogService;
@@ -253,8 +258,54 @@ public class InventoryManagementController extends VimController {
     return new ResponseEntity<>(imageSrc, headers, HttpStatus.OK);
   }
 
-  @GetMapping(URL_HISTORY + "/{type}/{id}")
+  @RequestMapping(URL_HISTORY)
   public String getHistory(
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) String q,
+      @RequestParam(required = false) String dateFrom,
+      @RequestParam(required = false) String dateTo,
+      Model model) {
+
+    final Date from =
+        StringUtils.isEmpty(dateFrom) ? null
+            : new DateTime(dateFrom).withTimeAtStartOfDay().toDate();
+    final Date to =
+        StringUtils.isEmpty(dateTo) ? null
+            : new DateTime(dateTo).millisOfDay().withMaximumValue().toDate();
+    String search = StringUtils.isEmpty(q) ? null : "%" + q + "%";
+    DataTable<InventoryLog> logDataTable = new DataTable<InventoryLog>(page, 15) {
+
+      @Override
+      public long getCount() {
+        return inventoryLogService.countLogs(search, from, to);
+      }
+
+      @Override
+      public List<InventoryLog> getData() {
+        PageRequest page = PageRequest
+            .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
+        return inventoryLogService.searchLogs(search, from, to, page);
+      }
+
+      @Override
+      public List<DataTableColumn<InventoryLog>> getColumns() {
+        return null;
+      }
+    };
+    model.addAttribute("searchQ", q);
+    model.addAttribute("searchFrom", dateFrom);
+    model.addAttribute("searchTo", dateTo);
+    List<InventoryLog> unpagedLogs = inventoryLogService
+        .searchLogs(search, from, to, Pageable.unpaged());
+    model.addAttribute("uniqueAmountOfUsers",
+        inventoryLogService.getUniqueUsers(unpagedLogs).size());
+    model.addAttribute("amountOfLogs", unpagedLogs.size());
+    model.addAttribute("dataTable", logDataTable);
+    return VIEW_LOGS;
+  }
+
+  @GetMapping(URL_HISTORY + "/{type}/{id}")
+  public String getHistoryForItemOrUser(
       @PathVariable String type,
       @PathVariable long id,
       @RequestParam(required = false) Integer page,

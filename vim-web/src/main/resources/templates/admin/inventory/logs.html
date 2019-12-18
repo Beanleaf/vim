@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg p-3 p-responsive width-full">
+
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{inventory.history}"></div>
+  </div>
+
+  <div class="mb-3">
+    <form class="subnav-search ml-0 d-flex" method="get" th:action="@{''}">
+      <div class="history-search-query col-6">
+        <input class="form-control subnav-search-input input-contrast width-full" name="q"
+               th:placeholder="#{inventory.history.search}"
+               th:value="${searchQ}"
+               type="text"/>
+        <i class="octicon octicon-search subnav-search-icon"></i>
+      </div>
+      <div class="history-search-period col-6 text-right">
+        <label class="ml-1" for="dateFrom"><span th:text="#{date.from}"></span>: </label>
+        <input class="form-control input-contrast" id="dateFrom" name="dateFrom"
+               th:value="${searchFrom}"
+               type="date"/>
+        <label class="ml-1" for="dateTo"><span th:text="#{date.to}"></span>: </label>
+        <input class="form-control input-contrast" id="dateTo" name="dateTo" th:value="${searchTo}"
+               type="date"/>
+        <button class="btn" type="submit">
+          <span th:text="#{form.search}"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="mb-3 reset-query-wrapper"
+       th:if="${!#strings.isEmpty(searchQ) or !#strings.isEmpty(searchFrom) or !#strings.isEmpty(searchTo)}">
+    <a class="reset-query" th:href="@{/admin/inventory/history}">
+      <span class="icon"><i class="octicon octicon-x"></i></span>
+      <span th:text="#{form.clearFilters}">form.clearFilters</span>
+    </a>
+  </div>
+
+  <div class="conversation-list-heading mt-5 mb-3">
+    <span class="inner text-gray">
+      <i class="octicon octicon-pulse pr-1"></i><span class="text-emphasized"
+                                                      th:text="${amountOfLogs}"></span> <span
+        th:text="#{actions}"></span>
+      <span class="text-emphasized" th:text="${uniqueAmountOfUsers}"></span> <span
+        th:text="#{user.description}"></span>
+    </span>
+  </div>
+
+  <div>
+    <ul class="simple-conversation-list">
+
+      <li class="d-flex flex-justify-between width-full"
+          th:each="log:${dataTable.getData()}"
+          th:with="InventoryDirection=${T(be.beanleaf.vim.domain.InventoryDirection)},
+                   logDirection=${log.getInventoryDirection()}">
+
+        <div class="d-flex flex-justify-start">
+          <div class="history-icon mx-2">
+           <span class="text-green"
+                 th:if="${logDirection.equals(InventoryDirection.IN)}">
+            <i class="octicon octicon-repo-push"></i>
+          </span>
+            <span class="text-orange"
+                  th:if="${logDirection.equals(InventoryDirection.OUT)}">
+            <i class="octicon octicon-repo-pull"></i>
+          </span>
+            <span class="State State--red State--small" th:if="${log.isDefect()}">
+            <i class="octicon octicon-issue-opened"></i>
+            <span th:text="#{inventory.item.status.defect}"></span>
+          </span>
+          </div>
+
+          <div class="history-body">
+            #<span th:text="${log.getInventoryItem().getId()}"></span>
+            <a href="#" th:text="${log.getInventoryItem().getDescription()}"></a>
+            <span th:if="${logDirection.equals(InventoryDirection.IN)}"
+                  th:text="#{inventory.history.inDescription}"></span>
+            <span th:if="${logDirection.equals(InventoryDirection.OUT)}"
+                  th:text="#{inventory.history.outDescription}"></span>
+            <a href="#" th:text="${log.getUser().getShortName()}"></a>
+          </div>
+        </div>
+        <div class="history-time mx-2">
+          <span th:text="${#dates.format(log.getTimestamp(), 'dd/MM/YYYY, HH:mm')}"></span>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+  <div th:replace="fragments/dataTable :: dataTableNavigation"></div>
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

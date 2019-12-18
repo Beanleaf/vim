@@ -179,3 +179,41 @@ details:not([open]) > :not(summary) {
 .text-body {
   color: $gray-900;
 }
+
+.conversation-list-heading {
+  @extend .text-center;
+  border-bottom: 1px solid #dfe2e5;
+  height: 0;
+
+  .inner {
+    position: relative;
+    top: -10px;
+    display: inline-block;
+    background: #fff;
+    padding: 0 10px;
+  }
+}
+
+.simple-conversation-list {
+  font-size: 13px;
+  color: $gray-500;
+
+  li {
+    padding: 11px 0 8px;
+    margin: 0;
+    list-style-type: none;
+    border-top: 1px solid $gray-100;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:hover {
+      background-color: $gray-100;
+    }
+
+    a {
+      font-weight: $fw-bold;
+    }
+  }
+}

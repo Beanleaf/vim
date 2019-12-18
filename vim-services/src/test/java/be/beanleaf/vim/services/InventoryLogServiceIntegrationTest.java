@@ -11,8 +11,12 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
 
@@ -49,5 +53,21 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     inventoryLogService.logDefect(log, "defect");
     assertThat(log.getComment()).isNotNull();
     assertThat(item.getCurrentStatus()).isEqualTo(ItemStatus.DEFECT);
+  }
+
+  @Test
+  void searchLogs() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = UserFixture.newUser("bob", "uuid", "mail");
+    user.setFirstName("Bob");
+    store(user);
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
+    inventoryLogService.log(item, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
+    inventoryLogService.log(item, user, InventoryDirection.OUT, ItemStatus.LEND);
+    Date date = Date.from(Instant.now());
+    List<InventoryLog> searchResult = inventoryLogService
+        .searchLogs("%bo%", null, date, Pageable.unpaged());
+    assertThat(searchResult.size()).isEqualTo(2);
   }
 }

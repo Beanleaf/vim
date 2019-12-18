@@ -19,7 +19,7 @@
       <input class="form-control subnav-search-input input-contrast width-full" name="q"
              th:placeholder="#{search.userByName}"
              th:value="${nameFilter}"
-             type="text"/>
+             autocomplete="off" type="text"/>
       <input name="inactive" th:value="${inactiveShown}" type="hidden"/>
       <i class="octicon octicon-search subnav-search-icon"></i>
     </form>

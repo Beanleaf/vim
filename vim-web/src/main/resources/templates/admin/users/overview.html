@@ -103,8 +103,11 @@
             </div>
           </div>
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
-            <span class="col-6"
-                  th:text="#{user.role.__${dataObject.getUserRole().name()}__}"></span>
+            <span class="col-6" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
+              <img class="mt-1" height="20"
+                   th:src="${webUtils.getGravatarImgSrc(dataObject.getEmailAddress(),20)}"
+                   width="20"/>
+            </span>
             <div class="col-6 pr-2">
               <a
                   class="btn-octicon float-right muted-link"

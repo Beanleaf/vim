@@ -69,10 +69,12 @@
     <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"
        th:text="#{navigation.userManagement}">navigation.userManagement</a>
   </nav>
-  <div class="userutils text-right">
+  <div class="userutils text-right" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
     <div th:if="${activeUser}">
       <span class="position-relative pr-2 text-white" th:text="${activeUser.getShortName()}">activeUser.getShortName()</span>
+      <img class="mr-2 v-align-middle" height="20"
+           th:src="${webUtils.getGravatarImgSrc(activeUser.getEmailAddress(),20)}" width="20"/>
       <a th:href="@{/logout}" class="btn-icon text-white" th:label="#{navigation.logout}">
         <i class="octicon octicon-sign-out"></i>
       </a>

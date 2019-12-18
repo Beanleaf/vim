@@ -108,7 +108,7 @@
             <div class="col-6 pr-2">
               <a
                   class="btn-octicon float-right muted-link"
-                  th:href="@{/admin/inventory/history/user/{id}(id=${dataObject.getId()})}">
+                  th:href="@{/admin/inventory/history/(q=${dataObject.getFirstName() + ' ' + dataObject.getLastName()})}">
                 <i class="octicon octicon-history"></i>
               </a>
               <a class="btn-octicon btn-octicon-danger float-right muted-link tooltipped tooltipped-n"

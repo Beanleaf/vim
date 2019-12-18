@@ -122,7 +122,10 @@ public class InventoryLogService {
             return builder.or(
                 builder.like(builder.upper(users.get("firstName")), upperCased),
                 builder.like(builder.upper(users.get("lastName")), upperCased),
-                builder.like(builder.upper(items.get("description")), upperCased)
+                builder.like(builder.upper(items.get("description")), upperCased),
+                builder.like(
+                    builder.upper(builder.concat(users.get("firstName"), users.get("lastName"))),
+                    upperCased.replace(" ", ""))
             );
           }));
     }

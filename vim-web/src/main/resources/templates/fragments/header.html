@@ -54,14 +54,16 @@
     <i class="logo octicon octicon-repo-clone"></i>
   </div>
   <div class="search ml-3" sec:authorize="hasAuthority('ADMIN')">
-    <form method="get" th:action="@{/admin/inventory/}">
+    <form method="get" th:action="@{/admin/inventory/history/}">
       <input class="form-control input-block input-sm" name="q"
-             th:placeholder="#{navigation.search.placeholder}"
+             th:placeholder="#{inventory.history.search}"
              type="text"/>
     </form>
   </div>
   <nav class="navigation flex-auto text-left ml-3">
     <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
+    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory/history}"
+       th:text="#{inventory.history}">inventory.history</a>
     <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
        th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
     <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"

@@ -12,12 +12,10 @@ import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
-import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.services.InventoryItemService;
 import be.beanleaf.vim.services.InventoryLogService;
 import be.beanleaf.vim.services.ItemCategoryService;
 import be.beanleaf.vim.services.QrService;
-import be.beanleaf.vim.services.UserService;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -59,25 +57,22 @@ public class InventoryManagementController extends VimController {
   private static final String VIEW_QR = "/admin/inventory/qrCode";
   private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
   private static final String URL_HISTORY = "/admin/inventory/history";
-  private static final String VIEW_HISTORY = "/admin/inventory/history";
   private static final String VIEW_LOGS = "/admin/inventory/logs";
 
   private final InventoryItemService inventoryItemService;
   private final InventoryLogService inventoryLogService;
   private final ItemCategoryService itemCategoryService;
   private final QrService qrService;
-  private final UserService userService;
 
   @Autowired
   public InventoryManagementController(VimSession vimSession, QrService qrService,
       InventoryItemService inventoryItemService, InventoryLogService inventoryLogService,
-      ItemCategoryService itemCategoryService, UserService userService) {
+      ItemCategoryService itemCategoryService) {
     super(vimSession);
     this.qrService = qrService;
     this.inventoryItemService = inventoryItemService;
     this.inventoryLogService = inventoryLogService;
     this.itemCategoryService = itemCategoryService;
-    this.userService = userService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -302,48 +297,6 @@ public class InventoryManagementController extends VimController {
     model.addAttribute("amountOfLogs", unpagedLogs.size());
     model.addAttribute("dataTable", logDataTable);
     return VIEW_LOGS;
-  }
-
-  @GetMapping(URL_HISTORY + "/{type}/{id}")
-  public String getHistoryForItemOrUser(
-      @PathVariable String type,
-      @PathVariable long id,
-      @RequestParam(required = false) Integer page,
-      Model model
-  ) {
-    final boolean isItemHistory = type.equalsIgnoreCase("item");
-    if (isItemHistory) {
-      InventoryItem inventoryItem = inventoryItemService.getInventoryItem(id);
-      model.addAttribute("historyItem", inventoryItem.getDescription());
-    } else {
-      User user = userService.getUser(id);
-      model.addAttribute("historyItem", user.getShortName());
-    }
-    DataTable<InventoryLog> dataTable = new DataTable<InventoryLog>(page, 15) {
-      @Override
-      public long getCount() {
-        return isItemHistory
-            ? inventoryLogService.countLogs(inventoryItemService.getInventoryItem(id))
-            : inventoryLogService.countLogs(userService.getUser(id));
-      }
-
-      @Override
-      public List<InventoryLog> getData() {
-        PageRequest page = PageRequest
-            .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
-        return isItemHistory
-            ? inventoryLogService.findForItem(inventoryItemService.getInventoryItem(id), page)
-            : inventoryLogService.findAllLogsForUser(userService.getUser(id));
-      }
-
-      @Override
-      public List<DataTableColumn<InventoryLog>> getColumns() {
-        return null;
-      }
-    };
-
-    model.addAttribute("dataTable", dataTable);
-    return VIEW_HISTORY;
   }
 
 }

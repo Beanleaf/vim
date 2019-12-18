@@ -59,7 +59,9 @@
       <li class="d-flex flex-justify-between width-full"
           th:each="log:${dataTable.getData()}"
           th:with="InventoryDirection=${T(be.beanleaf.vim.domain.InventoryDirection)},
-                   logDirection=${log.getInventoryDirection()}">
+                   logDirection=${log.getInventoryDirection()},
+                   item=${log.getInventoryItem()},
+                   user=${log.getUser()}">
 
         <div class="d-flex flex-justify-start">
           <div class="history-icon mx-2">
@@ -76,15 +78,17 @@
             <span th:text="#{inventory.item.status.defect}"></span>
           </span>
           </div>
-
           <div class="history-body">
-            #<span th:text="${log.getInventoryItem().getId()}"></span>
-            <a href="#" th:text="${log.getInventoryItem().getDescription()}"></a>
+            #<span th:text="${item.getId()}"></span>
+            <a th:href="@{/admin/inventory/history/(q=${item.getDescription()})}"
+               th:text="${item.getDescription()}"
+            ></a>
             <span th:if="${logDirection.equals(InventoryDirection.IN)}"
                   th:text="#{inventory.history.inDescription}"></span>
             <span th:if="${logDirection.equals(InventoryDirection.OUT)}"
                   th:text="#{inventory.history.outDescription}"></span>
-            <a href="#" th:text="${log.getUser().getShortName()}"></a>
+            <a th:href="@{/admin/inventory/history/(q=${user.getFirstName() + ' ' + user.getLastName()})}"
+               th:text="${user.getShortName()}"></a>
           </div>
         </div>
         <div class="history-time mx-2">
@@ -98,4 +102,40 @@
 </div>
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>
+<script type="text/javascript">
+
+  let fromField = $("#dateFrom");
+  let toField = $("#dateTo");
+
+  function compareDates(from, to) {
+    const fromVal = from.val();
+    const toVal = to.val();
+    toField.removeAttr("min");
+    fromField.removeAttr("max");
+
+    if (fromVal.length && !toVal.length) {
+      toField.attr("min", fromVal);
+    }
+    if (toVal.length && !fromVal.length) {
+      fromField.attr("max", toVal);
+    }
+  }
+
+  fromField.on({
+    keyup: debounce(function () {
+      compareDates(fromField, toField);
+    }, 500),
+    blur: function () {
+      compareDates(fromField, toField);
+    }
+  });
+  toField.on({
+    keyup: debounce(function () {
+      compareDates(fromField, toField);
+    }, 500),
+    blur: function () {
+      compareDates(fromField, toField);
+    }
+  });
+</script>
 </html>

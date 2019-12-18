@@ -60,6 +60,7 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     User user = UserFixture.newUser("bob", "uuid", "mail");
     user.setFirstName("Bob");
+    user.setLastName("Builder");
     store(user);
     InventoryItem item = createAndStore(
         InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
@@ -67,7 +68,7 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     inventoryLogService.log(item, user, InventoryDirection.OUT, ItemStatus.LEND);
     Date date = Date.from(Instant.now());
     List<InventoryLog> searchResult = inventoryLogService
-        .searchLogs("%bo%", null, date, Pageable.unpaged());
+        .searchLogs("%bob builder%", null, date, Pageable.unpaged());
     assertThat(searchResult.size()).isEqualTo(2);
   }
 }

@@ -13,7 +13,7 @@
         <a class="d-block tooltipped tooltipped-s" th:attr="aria-label=#{profile.changeAvatar}"
            th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
           <img class="avatar width-full height-full" height="260"
-               th:src="${webUtils.getGravatarImgSrc(user.getEmailAddress(), 250, 'identicon')}"
+               th:src="${webUtils.getGravatarImgSrc(user.getEmailAddress(), 260, 'identicon')}"
                width="260">
         </a>
       </div>

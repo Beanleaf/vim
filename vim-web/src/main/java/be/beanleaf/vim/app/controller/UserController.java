@@ -38,6 +38,8 @@ public class UserController extends VimController {
   private static final String URL_DELETE_USER = "/admin/users/delete";
   private static final String URL_EDIT_USER = "/admin/users/edit";
   private static final String URL_INACTIVATE_USER = "/admin/users/inactivate";
+  private static final String URL_PROFILE = "/profile";
+  private static final String VIEW_PROFILE = "profile";
 
   private final UserService userService;
   private final VimMailService vimMailService;
@@ -199,4 +201,10 @@ public class UserController extends VimController {
     return originalUser == userByEmailAddress || userByEmailAddress == null;
   }
 
+  @GetMapping(URL_PROFILE)
+  public String profile(Model model) {
+    User user = getVimSession().getActiveUser();
+    model.addAttribute("user", user);
+    return VIEW_PROFILE;
+  }
 }

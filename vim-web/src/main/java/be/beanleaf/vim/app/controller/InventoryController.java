@@ -151,7 +151,7 @@ public class InventoryController extends VimController {
       for (User administrator : administrators) {
         variables.put("recipientName", administrator.getName());
         vimMailService.sendMail("mails/defectItem", getLocaleString("mail.defect.subject"),
-            administrator.getEmailAddress(), variables);
+            administrator.getEmailAddress(), variables, administrator.getLanguageTag());
       }
       redirectAttributes.addFlashAttribute(
           new ToastMessage(MessageType.SUCCESS, "notifications.inventory.defectSuccess", true));

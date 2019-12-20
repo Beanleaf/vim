@@ -27,6 +27,7 @@ public class User {
   private UserRole userRole;
   @Column(unique = true, nullable = false)
   private String uuid;
+  private String languageTag;
 
   public User() {
     //JPA
@@ -112,4 +113,11 @@ public class User {
     this.uuid = uuid;
   }
 
+  public String getLanguageTag() {
+    return languageTag;
+  }
+
+  public void setLanguageTag(String languageTag) {
+    this.languageTag = languageTag;
+  }
 }

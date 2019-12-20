@@ -4,6 +4,8 @@
 <div class="clearfix mb-2" th:fragment="userProfileDetails">
   <div class="float-left col-3 col-md-12 pr-3 pr-md-0">
     <a class="d-block tooltipped tooltipped-s" th:attr="aria-label=#{profile.changeAvatar}"
+       href="https://gravatar.com"
+       target="_blank"
        th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
       <img class="avatar width-full height-full" height="260"
            th:src="${webUtils.getGravatarImgSrc(user.getEmailAddress(), 260, 'identicon')}"
@@ -62,8 +64,10 @@
       <dt><label for="language"><span th:text="#{language}"></span>:</label></dt>
       <dd>
         <select class="form-control" id="language" name="language">
-          <option th:text="#{language.nl}" value="nl"></option>
-          <option th:text="#{language.en}" value="en"></option>
+          <option th:each="languageTag : ${supportedLanguageTags}"
+                  th:text="#{language.__${languageTag}__}"
+                  th:value="${languageTag}">
+          </option>
         </select>
       </dd>
     </dl>

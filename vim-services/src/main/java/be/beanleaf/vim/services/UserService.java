@@ -105,7 +105,7 @@ public class UserService {
   }
 
   public User createNewUser(boolean active, String emailAddress, String name,
-      String phonenumber, UserRole role, String username) {
+      String phonenumber, UserRole role, String username, String languageTag) {
     User user = new User();
     user.setActive(active);
     user.setEmailAddress(emailAddress);
@@ -113,19 +113,21 @@ public class UserService {
     user.setPhonenumber(phonenumber);
     user.setUserRole(role);
     user.setUsername(username);
+    user.setLanguageTag(languageTag);
     user.setUuid(UUID.randomUUID().toString());
     return user;
   }
 
   @Transactional
   public void updateUser(User user, String email, boolean active, String name,
-      String phonenumber, UserRole userRole, String username) {
+      String phonenumber, UserRole userRole, String username, String languageTag) {
     user.setEmailAddress(email);
     user.setActive(active);
     user.setName(name);
     user.setPhonenumber(phonenumber);
     user.setUserRole(userRole);
     user.setUsername(username);
+    user.setLanguageTag(languageTag);
   }
 
   @Transactional(readOnly = true)

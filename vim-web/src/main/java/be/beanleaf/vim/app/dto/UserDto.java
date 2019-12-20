@@ -22,13 +22,15 @@ public class UserDto implements FormDto {
   private boolean notifyMail;
   @NotNull
   private UserRole userRole;
+  private String languageTag;
 
   public UserDto() {
-    this(null, null, null, null, UserRole.STANDARD, true, true);
+    this(null, null, null, null, UserRole.STANDARD, true, true, null);
   }
 
   public UserDto(String name, String username, String email,
-      String phonenumber, UserRole userRole, boolean active, boolean notifyMail) {
+      String phonenumber, UserRole userRole, boolean active, boolean notifyMail,
+      String languageTag) {
     this.name = name;
     this.username = username;
     this.email = email;
@@ -36,6 +38,7 @@ public class UserDto implements FormDto {
     this.userRole = userRole;
     this.active = active;
     this.notifyMail = notifyMail;
+    this.languageTag = languageTag;
   }
 
   public String getName() {
@@ -92,5 +95,13 @@ public class UserDto implements FormDto {
 
   public void setUserRole(UserRole userRole) {
     this.userRole = userRole;
+  }
+
+  public String getLanguageTag() {
+    return languageTag;
+  }
+
+  public void setLanguageTag(String languageTag) {
+    this.languageTag = languageTag;
   }
 }

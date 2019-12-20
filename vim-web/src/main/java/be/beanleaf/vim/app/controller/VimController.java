@@ -5,7 +5,9 @@ import be.beanleaf.vim.app.utils.FeedbackUtils;
 import be.beanleaf.vim.app.utils.Feedbackmessage;
 import be.beanleaf.vim.app.utils.LocaleUtils;
 import be.beanleaf.vim.domain.utilities.ValidationException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -27,6 +28,8 @@ public abstract class VimController {
 
   private final static Logger logger = LoggerFactory.getLogger(VimController.class);
   private final VimSession vimSession;
+  private final List<String> supportedLocales = Arrays.asList("nl", "en");
+
   @Value("${spring.messages.encoding:UTF-8}")
   private String defaultEncoding;
 
@@ -42,8 +45,9 @@ public abstract class VimController {
   private Map<String, Object> getDefaultModelAttributes() {
     Map<String, Object> attributes = new HashMap<>();
     attributes.put("defaultEncoding", defaultEncoding);
-    attributes.put("htmlLang", LocaleContextHolder.getLocale().getLanguage());
+    attributes.put("htmlLang", getLocale().getLanguage());
     attributes.put("activeUser", vimSession.getActiveUser());
+    attributes.put("supportedLanguageTags", supportedLocales);
     return attributes;
   }
 
@@ -70,14 +74,6 @@ public abstract class VimController {
 
   public Locale getLocale() {
     return LocaleContextHolder.getLocale();
-  }
-
-  ModelAndView render(String view, Model model) {
-    return render(view, model.asMap());
-  }
-
-  private ModelAndView render(String view, Map<String, Object> modelMap) {
-    return new ModelAndView(view, modelMap);
   }
 
   String redirect(String view) {

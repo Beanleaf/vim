@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.LocaleResolver;
 
 @SpringBootApplication(scanBasePackages = "be.beanleaf.vim")
 @EnableJpaRepositories(basePackages = "be.beanleaf.vim")
@@ -38,6 +39,11 @@ public class VimWebApp extends SpringBootServletInitializer {
     messageSource.setDefaultEncoding(encoding);
     bean.setValidationMessageSource(messageSource);
     return bean;
+  }
+
+  @Bean
+  public LocaleResolver localeResolver() {
+    return new VimLocaleResolver();
   }
 
   public static void main(String[] args) {

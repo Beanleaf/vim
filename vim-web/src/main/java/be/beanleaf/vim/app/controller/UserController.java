@@ -102,14 +102,15 @@ public class UserController extends VimController {
     }
     User user = userService.createNewUser(
         userDto.isActive(), userDto.getEmail(), userDto.getName(),
-        userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername()
+        userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername(),
+        userDto.getLanguageTag()
     );
     userService.save(user);
     if (userDto.isNotifyMail()) {
       Map<String, Object> mailVariables = new HashMap<>();
       mailVariables.put("newUser", user);
       vimMailService.sendMail("mails/welcomeMail", getLocaleString("mail.welcome.subject"),
-          user.getEmailAddress(), mailVariables);
+          user.getEmailAddress(), mailVariables, user.getLanguageTag());
     }
     redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
         "notifications.users.newUserSuccess", true));
@@ -147,7 +148,7 @@ public class UserController extends VimController {
     model.addAttribute("originalUser", user);
     model.addAttribute(new UserDto(
         user.getName(), user.getUsername(), user.getEmailAddress(),
-        user.getPhonenumber(), user.getUserRole(), user.isActive(), false
+        user.getPhonenumber(), user.getUserRole(), user.isActive(), false, user.getLanguageTag()
     ));
     return VIEW_EDIT_USER;
   }
@@ -172,7 +173,8 @@ public class UserController extends VimController {
     }
     if (!bindingResult.hasErrors()) {
       userService.updateUser(user, userDto.getEmail(), userDto.isActive(), userDto.getName(),
-          userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername());
+          userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername(),
+          userDto.getLanguageTag());
       redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.users.editSuccess", true));
       return redirect(URL_OVERVIEW);

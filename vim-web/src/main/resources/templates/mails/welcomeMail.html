@@ -6,7 +6,7 @@
   <div class="header" th:replace="fragments/mail :: mailHeader"></div>
   <!--/*@thymesVar id="newUser" type="be.beanleaf.vim.domain.entities.User"*/-->
   <div class="body">
-    <p th:text="#{mail.salutation(${newUser.getShortName()})}"></p>
+    <p th:text="#{mail.salutation(${newUser.getName()})}"></p>
     <p th:utext="#{mail.welcome.body}">
     </p>
     <ul>

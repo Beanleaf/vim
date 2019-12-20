@@ -67,7 +67,7 @@ public class UserController extends VimController {
       @Override
       public List<User> getData() {
         PageRequest page = PageRequest
-            .of(getCurrentPage(), getPageSize(), Sort.by("firstName", "lastName"));
+            .of(getCurrentPage(), getPageSize(), Sort.by("name"));
         return userService.findUsers(q, !inactive, null, page);
       }
 
@@ -101,7 +101,7 @@ public class UserController extends VimController {
       return VIEW_EDIT_USER;
     }
     User user = userService.createNewUser(
-        userDto.isActive(), userDto.getEmail(), userDto.getFirstName(), userDto.getLastName(),
+        userDto.isActive(), userDto.getEmail(), userDto.getName(),
         userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername()
     );
     userService.save(user);
@@ -146,7 +146,7 @@ public class UserController extends VimController {
     model.addAttribute("isDeletable", userService.isDeletable(user));
     model.addAttribute("originalUser", user);
     model.addAttribute(new UserDto(
-        user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmailAddress(),
+        user.getName(), user.getUsername(), user.getEmailAddress(),
         user.getPhonenumber(), user.getUserRole(), user.isActive(), false
     ));
     return VIEW_EDIT_USER;
@@ -171,9 +171,8 @@ public class UserController extends VimController {
       bindingResult.rejectValue("username", "users.usernameInUse");
     }
     if (!bindingResult.hasErrors()) {
-      userService.updateUser(user, userDto.getEmail(), userDto.isActive(), userDto.getFirstName(),
-          userDto.getLastName(), userDto.getPhonenumber(), userDto.getUserRole(),
-          userDto.getUsername());
+      userService.updateUser(user, userDto.getEmail(), userDto.isActive(), userDto.getName(),
+          userDto.getPhonenumber(), userDto.getUserRole(), userDto.getUsername());
       redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
           "notifications.users.editSuccess", true));
       return redirect(URL_OVERVIEW);
@@ -201,8 +200,10 @@ public class UserController extends VimController {
     return originalUser == userByEmailAddress || userByEmailAddress == null;
   }
 
-  @GetMapping(URL_PROFILE)
-  public String profile(Model model) {
+  @GetMapping(value = {URL_PROFILE, URL_PROFILE + "/{subview}"})
+  public String profile(
+      @PathVariable(required = false) String subview,
+      Model model) {
     User user = getVimSession().getActiveUser();
     model.addAttribute("user", user);
     return VIEW_PROFILE;

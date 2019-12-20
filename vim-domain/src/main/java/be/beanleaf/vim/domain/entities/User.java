@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +23,7 @@ public class User {
   @Column(unique = true, nullable = false)
   private String emailAddress;
   private String phonenumber;
-  private String firstName;
-  private String lastName;
+  private String name;
   private UserRole userRole;
   @Column(unique = true, nullable = false)
   private String uuid;
@@ -90,20 +88,12 @@ public class User {
     this.phonenumber = phonenumber;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public String getName() {
+    return name;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public UserRole getUserRole() {
@@ -122,13 +112,4 @@ public class User {
     this.uuid = uuid;
   }
 
-  @Transient
-  public String getShortName() {
-    String shortName = getFirstName();
-    if (getLastName() != null) {
-      return (shortName + ' ' + getLastName().substring(0, 1) + '.').trim();
-    }
-
-    return shortName != null ? shortName : getUsername();
-  }
 }

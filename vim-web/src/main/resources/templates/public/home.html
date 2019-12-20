@@ -9,7 +9,7 @@
 <div class="container-lg p-3 p-responsive width-full">
 
   <div class="blankslate" th:if="${activeUser}">
-    <h3 class="mb-1" th:text="#{home.greeting(${activeUser.getFirstName()})}">
+    <h3 class="mb-1" th:text="#{home.greeting(${activeUser.getName()})}">
       home.greeting
     </h3>
     <p th:text="#{home.actions}">home.actions</p>

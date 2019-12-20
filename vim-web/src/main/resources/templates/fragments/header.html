@@ -72,7 +72,7 @@
   <div class="userutils text-right" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
     <div th:if="${activeUser}">
-      <span class="position-relative pr-2 text-white" th:text="${activeUser.getShortName()}">activeUser.getShortName()</span>
+      <span class="position-relative pr-2 text-white" th:text="${activeUser.getName()}">activeUser.getName()</span>
 
       <details class="dropdown details-reset details-overlay d-inline-block">
         <summary class="text-white">

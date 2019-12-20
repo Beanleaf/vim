@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="clearfix mb-2" th:fragment="userProfileDetails">
+  <div class="float-left col-3 col-md-12 pr-3 pr-md-0">
+    <a class="d-block tooltipped tooltipped-s" th:attr="aria-label=#{profile.changeAvatar}"
+       th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
+      <img class="avatar width-full height-full" height="260"
+           th:src="${webUtils.getGravatarImgSrc(user.getEmailAddress(), 260, 'identicon')}"
+           width="260">
+    </a>
+  </div>
+  <div class="float-left col-9 col-md-12 pl-2 pl-md-0"
+       th:with="UserRole=${T(be.beanleaf.vim.domain.UserRole)}"
+  >
+    <h1 th:text="${user.getName()}"></h1>
+    <h2 class="text-gray text-normal" th:text="${user.getUsername()}"></h2>
+    <span class="State"
+          th:if="${user.getUserRole().equals(UserRole.ADMIN)}"
+          th:text="#{user.role.ADMIN}"></span>
+  </div>
+</div>
+<nav class="UnderlineNav"
+     th:fragment="userProfileNavigation"
+     th:with="url=${#httpServletRequest.requestURI}">
+  <div class="UnderlineNav-body">
+    <a class="UnderlineNav-item"
+       th:classappend="${#strings.equals(url, '/profile') ? 'selected' : ''}"
+       th:href="@{/profile/}"
+       th:text="#{profile.overview}">profile.overview</a>
+    <a class="UnderlineNav-item"
+       th:classappend="${#strings.containsIgnoreCase(url, 'logs') ? 'selected' : ''}"
+       th:href="@{/profile/logs}"
+       th:text="#{profile.logs}">profile.logs
+      <span class="Counter hide-lg hide-md hide-sm">17</span>
+    </a>
+    <a class="UnderlineNav-item"
+       th:classappend="${#strings.containsIgnoreCase(url, 'delete') ? 'selected' : ''}"
+       th:href="@{/profile/delete}"
+       th:text="#{profile.delete}">profile.delete</a>
+  </div>
+</nav>
+
+<div th:fragment="userOverview">
+  <form action="" class="" method="">
+    <dl class="form-group">
+      <dt><label for="name"><span th:text="#{user.name}"></span>:</label></dt>
+      <dd>
+        <input class="form-control" id="name" name="name" th:value="${user.getName()}" type="text"/>
+        <div class="note" th:text="#{profile.nameNote}"></div>
+      </dd>
+    </dl>
+    <dl class="form-group">
+      <dt><label for="email"><span th:text="#{user.email}"></span>:</label></dt>
+      <dd>
+        <input class="form-control" id="email" name="email" th:value="${user.getEmailAddress()}"
+               type="text"/>
+        <div class="note" th:text="#{profile.emailNote}"></div>
+      </dd>
+    </dl>
+    <dl class="form-group">
+      <dt><label for="language"><span th:text="#{language}"></span>:</label></dt>
+      <dd>
+        <select class="form-control" id="language" name="language">
+          <option th:text="#{language.nl}" value="nl"></option>
+          <option th:text="#{language.en}" value="en"></option>
+        </select>
+      </dd>
+    </dl>
+
+    <input class="btn btn-primary" th:value="#{form.save}" type="submit"/>
+  </form>
+</div>
+</body>
+</html>

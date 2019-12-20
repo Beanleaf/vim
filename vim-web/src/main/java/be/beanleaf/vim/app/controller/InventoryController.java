@@ -142,14 +142,14 @@ public class InventoryController extends VimController {
       Map<String, Object> variables = new HashMap<>();
       variables.put("defectItem", log.getInventoryItem());
       variables.put("comment", log.getComment());
-      variables.put("reporter", getVimSession().getActiveUser().getShortName());
+      variables.put("reporter", getVimSession().getActiveUser().getName());
       variables.put("time", log.getTimestamp());
       List<User> administrators = userService.findActiveUsersByRole(UserRole.ADMIN);
       if (CollectionUtils.isEmpty(administrators)) {
         throw new IllegalStateException("There should be at least one administrator");
       }
       for (User administrator : administrators) {
-        variables.put("recipientName", administrator.getShortName());
+        variables.put("recipientName", administrator.getName());
         vimMailService.sendMail("mails/defectItem", getLocaleString("mail.defect.subject"),
             administrator.getEmailAddress(), variables);
       }

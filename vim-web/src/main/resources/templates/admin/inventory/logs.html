@@ -87,8 +87,8 @@
                   th:text="#{inventory.history.inDescription}"></span>
             <span th:if="${logDirection.equals(InventoryDirection.OUT)}"
                   th:text="#{inventory.history.outDescription}"></span>
-            <a th:href="@{/admin/inventory/history/(q=${user.getFirstName() + ' ' + user.getLastName()})}"
-               th:text="${user.getShortName()}"></a>
+            <a th:href="@{/admin/inventory/history/(q=${user.getName()})}"
+               th:text="${user.getName()}"></a>
           </div>
         </div>
         <div class="history-time mx-2">

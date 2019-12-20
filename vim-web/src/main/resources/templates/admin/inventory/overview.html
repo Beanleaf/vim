@@ -108,7 +108,7 @@
           </span>
             <div class="mt-1 text-small text-gray">
               <span th:text="#{inventory.item.addedBy}"></span>
-              <span th:text="${dataObject.getAddedByUser().getShortName()}"></span>
+              <span th:text="${dataObject.getAddedByUser().getName()}"></span>
               <a class="tooltipped tooltipped-n muted-link"
                  th:href="@{${urlBuilder.replaceQueryParam('q', dataObject.getBrand()).build().toUriString()}}"
                  th:attr="aria-label=#{inventory.item.brand}"

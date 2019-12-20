@@ -12,7 +12,7 @@
     <div class="Subhead-heading" th:text="#{users.newUser}" th:unless="${originalUser}"></div>
     <div class="Subhead-heading" th:if="${originalUser}">
       <span th:text="#{users.editUser}"></span>
-      <span th:text="${originalUser.getShortName()}"></span>
+      <span th:text="${originalUser.getName()}"></span>
     </div>
   </div>
 
@@ -20,19 +20,12 @@
         th:object="${userDto}">
     <input id="userId" th:if="${originalUser != null}" th:value="${originalUser.getId()}"
            type="hidden">
-    <dl class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'errored'">
-      <dt><label for="firstName" th:text="#{user.firstName}"></label></dt>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'errored'">
+      <dt><label for="name" th:text="#{user.name}"></label></dt>
       <dd>
-        <input class="form-control" id="firstName" th:field="*{firstName}" type="text"/>
+        <input class="form-control" id="name" th:field="*{name}" type="text"/>
       </dd>
-      <dd class="error" th:errors="*{firstName}">First name error</dd>
-    </dl>
-    <dl class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? 'errored'">
-      <dt><label for="lastName" th:text="#{user.lastName}"></label></dt>
-      <dd>
-        <input class="form-control" id="lastName" th:field="*{lastName}" type="text"/>
-      </dd>
-      <dd class="error" th:errors="*{lastName}">Firstname error</dd>
+      <dd class="error" th:errors="*{name}">First name error</dd>
     </dl>
     <dl class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'errored'">
       <dt><label for="username" th:text="#{user.username}"></label></dt>

@@ -7,37 +7,13 @@
 
 <div class="container-xl clearfix px-3 mt-4">
   <div class="col-lg-3 col-md-4 col-12 float-md-left pr-md-3 pr-xl-6">
-    <div class="user-profile-sticky-bar js-user-profile-stickery-bar"></div>
-    <div class="clearfix mb-2">
-      <div class="float-left col-3 col-md-12 pr-3 pr-md-0">
-        <a class="d-block tooltipped tooltipped-s" th:attr="aria-label=#{profile.changeAvatar}"
-           th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
-          <img class="avatar width-full height-full" height="260"
-               th:src="${webUtils.getGravatarImgSrc(user.getEmailAddress(), 260, 'identicon')}"
-               width="260">
-        </a>
-      </div>
-      <div class="float-left col-9 col-md-12 pl-2 pl-md-0">
-        <h1 th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h1>
-        <h2 class="text-gray text-normal" th:text="${user.getUsername()}"></h2>
-      </div>
-    </div>
+    <div th:replace="fragments/userProfile :: userProfileDetails"></div>
   </div>
   <div class="col-lg-9 col-md-8 col-12 float-md-left pl-md-2">
-    <nav class="UnderlineNav">
-      <div class="UnderlineNav-body">
-        <a class="UnderlineNav-item selected" href="#">Overview</a>
-        <a class="UnderlineNav-item" href="#">Recent logs
-          <span class="Counter hide-lg hide-md hide-sm">17</span>
-        </a>
-        <a class="UnderlineNav-item" href="#">Delete account</a>
-      </div>
-    </nav>
+    <nav th:replace="fragments/userProfile :: userProfileNavigation"></nav>
+    <div th:replace="fragments/userProfile :: userOverview"></div>
   </div>
 </div>
-
-
 </body>
-
 <footer th:replace="fragments/footer :: footer"></footer>
 </html>

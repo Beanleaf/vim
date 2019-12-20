@@ -74,9 +74,7 @@ public class UserService {
       Specification<User> nameSpec = (user, cq, cb) -> cb
           .like(cb.upper(user.get("username")), searchString);
       nameSpec = nameSpec
-          .or((user, cq, cb) -> cb.like(cb.upper(user.get("firstName")), searchString));
-      nameSpec = nameSpec != null ? nameSpec
-          .or((user, cq, cb) -> cb.like(cb.upper(user.get("lastName")), searchString)) : null;
+          .or((user, cq, cb) -> cb.like(cb.upper(user.get("name")), searchString));
       specs.add(nameSpec);
     }
 
@@ -106,13 +104,12 @@ public class UserService {
     user.setPasswordSalt(hashSalt.getRight());
   }
 
-  public User createNewUser(boolean active, String emailAddress, String firstName, String lastName,
+  public User createNewUser(boolean active, String emailAddress, String name,
       String phonenumber, UserRole role, String username) {
     User user = new User();
     user.setActive(active);
     user.setEmailAddress(emailAddress);
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
+    user.setName(name);
     user.setPhonenumber(phonenumber);
     user.setUserRole(role);
     user.setUsername(username);
@@ -121,12 +118,11 @@ public class UserService {
   }
 
   @Transactional
-  public void updateUser(User user, String email, boolean active, String firstName, String lastName,
+  public void updateUser(User user, String email, boolean active, String name,
       String phonenumber, UserRole userRole, String username) {
     user.setEmailAddress(email);
     user.setActive(active);
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
+    user.setName(name);
     user.setPhonenumber(phonenumber);
     user.setUserRole(userRole);
     user.setUsername(username);

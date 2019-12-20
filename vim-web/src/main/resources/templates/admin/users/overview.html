@@ -75,7 +75,7 @@
           <div class="float-left col-8 lh-condensed py-2 px-3">
             <a class="link-gray-dark v-align-middle no-underline h5"
                th:href="@{/admin/users/edit/{id}(id=${dataObject.getId()})}"
-               th:text="${dataObject.getFirstName() + ' ' + dataObject.getLastName()}">
+               th:text="${dataObject.getName()}">
             </a>
             <span class="labels lh-default">
               <span class="Label Label--outline Label--gray"
@@ -111,7 +111,7 @@
             <div class="col-6 pr-2">
               <a
                   class="btn-octicon float-right muted-link"
-                  th:href="@{/admin/inventory/history/(q=${dataObject.getFirstName() + ' ' + dataObject.getLastName()})}">
+                  th:href="@{/admin/inventory/history/(q=${dataObject.getName()})}">
                 <i class="octicon octicon-history"></i>
               </a>
               <a class="btn-octicon btn-octicon-danger float-right muted-link tooltipped tooltipped-n"

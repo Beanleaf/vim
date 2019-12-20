@@ -9,9 +9,7 @@ import org.hibernate.validator.constraints.Length;
 public class UserDto implements FormDto {
 
   @NotEmpty(message = "{validations.notEmpty.message}")
-  private String firstName;
-  @NotEmpty(message = "{validations.notEmpty.message}")
-  private String lastName;
+  private String name;
   @NotEmpty(message = "{validations.notEmpty.message}")
   @Length(max = 10, message = "{validations.length.10}")
   private String username;
@@ -26,13 +24,12 @@ public class UserDto implements FormDto {
   private UserRole userRole;
 
   public UserDto() {
-    this(null, null, null, null, null, UserRole.STANDARD, true, true);
+    this(null, null, null, null, UserRole.STANDARD, true, true);
   }
 
-  public UserDto(String firstName, String lastName, String username, String email,
+  public UserDto(String name, String username, String email,
       String phonenumber, UserRole userRole, boolean active, boolean notifyMail) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.name = name;
     this.username = username;
     this.email = email;
     this.phonenumber = phonenumber;
@@ -41,20 +38,12 @@ public class UserDto implements FormDto {
     this.notifyMail = notifyMail;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public String getName() {
+    return name;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getUsername() {

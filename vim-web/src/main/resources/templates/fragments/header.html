@@ -47,14 +47,94 @@
   </div>
 </section>
 
-<div th:fragment="userUtils" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
-  <div class="userutils text-right" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
-    <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
-    <div th:if="${activeUser}">
-      <span class="position-relative pr-2 text-white hide-md hide-sm"
-            th:text="${activeUser.getName()}">activeUser.getName()</span>
-      <details class="dropdown details-reset details-overlay d-inline-block">
-        <summary class="text-white">
+<!-- Navigation -->
+<header th:fragment="topBar" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
+  <div class="Header flex-wrap flex-lg-nowrap p-responsive">
+    <div class="Header-item d-none d-lg-flex">
+      <a class="Header-link" th:href="@{/}">
+        <i class="text-white logo octicon octicon-repo-clone"></i>
+      </a>
+    </div>
+    <div class="Header-item d-lg-none">
+      <button class="Header-link btn-link" id="hamburger-toggle">
+        <i class="octicon octicon-three-bars"></i>
+      </button>
+    </div>
+    <div
+        class="Header-item Header-item--full flex-column flex-lg-row width-full flex-order-2 flex-lg-order-none mr-0 mr-lg-3 mt-3 mt-lg-0 d-sm-none d-md-none d-lg-flex"
+        id="hamburger-nav">
+      <div
+          class="header-search flex-self-stretch flex-lg-self-auto mr-0 mr-lg-3 mb-3 mb-lg-0 position-relative"
+          sec:authorize="hasAuthority('ADMIN')">
+        <form method="get" th:action="@{/admin/inventory/history/}">
+          <input autocomplete="off" class="form-control input-block input-sm"
+                 name="q"
+                 th:placeholder="#{inventory.history.search}" type="text"/>
+        </form>
+      </div>
+      <nav class="d-flex flex-column flex-lg-row flex-self-stretch flex-lg-self-auto">
+        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/}"
+           th:text="#{navigation.home}">navigation.home</a>
+        <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/login}"
+           th:text="#{navigation.login}"
+           th:unless="${activeUser}">navigation.login</a>
+
+        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           sec:authorize="hasAuthority('ADMIN')"
+           th:href="@{/admin/inventory/history}"
+           th:text="#{inventory.history}">inventory.history</a>
+        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           sec:authorize="hasAuthority('ADMIN')"
+           th:href="@{/admin/inventory}"
+           th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
+        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           sec:authorize="hasAuthority('ADMIN')"
+           th:href="@{/admin/users}"
+           th:text="#{navigation.userManagement}">navigation.userManagement</a>
+
+        <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/inventory/scan/in}" th:if="${activeUser}"
+           th:text="#{inventory.actions.in.title}">Scan in</a>
+        <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/inventory/scan/out}" th:if="${activeUser}"
+           th:text="#{inventory.actions.out.title}">Scan out</a>
+
+        <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/profile}" th:if="${activeUser}">
+          <img class="v-align-middle" height="16"
+               th:src="${webUtils.getGravatarImgSrc(activeUser.getEmailAddress(),16, 'identicon')}"
+               width="16"/>
+          <span th:text="${activeUser.getUsername()}">navigation.profile</span></a>
+        <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/logout}" th:if="${activeUser}">
+          <i class="octicon octicon-sign-out"></i>
+          <span th:text="#{navigation.logout}">navigation.logout</span></a>
+      </nav>
+    </div>
+    <div class="Header-item Header-item--full flex-justify-center d-lg-none position-relative">
+      <a class="Header-link" th:href="@{/}">
+        <i class="text-white logo octicon octicon-repo-clone"></i>
+      </a>
+    </div>
+    <div class="Header-item mr-0 mr-lg-3 flex-order-1 flex-lg-order-none d-lg-none">
+      <a class="Header-link" th:href="@{/profile}" th:if="${activeUser}">
+        <img class="mr-2 v-align-middle" height="20"
+             th:src="${webUtils.getGravatarImgSrc(activeUser.getEmailAddress(),20, 'identicon')}"
+             width="20"/>
+      </a>
+      <a class="Header-link" th:href="@{/login}" th:unless="${activeUser}">
+        <i class="octicon octicon-sign-in"></i>
+      </a>
+    </div>
+    <div class="Header-item position-relative mr-0 d-none d-lg-flex">
+      <a class="Header-link hide-sm hide-md"
+         th:href="@{/login}"
+         th:text="#{navigation.login}"
+         th:unless="${activeUser}">navigation.login</a>
+      <details class="dropdown details-reset details-overlay d-inline-block" th:if="${activeUser}">
+        <summary class="Header-link">
           <img class="mr-2 v-align-middle" height="20"
                th:src="${webUtils.getGravatarImgSrc(activeUser.getEmailAddress(),20, 'identicon')}"
                width="20"/>
@@ -74,37 +154,7 @@
         </ul>
       </details>
     </div>
-  </div>
-</div>
 
-<!-- Navigation -->
-<header th:fragment="topBar">
-  <div class="topbar p-responsive d-flex flex-justify-between flex-items-center hide-md hide-sm">
-    <div class="text-white">
-      <i class="logo octicon octicon-repo-clone"></i>
-    </div>
-    <div class="search ml-3" sec:authorize="hasAuthority('ADMIN')">
-      <form method="get" th:action="@{/admin/inventory/history/}">
-        <input autocomplete="off" class="form-control input-block input-sm"
-               name="q"
-               th:placeholder="#{inventory.history.search}" type="text"/>
-      </form>
-    </div>
-    <nav class="navigation flex-auto text-left ml-3">
-      <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
-      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory/history}"
-         th:text="#{inventory.history}">inventory.history</a>
-      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
-         th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
-      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"
-         th:text="#{navigation.userManagement}">navigation.userManagement</a>
-    </nav>
-    <div th:replace="this :: userUtils"></div>
-  </div>
-  <div class="topbar p-responsive d-flex flex-justify-between flex-items-center d-md-none">
-    <i class="text-white octicon mega-octicon octicon-three-bars"></i>
-    <i class="text-white logo octicon octicon-repo-clone"></i>
-    <div th:replace="this :: userUtils"></div>
   </div>
 </header>
 

@@ -47,33 +47,12 @@
   </div>
 </section>
 
-<!-- Navigation -->
-<header class="topbar p-responsive d-flex flex-justify-between flex-items-center"
-        th:fragment="topBar">
-  <div class="text-white">
-    <i class="logo octicon octicon-repo-clone"></i>
-  </div>
-  <div class="search ml-3" sec:authorize="hasAuthority('ADMIN')">
-    <form method="get" th:action="@{/admin/inventory/history/}">
-      <input class="form-control input-block input-sm" name="q"
-             th:placeholder="#{inventory.history.search}"
-             autocomplete="off" type="text"/>
-    </form>
-  </div>
-  <nav class="navigation flex-auto text-left ml-3">
-    <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
-    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory/history}"
-       th:text="#{inventory.history}">inventory.history</a>
-    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
-       th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
-    <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"
-       th:text="#{navigation.userManagement}">navigation.userManagement</a>
-  </nav>
+<div th:fragment="userUtils" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
   <div class="userutils text-right" th:with="webUtils=${T(be.beanleaf.vim.app.utils.WebUtils)}">
     <a class="navlink" th:href="@{/login}" th:if="!${activeUser}" th:text="#{navigation.login}">navigation.login</a>
     <div th:if="${activeUser}">
-      <span class="position-relative pr-2 text-white" th:text="${activeUser.getName()}">activeUser.getName()</span>
-
+      <span class="position-relative pr-2 text-white hide-md hide-sm"
+            th:text="${activeUser.getName()}">activeUser.getName()</span>
       <details class="dropdown details-reset details-overlay d-inline-block">
         <summary class="text-white">
           <img class="mr-2 v-align-middle" height="20"
@@ -81,7 +60,6 @@
                width="20"/>
           <div class="dropdown-caret"></div>
         </summary>
-
         <ul class="dropdown-menu dropdown-menu-sw text-left">
           <li><a class="dropdown-item btn-icon" th:href="@{/logout}"
                  th:label="#{navigation.logout}">
@@ -96,6 +74,37 @@
         </ul>
       </details>
     </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<header th:fragment="topBar">
+  <div class="topbar p-responsive d-flex flex-justify-between flex-items-center hide-md hide-sm">
+    <div class="text-white">
+      <i class="logo octicon octicon-repo-clone"></i>
+    </div>
+    <div class="search ml-3" sec:authorize="hasAuthority('ADMIN')">
+      <form method="get" th:action="@{/admin/inventory/history/}">
+        <input autocomplete="off" class="form-control input-block input-sm"
+               name="q"
+               th:placeholder="#{inventory.history.search}" type="text"/>
+      </form>
+    </div>
+    <nav class="navigation flex-auto text-left ml-3">
+      <a class="navlink" th:href="@{/}" th:text="#{navigation.home}">navigation.home</a>
+      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory/history}"
+         th:text="#{inventory.history}">inventory.history</a>
+      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/inventory}"
+         th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
+      <a class="navlink" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/users}"
+         th:text="#{navigation.userManagement}">navigation.userManagement</a>
+    </nav>
+    <div th:replace="this :: userUtils"></div>
+  </div>
+  <div class="topbar p-responsive d-flex flex-justify-between flex-items-center d-md-none">
+    <i class="text-white octicon mega-octicon octicon-three-bars"></i>
+    <i class="text-white logo octicon octicon-repo-clone"></i>
+    <div th:replace="this :: userUtils"></div>
   </div>
 </header>
 

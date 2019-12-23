@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class InventoryItemDto implements FormDto {
+public class InventoryItemDto {
 
   @NotNull(message = "{validations.notNull.message}")
   private ItemCategory itemCategory;

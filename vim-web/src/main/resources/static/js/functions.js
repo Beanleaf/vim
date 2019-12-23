@@ -110,3 +110,37 @@ function debounce(func, wait, immediate) {
     }
   };
 }
+
+function checkFormGroupControl(url, domElement, successClass, errorClass,
+    data) {
+  const value = domElement.val();
+  const formGroup = domElement.closest(".form-group");
+  if (value.length) {
+    $.ajax({
+      url: url,
+      method: "GET",
+      data: data,
+      success: function (result) {
+        formGroup
+        .removeClass(result ? errorClass : successClass)
+        .addClass(result ? successClass : errorClass);
+      },
+    });
+  } else {
+    formGroup.removeClass(successClass);
+    formGroup.removeClass(errorClass);
+  }
+}
+
+function checkUserData(url, domElement, userIdElement, successClass,
+    errorClass) {
+  checkFormGroupControl(
+      url,
+      domElement,
+      successClass,
+      errorClass,
+      {
+        "toCheck": domElement.val(),
+        "id": userIdElement.length ? userIdElement.val() : null
+      })
+}

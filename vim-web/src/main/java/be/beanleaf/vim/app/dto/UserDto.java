@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class UserDto implements FormDto {
+public class UserDto {
 
   @NotEmpty(message = "{validations.notEmpty.message}")
   private String name;

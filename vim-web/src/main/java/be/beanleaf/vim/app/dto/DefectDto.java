@@ -1,6 +1,6 @@
 package be.beanleaf.vim.app.dto;
 
-public class DefectDto implements FormDto {
+public class DefectDto {
 
   String comment;
 

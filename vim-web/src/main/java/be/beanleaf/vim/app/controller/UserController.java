@@ -3,6 +3,7 @@ package be.beanleaf.vim.app.controller;
 import be.beanleaf.datatable.DataTable;
 import be.beanleaf.datatable.DataTableColumn;
 import be.beanleaf.vim.app.VimSession;
+import be.beanleaf.vim.app.dto.ProfileDto;
 import be.beanleaf.vim.app.dto.UserDto;
 import be.beanleaf.vim.app.services.VimMailService;
 import be.beanleaf.vim.app.utils.MessageType;
@@ -207,7 +208,27 @@ public class UserController extends VimController {
       @PathVariable(required = false) String subview,
       Model model) {
     User user = getVimSession().getActiveUser();
-    model.addAttribute("user", user);
+    model.addAttribute(new ProfileDto(user.getName(), user.getEmailAddress(), user.getLanguageTag(),
+        user.getId()));
+    model.addAttribute(user);
+    return VIEW_PROFILE;
+  }
+
+  @PostMapping(URL_PROFILE)
+  public String editUserPost(
+      @Valid @ModelAttribute ProfileDto profileDto,
+      BindingResult bindingResult,
+      Model model) {
+    model.addAttribute(profileDto);
+    User user = getVimSession().getActiveUser();
+    model.addAttribute(user);
+    if (!bindingResult.hasErrors()) {
+      userService.updateEmail(user, profileDto.getEmail());
+      userService.updateLanguage(user, profileDto.getLanguageTag());
+      model.addAttribute(new ToastMessage(MessageType.SUCCESS,
+          "notifications.profile.editSuccess", true));
+      getVimSession().setActiveUser(user);
+    }
     return VIEW_PROFILE;
   }
 }

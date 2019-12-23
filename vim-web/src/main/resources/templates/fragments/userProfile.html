@@ -44,26 +44,32 @@
 </nav>
 
 <div th:fragment="userOverview">
-  <form action="" class="" method="">
+  <form autocomplete="off" method="post" th:action="@{''}" th:object="${profileDto}">
+    <input id="userId" name="userId" th:value="${activeUser.getId()}" type="hidden"/>
     <dl class="form-group">
       <dt><label for="name"><span th:text="#{user.name}"></span>:</label></dt>
+      <dd class="error" th:errors="*{name}">First name error</dd>
       <dd>
-        <input class="form-control" id="name" name="name" th:value="${user.getName()}" type="text"/>
+        <input class="form-control" id="name" name="name" th:field="*{name}" type="text"/>
         <div class="note" th:text="#{profile.nameNote}"></div>
       </dd>
     </dl>
     <dl class="form-group">
       <dt><label for="email"><span th:text="#{user.email}"></span>:</label></dt>
       <dd>
-        <input class="form-control" id="email" name="email" th:value="${user.getEmailAddress()}"
+        <input class="form-control emailCheck" id="email" name="email" th:field="*{email}"
                type="text"/>
         <div class="note" th:text="#{profile.emailNote}"></div>
       </dd>
+      <dd class="success" th:text="#{users.emailAvailable}"></dd>
+      <dd class="error" th:errors="*{email}"></dd>
+      <dd class="error" th:text="#{users.emailInUse}"
+          th:unless="${#fields.hasErrors('email')}"></dd>
     </dl>
     <dl class="form-group">
       <dt><label for="language"><span th:text="#{language}"></span>:</label></dt>
       <dd>
-        <select class="form-control" id="language" name="language">
+        <select class="form-control" id="language" name="language" th:field="*{languageTag}">
           <option th:each="languageTag : ${supportedLanguageTags}"
                   th:text="#{language.__${languageTag}__}"
                   th:value="${languageTag}">

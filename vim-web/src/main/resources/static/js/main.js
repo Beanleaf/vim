@@ -48,3 +48,34 @@ $("input[data-type='currency']").on({
     formatDecimal($(this), true, $(this).attr("data-currency-divider"));
   }
 });
+
+const debounceDelay = 500;
+const successClass = "successful";
+const errorClass = "errored";
+
+const emailCheckUrl = "/admin/user/emailCheck";
+$(".emailCheck").on({
+  keyup: debounce(function () {
+    checkUserData(emailCheckUrl,
+        $(this), $("#userId"),
+        successClass, errorClass)
+  }, debounceDelay),
+  blur: function () {
+    checkUserData(emailCheckUrl,
+        $(this), $("#userId"),
+        successClass, errorClass)
+  }
+});
+const usernameCheckUrl = "/admin/user/usernameCheck";
+$(".usernameCheck").on({
+  keyup: debounce(function () {
+    checkUserData(usernameCheckUrl,
+        $(this), $("#userId"),
+        successClass, errorClass)
+  }, debounceDelay),
+  blur: function () {
+    checkUserData(usernameCheckUrl,
+        $(this), $("#userId"),
+        successClass, errorClass)
+  }
+});

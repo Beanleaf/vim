@@ -158,4 +158,14 @@ public class UserService {
       throw new ValidationException("error.user.notDeletable");
     }
   }
+
+  @Transactional
+  public void updateEmail(User user, String email) {
+    user.setEmailAddress(email);
+  }
+
+  @Transactional
+  public void updateLanguage(User user, String languageTag) {
+    user.setLanguageTag(languageTag);
+  }
 }

@@ -30,7 +30,8 @@
     <dl class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'errored'">
       <dt><label for="username" th:text="#{user.username}"></label></dt>
       <dd>
-        <input class="form-control" id="username" maxlength="10" th:field="*{username}"
+        <input class="form-control usernameCheck" id="username" maxlength="10"
+               th:field="*{username}"
                type="text"/>
       </dd>
       <dd class="success" th:text="#{users.usernameAvailable}"></dd>
@@ -41,7 +42,7 @@
     <dl class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'errored'">
       <dt><label for="email" th:text="#{user.email}"></label></dt>
       <dd>
-        <input class="form-control" id="email" th:field="*{email}" type="text"/>
+        <input class="form-control emailCheck" id="email" th:field="*{email}" type="text"/>
       </dd>
       <dd class="success" th:text="#{users.emailAvailable}"></dd>
       <dd class="error" th:errors="*{email}"></dd>
@@ -107,46 +108,4 @@
 </div>
 </body>
 <footer th:replace="fragments/footer :: footer"></footer>
-<script type="text/javascript">
-  const usernameCheckUrl = "/admin/user/usernameCheck";
-  const emailCheckUrl = "/admin/user/emailCheck";
-  const successClass = "successful";
-  const errorClass = "errored";
-
-  function check(url, htmlElement) {
-    const value = htmlElement.val();
-    const formGroup = htmlElement.closest(".form-group");
-    const userIdElement = $("#userId");
-    const originalId = userIdElement.length ? userIdElement.val() : null;
-    formGroup.removeClass(successClass);
-    formGroup.removeClass(errorClass);
-    if (value.length) {
-      $.ajax({
-        url: url,
-        method: "GET",
-        data: {"toCheck": value, "id": originalId},
-        success: function (result) {
-          formGroup.addClass(result ? successClass : errorClass);
-        }
-      });
-    }
-  }
-
-  $("#username").on({
-    keyup: debounce(function () {
-      check(usernameCheckUrl, $("#username"))
-    }, 500),
-    blur: function () {
-      check(usernameCheckUrl, $("#username"))
-    }
-  });
-  $("#email").on({
-    keyup: debounce(function () {
-      check(emailCheckUrl, $("#email"))
-    }, 500),
-    blur: function () {
-      check(emailCheckUrl, $("#email"))
-    }
-  });
-</script>
 </html>

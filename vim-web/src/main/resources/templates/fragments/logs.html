@@ -32,7 +32,7 @@
             <div class="mt-1 text-small text-gray">
               <i class="octicon octicon-clock"></i>
               <span th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}"></span>
-              <span class="tooltipped tooltipped-n"
+              <span class="tooltipped tooltipped-n d-none d-lg-inline"
                     th:attr="aria-label=#{inventory.item.brand}"
                     th:unless="${#strings.isEmpty(item.getBrand())}">
               <i class="ml-2 octicon octicon-tag"></i>
@@ -41,7 +41,8 @@
             </div>
           </div>
           <div class="float-right col-3 pt-2 d-flex flex-justify-between">
-            <span class="col-6" th:text="${item.getItemCategory().getDescription()}"></span>
+            <span class="col-6 d-none d-lg-inline"
+                  th:text="${item.getItemCategory().getDescription()}"></span>
             <div class="col-6 pr-2"
                  th:if="${log.getInventoryDirection().equals(InventoryDirection.IN)}">
               <button class="btn-octicon btn-octicon-danger float-right openBoxForm"

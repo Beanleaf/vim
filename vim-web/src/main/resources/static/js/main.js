@@ -1,7 +1,5 @@
 $("#hamburger-toggle").click(function () {
-  let hamburgerNav = $("#hamburger-nav");
-  hamburgerNav.toggleClass("d-sm-none");
-  hamburgerNav.toggleClass("d-md-none");
+  $("#hamburger-nav").toggleClass("d-none");
 });
 
 $(".js-flash-close").click(function () {

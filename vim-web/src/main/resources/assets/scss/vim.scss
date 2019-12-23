@@ -25,10 +25,15 @@ footer a.icon {
     border: none;
 
     &:focus {
-      min-width: 300px;
       outline: none;
       background: $white;
       color: $gray-900;
+    }
+
+    @media (min-width: $width-lg) {
+      &:focus {
+        min-width: 300px;
+      }
     }
   }
 }
@@ -193,4 +198,8 @@ details:not([open]) > :not(summary) {
       font-weight: $fw-bold;
     }
   }
+}
+
+.logo {
+  font-size: 20px;
 }

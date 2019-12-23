@@ -1,6 +1,7 @@
 package be.beanleaf.vim.app.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class WebUtils {
 
@@ -13,5 +14,16 @@ public abstract class WebUtils {
 
   public static String getGravatarImgSrc(String email, int size) {
     return getGravatarImgSrc(email, size, "blank");
+  }
+
+  public static String getExactPatternMatch(String input) {
+    if (StringUtils.isEmpty(input)) {
+      return "";
+    }
+    StringBuilder pattern = new StringBuilder();
+    for (int i = 0; i < input.length(); i++) {
+      pattern.append("[").append(input.charAt(i)).append("]");
+    }
+    return pattern.toString();
   }
 }

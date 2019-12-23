@@ -2,12 +2,14 @@ package be.beanleaf.vim.app.controller;
 
 import be.beanleaf.datatable.DataTable;
 import be.beanleaf.datatable.DataTableColumn;
+import be.beanleaf.vim.app.VimSecurityConfiguration;
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.dto.ProfileDto;
 import be.beanleaf.vim.app.dto.UserDto;
 import be.beanleaf.vim.app.services.VimMailService;
 import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
+import be.beanleaf.vim.app.utils.WebUtils;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.services.UserService;
 import java.util.HashMap;
@@ -40,7 +42,9 @@ public class UserController extends VimController {
   private static final String URL_EDIT_USER = "/admin/users/edit";
   private static final String URL_INACTIVATE_USER = "/admin/users/inactivate";
   private static final String URL_PROFILE = "/profile";
-  private static final String VIEW_PROFILE = "profile";
+  private static final String VIEW_PROFILE = "user/profile";
+  private static final String URL_CONFIRM_DELETE = "/user/confirmDelete";
+  private static final String VIEW_PROFILE_DELETE = "user/delete";
 
   private final UserService userService;
   private final VimMailService vimMailService;
@@ -203,10 +207,8 @@ public class UserController extends VimController {
     return originalUser == userByEmailAddress || userByEmailAddress == null;
   }
 
-  @GetMapping(value = {URL_PROFILE, URL_PROFILE + "/{subview}"})
-  public String profile(
-      @PathVariable(required = false) String subview,
-      Model model) {
+  @GetMapping(URL_PROFILE)
+  public String profile(Model model) {
     User user = getVimSession().getActiveUser();
     model.addAttribute(new ProfileDto(user.getName(), user.getEmailAddress(), user.getLanguageTag(),
         user.getId()));
@@ -230,5 +232,29 @@ public class UserController extends VimController {
       getVimSession().setActiveUser(user);
     }
     return VIEW_PROFILE;
+  }
+
+  @GetMapping(URL_PROFILE + "/delete")
+  public String profileLogs(Model model) {
+    User user = getVimSession().getActiveUser();
+    model.addAttribute(user);
+    model.addAttribute("usernamePattern", WebUtils.getExactPatternMatch(user.getUsername()));
+    return VIEW_PROFILE_DELETE;
+  }
+
+  @GetMapping(URL_CONFIRM_DELETE)
+  public String profileDelete(@RequestParam String verify, Model model) {
+    User activeUser = getVimSession().getActiveUser();
+    if (activeUser.getUsername().equals(verify)) {
+      if (userService.isDeletable(activeUser)) {
+        userService.delete(activeUser);
+      } else {
+        userService.deactivateUser(activeUser);
+      }
+      return redirect(VimSecurityConfiguration.URL_LOGOUT);
+    }
+
+    model.addAttribute("error", true);
+    return VIEW_PROFILE_DELETE;
   }
 }

@@ -83,3 +83,19 @@ $(".usernameCheck").on({
         successClass, errorClass)
   }
 });
+
+$("input[name='verify']").on({
+  keyup: function () {
+    let valid = $(this)[0].checkValidity();
+    const elements = $(this).closest("form").find(".disable-invalid");
+    if ($(this).val().length > 0 && valid) {
+      elements.each(function () {
+        $(this).prop("disabled", false);
+      });
+    } else {
+      elements.each(function () {
+        $(this).prop("disabled", true);
+      });
+    }
+  }
+});

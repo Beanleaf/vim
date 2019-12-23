@@ -11,7 +11,16 @@
   </div>
   <div class="col-lg-9 col-md-8 col-12 float-md-left pl-md-2">
     <nav th:replace="fragments/userProfile :: userProfileNavigation"></nav>
-    <div th:replace="fragments/userProfile :: userOverview"></div>
+    <div class="flash flash-warn my-2" th:text="#{warning}"></div>
+    <p th:utext="#{profile.deleteNote}">
+    </p>
+    <p class="flash flash-error" th:if="${error}" th:text="#{profile.deleteError}"></p>
+    <form autocomplete="off" method="get" th:action="@{/user/confirmDelete}">
+      <p><input class="form-control" name="verify" th:pattern="${usernamePattern}" type="text"/></p>
+      <button class="btn btn-danger disable-invalid" disabled th:text="#{profile.deleteConfirm}"
+              type="submit"
+      ></button>
+    </form>
   </div>
 </div>
 </body>

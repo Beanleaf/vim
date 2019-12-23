@@ -134,7 +134,7 @@
          th:text="#{navigation.login}"
          th:unless="${activeUser}">navigation.login</a>
       <details class="dropdown details-reset details-overlay d-inline-block" th:if="${activeUser}">
-        <summary class="Header-link">
+        <summary class="Header-link outline-none">
           <img class="mr-2 v-align-middle" height="20"
                th:src="${webUtils.getGravatarImgSrc(activeUser.getEmailAddress(),20, 'identicon')}"
                width="20"/>

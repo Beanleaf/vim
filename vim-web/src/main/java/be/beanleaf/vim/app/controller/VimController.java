@@ -73,6 +73,10 @@ public abstract class VimController {
   }
 
   public Locale getLocale() {
+    Locale userLocale = LocaleUtils.getUserLocale(getVimSession().getActiveUser());
+    if (userLocale != null) {
+      return userLocale;
+    }
     return LocaleContextHolder.getLocale();
   }
 

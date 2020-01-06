@@ -5,10 +5,16 @@ import java.util.List;
 public class ChartDto {
 
   private String title;
+  private String type;
   private List<ChartPointDto> points;
 
   public ChartDto(String title, List<ChartPointDto> points) {
+    this(title, null, points);
+  }
+
+  public ChartDto(String title, String type, List<ChartPointDto> points) {
     this.title = title;
+    this.type = type;
     this.points = points;
   }
 
@@ -16,16 +22,12 @@ public class ChartDto {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
   public List<ChartPointDto> getPoints() {
     return points;
   }
 
-  public void setPoints(List<ChartPointDto> points) {
-    this.points = points;
+  public String getType() {
+    return type;
   }
 
   public static class ChartPointDto {

@@ -11,6 +11,7 @@
     //<![CDATA[
     let dps = /*[[${chart.getPoints()}]]*/ [];
     let titleText = /*[[${chart.getTitle()}]]*/ "";
+    let type = /*[[${chart.getType()}]]*/ "line";
     //]]
 
     // filter out null values
@@ -32,7 +33,7 @@
         includeZero: false
       },
       data: [{
-        type: "line",
+        type: type,
         dataPoints: dps
       }]
     });

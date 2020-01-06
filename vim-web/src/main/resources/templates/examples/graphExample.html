@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Test 2</title>
+</head>
+<body>
+<!-- Model attribute "chart" must exist -->
+<script th:inline="javascript">
+  window.onload = function () {
+    //<![CDATA[
+    let dps = /*[[${chart.getPoints()}]]*/ [];
+    let titleText = /*[[${chart.getTitle()}]]*/ "";
+    //]]
+
+    // filter out null values
+    dps = dps.filter(function (e) {
+      Object.keys(e).forEach(
+          (key) => (e[key] == null) && delete e[key]
+      );
+      return e != null;
+    });
+    console.log(dps);
+
+    let chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      theme: "light2",
+      title: {
+        text: titleText
+      },
+      axisY: {
+        includeZero: false
+      },
+      data: [{
+        type: "line",
+        dataPoints: dps
+      }]
+    });
+    chart.render();
+  }
+</script>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

@@ -1,45 +1,30 @@
 package be.beanleaf.vim.app.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChartDto {
 
-  private String title;
-  private List<ChartPointDto> points;
+  private List<ChartDataSetDto> datasets;
+  private List<String> labels = new ArrayList<>();
   private boolean beginYAtZero;
   private String type;
   private boolean show0Values;
-  private Integer borderWidth;
   private boolean legendDisplay;
 
-  public ChartDto(String title, List<ChartPointDto> points, String type, boolean beginYAtZero) {
-    this.title = title;
-    this.points = points;
+  public ChartDto(String type, boolean beginYAtZero) {
     this.type = type;
     this.beginYAtZero = beginYAtZero;
     setShow0Values(true);
-    setBorderWidth(1);
     setLegendDisplay(true);
   }
 
-  public ChartDto(String title, List<ChartPointDto> points) {
-    this(title, points, "line", true);
+  public List<ChartDataSetDto> getDatasets() {
+    return datasets;
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public List<ChartPointDto> getPoints() {
-    return points;
-  }
-
-  public void setPoints(List<ChartPointDto> points) {
-    this.points = points;
+  public void setDatasets(List<ChartDataSetDto> datasets) {
+    this.datasets = datasets;
   }
 
   public boolean isBeginYAtZero() {
@@ -66,19 +51,19 @@ public class ChartDto {
     this.show0Values = show0Values;
   }
 
-  public Integer getBorderWidth() {
-    return borderWidth;
-  }
-
-  public void setBorderWidth(Integer borderWidth) {
-    this.borderWidth = borderWidth;
-  }
-
   public boolean isLegendDisplay() {
     return legendDisplay;
   }
 
   public void setLegendDisplay(boolean legendDisplay) {
     this.legendDisplay = legendDisplay;
+  }
+
+  public List<String> getLabels() {
+    return labels;
+  }
+
+  public void addLabel(String label) {
+    this.labels.add(label);
   }
 }

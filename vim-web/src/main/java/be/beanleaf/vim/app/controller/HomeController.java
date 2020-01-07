@@ -1,17 +1,16 @@
 package be.beanleaf.vim.app.controller;
 
 import be.beanleaf.vim.app.VimSession;
+import be.beanleaf.vim.app.dto.ChartDataSetDto;
 import be.beanleaf.vim.app.dto.ChartDto;
-import be.beanleaf.vim.app.dto.ChartPointDto;
 import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.services.InventoryLogService;
 import java.text.DateFormat;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,17 +32,18 @@ public class HomeController extends VimController {
 
   private void addRecentLogsGraph(Model model) {
     Instant today = Instant.now();
-    List<ChartPointDto> points = new ArrayList<>();
+    ChartDto chartDto = new ChartDto("bar", true);
+    ChartDataSetDto logsDataSet = new ChartDataSetDto("logs");
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, getLocale());
     for (int i = 0; i <= 30; i++) {
       Date date = Date.from(today.minus(Duration.ofDays(i)));
-      String label = df.format(date);
       long count = inventoryLogService.countLogsByDate(date);
       if (count > 0) {
-        points.add(new ChartPointDto(label, count));
+        chartDto.addLabel(df.format(date));
+        logsDataSet.addData(count, "#b392f0", "#6f42c1");
       }
     }
-    ChartDto chartDto = new ChartDto("logs", points, "bar", true);
+    chartDto.setDatasets(Collections.singletonList(logsDataSet));
     chartDto.setLegendDisplay(false);
     model.addAttribute("chart", chartDto);
   }

@@ -26,37 +26,25 @@
            th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
       </p>
 
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
       <h3 th:text="#{inventory.history}"></h3>
       <span class="text-gray" th:text="#{passedDays('30')}"></span>
       <canvas class="mt-2 chart" id="logChart"></canvas>
-      <script th:inline="javascript"
-              th:with="ChartUtils=${T(be.beanleaf.vim.app.utils.ChartUtils)}">
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+      <script th:inline="javascript">
         //<![CDATA[
         let chart = [];
-        chart["title"] = /*[[${chart.getTitle()}]]*/ "";
         chart["type"] = /*[[${chart.getType()}]]*/ "line";
-        chart["labels"] = /*[[${ChartUtils.getLabels(chart)}]]*/ [];
-        chart["data"] = /*[[${ChartUtils.getData(chart)}]]*/ [];
-        chart["backgroundColors"] = /*[[${ChartUtils.getBackgroundColors(chart)}]]*/ [];
-        chart["borderColors"] = /*[[${ChartUtils.getBorderColors(chart)}]]*/ [];
+        chart["labels"] = /*[[${chart.getLabels()}]]*/ [];
         chart["beginYAtZero"] = /*[[${chart.isBeginYAtZero()}]]*/ false;
-        chart["borderWidth"] = /*[[${chart.getBorderWidth()}]]*/ 1;
         chart["displayLegend"] = /*[[${chart.isLegendDisplay()}]]*/ true;
+        chart["datasets"] = /*[[${chart.getDatasets()}]]*/[];
         //]]
 
         new Chart(document.getElementById("logChart"), {
           type: chart["type"],
           data: {
             labels: chart["labels"],
-            datasets: [{
-              label: chart["title"],
-              data: chart["data"],
-              backgroundColor: chart["backgroundColors"] == null ? "#b392f0"
-                  : chart["backgroundColors"],
-              borderColor: chart["borderColors"] == null ? "#6f42c1" : chart["borderColors"],
-              borderWidth: chart["borderWidth"]
-            }]
+            datasets: chart["datasets"]
           },
           options: {
             legend: {

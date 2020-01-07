@@ -55,8 +55,7 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(item.getCurrentStatus()).isEqualTo(ItemStatus.DEFECT);
   }
 
-  @Test
-  void searchLogs() {
+  private void persistTestLogs() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     User user = UserFixture.newUser("bob", "uuid", "mail");
     user.setName("Bob");
@@ -65,9 +64,21 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
         InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
     inventoryLogService.log(item, user, InventoryDirection.IN, ItemStatus.AVAILABLE);
     inventoryLogService.log(item, user, InventoryDirection.OUT, ItemStatus.LEND);
+  }
+
+  @Test
+  void searchLogs() {
+    persistTestLogs();
     Date date = Date.from(Instant.now());
     List<InventoryLog> searchResult = inventoryLogService
         .searchLogs("%bob%", null, date, Pageable.unpaged());
     assertThat(searchResult.size()).isEqualTo(2);
+  }
+
+  @Test
+  void countLogsByDate() {
+    persistTestLogs();
+    Date today = Date.from(Instant.now());
+    assertThat(inventoryLogService.countLogsByDate(today)).isEqualTo(2);
   }
 }

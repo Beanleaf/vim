@@ -25,4 +25,6 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
   long countAllByInventoryItem(InventoryItem item);
 
   long countAllByUser(User user);
+
+  long countAllByTimestampBetween(Date startDate, Date endDate);
 }

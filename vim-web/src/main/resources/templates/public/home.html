@@ -19,9 +19,64 @@
       <a class="btn BtnGroup-item btn-large" th:href="@{/inventory/scan/out}"
          th:text="#{inventory.actions.out.title}">Scan out</a>
     </div>
-    <p sec:authorize="hasAuthority('ADMIN')">
-      <a class="btn-link" th:href="@{/admin/inventory}" th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
-    </p>
+
+    <div sec:authorize="hasAuthority('ADMIN')">
+      <p>
+        <a class="btn-link" th:href="@{/admin/inventory}"
+           th:text="#{navigation.inventoryManagement}">navigation.inventoryManagement</a>
+      </p>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+      <h3 th:text="#{inventory.history}"></h3>
+      <span class="text-gray" th:text="#{passedDays('30')}"></span>
+      <canvas class="mt-2 chart" id="logChart"></canvas>
+      <script th:inline="javascript"
+              th:with="ChartUtils=${T(be.beanleaf.vim.app.utils.ChartUtils)}">
+        //<![CDATA[
+        let chart = [];
+        chart["title"] = /*[[${chart.getTitle()}]]*/ "";
+        chart["type"] = /*[[${chart.getType()}]]*/ "line";
+        chart["labels"] = /*[[${ChartUtils.getLabels(chart)}]]*/ [];
+        chart["data"] = /*[[${ChartUtils.getData(chart)}]]*/ [];
+        chart["backgroundColors"] = /*[[${ChartUtils.getBackgroundColors(chart)}]]*/ [];
+        chart["borderColors"] = /*[[${ChartUtils.getBorderColors(chart)}]]*/ [];
+        chart["beginYAtZero"] = /*[[${chart.isBeginYAtZero()}]]*/ false;
+        chart["borderWidth"] = /*[[${chart.getBorderWidth()}]]*/ 1;
+        chart["displayLegend"] = /*[[${chart.isLegendDisplay()}]]*/ true;
+        //]]
+
+        new Chart(document.getElementById("logChart"), {
+          type: chart["type"],
+          data: {
+            labels: chart["labels"],
+            datasets: [{
+              label: chart["title"],
+              data: chart["data"],
+              backgroundColor: chart["backgroundColors"] == null ? "#b392f0"
+                  : chart["backgroundColors"],
+              borderColor: chart["borderColors"] == null ? "#6f42c1" : chart["borderColors"],
+              borderWidth: chart["borderWidth"]
+            }]
+          },
+          options: {
+            legend: {
+              display: chart["displayLegend"]
+            },
+            scales: {
+              xAxes: [{gridLines: {display: false}}],
+              yAxes: [{
+                gridLines: {drawBorder: false},
+                ticks: {
+                  padding: 20,
+                  beginAtZero: chart["beginYAtZero"]
+                }
+              }]
+            }
+          }
+        });
+      </script>
+    </div>
+
   </div>
   <div class="blankslate mt-3" th:unless="${activeUser}">
     <i class="octicon mega-octicon octicon-key blankslate-icon"></i>

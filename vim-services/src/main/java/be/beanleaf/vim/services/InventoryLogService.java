@@ -6,6 +6,7 @@ import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryLogRepository;
+import be.beanleaf.vim.utils.DateUtils;
 import be.beanleaf.vim.utils.SpecificationUtils;
 import java.time.Duration;
 import java.time.Instant;
@@ -91,13 +92,19 @@ public class InventoryLogService {
   }
 
   @Transactional(readOnly = true)
-  public long countLogs(InventoryItem inventoryItem) {
+  public long countLogsByInventoryItem(InventoryItem inventoryItem) {
     return inventoryLogRepository.countAllByInventoryItem(inventoryItem);
   }
 
   @Transactional(readOnly = true)
-  public long countLogs(User user) {
+  public long countLogsByUser(User user) {
     return inventoryLogRepository.countAllByUser(user);
+  }
+
+  @Transactional(readOnly = true)
+  public long countLogsByDate(Date date) {
+    return inventoryLogRepository
+        .countAllByTimestampBetween(DateUtils.atStartOfDay(date), DateUtils.atEndOfDay(date));
   }
 
   @Transactional(readOnly = true)

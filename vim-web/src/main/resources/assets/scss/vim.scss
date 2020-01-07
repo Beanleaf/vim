@@ -203,3 +203,8 @@ details:not([open]) > :not(summary) {
 .logo {
   font-size: 20px;
 }
+
+.chart {
+  padding: 10px;
+  background-color: $gray-100;
+}

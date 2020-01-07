@@ -5,87 +5,80 @@ import java.util.List;
 public class ChartDto {
 
   private String title;
-  private String type;
   private List<ChartPointDto> points;
+  private boolean beginYAtZero;
+  private String type;
+  private boolean show0Values;
+  private Integer borderWidth;
+  private boolean legendDisplay;
 
-  public ChartDto(String title, List<ChartPointDto> points) {
-    this(title, null, points);
+  public ChartDto(String title, List<ChartPointDto> points, String type, boolean beginYAtZero) {
+    this.title = title;
+    this.points = points;
+    this.type = type;
+    this.beginYAtZero = beginYAtZero;
+    setShow0Values(true);
+    setBorderWidth(1);
+    setLegendDisplay(true);
   }
 
-  public ChartDto(String title, String type, List<ChartPointDto> points) {
-    this.title = title;
-    this.type = type;
-    this.points = points;
+  public ChartDto(String title, List<ChartPointDto> points) {
+    this(title, points, "line", true);
   }
 
   public String getTitle() {
     return title;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public List<ChartPointDto> getPoints() {
     return points;
+  }
+
+  public void setPoints(List<ChartPointDto> points) {
+    this.points = points;
+  }
+
+  public boolean isBeginYAtZero() {
+    return beginYAtZero;
+  }
+
+  public void setBeginYAtZero(boolean beginYAtZero) {
+    this.beginYAtZero = beginYAtZero;
   }
 
   public String getType() {
     return type;
   }
 
-  public static class ChartPointDto {
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    private Integer X;
-    private Integer Y;
-    private String label;
-    private String indexLabel;
+  public boolean isShow0Values() {
+    return show0Values;
+  }
 
-    public ChartPointDto(Integer x, Integer y, String label, String indexLabel) {
-      this.X = x;
-      this.Y = y;
-      this.label = label;
-      this.indexLabel = indexLabel;
-    }
+  public void setShow0Values(boolean show0Values) {
+    this.show0Values = show0Values;
+  }
 
-    public ChartPointDto(Integer x, Integer y) {
-      this(x, y, null, null);
-    }
+  public Integer getBorderWidth() {
+    return borderWidth;
+  }
 
-    public ChartPointDto(String label, Integer y) {
-      this(null, y, label, null);
-    }
+  public void setBorderWidth(Integer borderWidth) {
+    this.borderWidth = borderWidth;
+  }
 
-    public ChartPointDto(String label, Integer y, String indexLabel) {
-      this(null, y, label, indexLabel);
-    }
+  public boolean isLegendDisplay() {
+    return legendDisplay;
+  }
 
-    public Integer getX() {
-      return X;
-    }
-
-    public void setX(Integer x) {
-      X = x;
-    }
-
-    public Integer getY() {
-      return Y;
-    }
-
-    public void setY(Integer y) {
-      Y = y;
-    }
-
-    public String getLabel() {
-      return label;
-    }
-
-    public void setLabel(String label) {
-      this.label = label;
-    }
-
-    public String getIndexLabel() {
-      return indexLabel;
-    }
-
-    public void setIndexLabel(String indexLabel) {
-      this.indexLabel = indexLabel;
-    }
+  public void setLegendDisplay(boolean legendDisplay) {
+    this.legendDisplay = legendDisplay;
   }
 }

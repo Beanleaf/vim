@@ -33,7 +33,7 @@ public class HomeController extends VimController {
   private void addRecentLogsGraph(Model model) {
     Instant today = Instant.now();
     ChartDto chartDto = new ChartDto("bar", true);
-    ChartDataSetDto logsDataSet = new ChartDataSetDto("logs");
+    ChartDataSetDto logsDataSet = new ChartDataSetDto("");
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, getLocale());
     for (int i = 0; i <= 30; i++) {
       Date date = Date.from(today.minus(Duration.ofDays(i)));

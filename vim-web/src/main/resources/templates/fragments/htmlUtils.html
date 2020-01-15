@@ -29,4 +29,11 @@
     </div>
   </details>
 </div>
+
+<span th:fragment="flag-icon(languageTag)">
+  <th:block th:switch="${languageTag}">
+    <span class="flag-icon flag-icon-nl" th:case="'nl'"></span>
+    <span class="flag-icon flag-icon-gb" th:case="'en'"></span>
+  </th:block>
+</span>
 </html>

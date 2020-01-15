@@ -27,6 +27,26 @@
       </span>
     </div>
   </form>
+
+  <div class="text-center">
+    <details class="dropdown details-reset details-overlay d-inline-block">
+      <summary class="outline-none">
+        <span th:include="fragments/htmlUtils :: flag-icon(${htmlLang})"></span>
+        <div class="dropdown-caret"></div>
+      </summary>
+      <ul class="dropdown-menu dropdown-menu-sw text-left"
+          th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+        <li th:each="languageTag : ${supportedLanguageTags}">
+          <a class="dropdown-item"
+             th:href="@{${urlBuilder.replaceQueryParam('lang', languageTag).build().toUriString()}}"
+          >
+            <span th:include="fragments/htmlUtils :: flag-icon(${languageTag})"></span>
+            <span class="ml-1" th:text="#{language.__${languageTag}__}"></span>
+          </a>
+        </li>
+      </ul>
+    </details>
+  </div>
 </div>
 
 </body>

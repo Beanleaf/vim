@@ -4,6 +4,7 @@ import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
+import java.util.Date;
 
 public abstract class InventoryItemFixture {
 
@@ -13,6 +14,7 @@ public abstract class InventoryItemFixture {
     inventoryItem.setItemCategory(itemCategory);
     inventoryItem.setAddedByUser(user);
     inventoryItem.setCurrentStatus(status);
+    inventoryItem.setAddedOn(new Date());
     return inventoryItem;
   }
 

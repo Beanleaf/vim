@@ -10,7 +10,9 @@ import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.InventoryLogFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
+import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -73,6 +75,23 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     List<InventoryItem> items = inventoryItemService.findAll(Pageable.unpaged());
     assertThat(items).hasSize(2);
     assertThat(items.get(0).getDescription()).contains("#");
+  }
+
+  @Test
+  void calculateValueOnDate() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item1 = InventoryItemFixture.newInventoryItem("uuid", itemCategory, user);
+    item1.setValue(50.00);
+    store(item1);
+    InventoryItem item2 = InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user);
+    item2.setValue(25.50);
+    store(item2);
+    InventoryItem item3 = InventoryItemFixture.newInventoryItem("uuid3", itemCategory, user);
+    item3.setValue(10.00);
+    item3.setAddedOn(DateUtils.addDays(new Date(), 5));
+    store(item3);
+    assertThat(inventoryItemService.findValueOnDate(new Date())).isEqualTo(75.50);
   }
 
   @Test

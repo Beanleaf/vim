@@ -269,7 +269,6 @@ public class InventoryManagementController extends VimController {
             : new DateTime(dateTo).millisOfDay().withMaximumValue().toDate();
     String search = StringUtils.isEmpty(q) ? null : "%" + q + "%";
     DataTable<InventoryLog> logDataTable = new DataTable<InventoryLog>(page, 15) {
-
       @Override
       public long getCount() {
         return inventoryLogService.countLogs(search, from, to);

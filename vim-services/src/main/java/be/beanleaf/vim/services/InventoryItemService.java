@@ -6,8 +6,10 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryitemRepository;
+import be.beanleaf.vim.utils.DateUtils;
 import be.beanleaf.vim.utils.SpecificationUtils;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
@@ -97,6 +99,7 @@ public class InventoryItemService {
     item.setCurrentStatus(ItemStatus.AVAILABLE);
     item.setBrand(brand);
     item.setDeleted(false);
+    item.setAddedOn(new Date());
     return item;
   }
 
@@ -129,6 +132,11 @@ public class InventoryItemService {
       InventoryItem item = createNewItem(category, newDescription, active, brand, user);
       save(item);
     }
+  }
+
+  @Transactional
+  public Double findValueOnDate(Date date) {
+    return inventoryitemRepository.findValueOnDate(DateUtils.atEndOfDay(date));
   }
 
   @Transactional

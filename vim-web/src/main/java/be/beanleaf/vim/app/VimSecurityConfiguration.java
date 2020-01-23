@@ -16,6 +16,7 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final VimAuthenticationProvider vimAuthenticationProvider;
   public static final String URL_LOGOUT = "/logout";
+  private static final String URL_LOGGEDOUT = HomeController.URL_HOME + "?logout";
 
   @Autowired
   public VimSecurityConfiguration(VimAuthenticationProvider vimAuthenticationProvider) {
@@ -31,18 +32,23 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/db/**").denyAll()
           .antMatchers("/css/**").permitAll()
           .antMatchers("/js/**").permitAll()
-        .antMatchers("/favicon.ico").permitAll()
-        .antMatchers("/webjars/octicons/**").permitAll()
-        .antMatchers("/webjars/jquery/**").permitAll()
-        .antMatchers("/").permitAll()
+          .antMatchers("/favicon.ico").permitAll()
+          .antMatchers("/webjars/octicons/**").permitAll()
+          .antMatchers("/webjars/jquery/**").permitAll()
+          .antMatchers("/").permitAll()
         .and()
-        .formLogin()
-        .loginPage(SecurityController.URL_LOGIN)
-        .failureUrl(SecurityController.URL_LOGIN_ERROR)
+          .formLogin()
+          .loginPage(SecurityController.URL_LOGIN)
+          .failureUrl(SecurityController.URL_LOGIN_ERROR)
         .and()
-        .logout()
-        .logoutUrl(URL_LOGOUT)
-          .logoutSuccessUrl(HomeController.URL_HOME + "?logout");
+          .logout()
+          .logoutUrl(URL_LOGOUT)
+          .logoutSuccessUrl(URL_LOGGEDOUT)
+        .and()
+          .sessionManagement()
+          .invalidSessionUrl(URL_LOGGEDOUT)
+          .maximumSessions(1)
+          .expiredUrl(URL_LOGGEDOUT);
   }
 
   private String[] getAllPossibleUserRoles() {

@@ -2,6 +2,9 @@ package be.beanleaf.vim.app.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 
 public abstract class WebUtils {
 
@@ -25,5 +28,13 @@ public abstract class WebUtils {
       pattern.append("[").append(input.charAt(i)).append("]");
     }
     return pattern.toString();
+  }
+
+  public static HttpHeaders getDownloadHeaders(String filename) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+    headers
+        .setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
+    return headers;
   }
 }

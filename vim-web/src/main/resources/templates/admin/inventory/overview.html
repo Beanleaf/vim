@@ -16,6 +16,10 @@
          th:href="@{/admin/inventory/history}"
          th:text="#{inventory.history}">
       </a>
+      <a class="btn btn-sm" target="_blank" th:href="@{/admin/inventory/downloadQrCodes}"
+         th:text="#{inventory.downloadActiveQr}">
+        Download QR codes
+      </a>
     </div>
     <div class="Subhead-description" th:text="#{inventory.allItems.description}">
       inventory.allItems.description

@@ -4,10 +4,12 @@ import be.beanleaf.datatable.DataTable;
 import be.beanleaf.datatable.DataTableColumn;
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.dto.InventoryItemDto;
+import be.beanleaf.vim.app.services.VimPdfService;
 import be.beanleaf.vim.app.utils.LocaleUtils;
 import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.SelectFilter;
 import be.beanleaf.vim.app.utils.ToastMessage;
+import be.beanleaf.vim.app.utils.WebUtils;
 import be.beanleaf.vim.domain.ItemStatus;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
@@ -27,9 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.CacheControl;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -58,21 +57,25 @@ public class InventoryManagementController extends VimController {
   private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
   private static final String URL_HISTORY = "/admin/inventory/history";
   private static final String VIEW_LOGS = "/admin/inventory/logs";
+  private static final String URL_DOWNLOAD_QR = "/admin/inventory/downloadQrCodes";
 
   private final InventoryItemService inventoryItemService;
   private final InventoryLogService inventoryLogService;
   private final ItemCategoryService itemCategoryService;
   private final QrService qrService;
+  private final VimPdfService vimPdfService;
 
   @Autowired
   public InventoryManagementController(VimSession vimSession, QrService qrService,
       InventoryItemService inventoryItemService, InventoryLogService inventoryLogService,
-      ItemCategoryService itemCategoryService) {
+      ItemCategoryService itemCategoryService,
+      VimPdfService vimPdfService) {
     super(vimSession);
     this.qrService = qrService;
     this.inventoryItemService = inventoryItemService;
     this.inventoryLogService = inventoryLogService;
     this.itemCategoryService = itemCategoryService;
+    this.vimPdfService = vimPdfService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -246,11 +249,15 @@ public class InventoryManagementController extends VimController {
     byte[] imageSrc = qrService.generateQr(inventoryItem.getUuid(), "png", width, height);
     String filename =
         "qr_" + inventoryItemService.getShortCode(inventoryItem).toLowerCase() + ".png";
-    HttpHeaders headers = new HttpHeaders();
-    headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-    headers
-        .setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
-    return new ResponseEntity<>(imageSrc, headers, HttpStatus.OK);
+    return new ResponseEntity<>(imageSrc, WebUtils.getDownloadHeaders(filename), HttpStatus.OK);
+  }
+
+
+  @GetMapping(URL_DOWNLOAD_QR)
+  public ResponseEntity<byte[]> downloadQrCodes() {
+    byte[] pdfSrc = vimPdfService.getQrList(inventoryItemService.findAllActiveItems());
+    String filename = "qr_codes.pdf";
+    return new ResponseEntity<>(pdfSrc, WebUtils.getDownloadHeaders(filename), HttpStatus.OK);
   }
 
   @RequestMapping(URL_HISTORY)

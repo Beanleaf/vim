@@ -2,6 +2,7 @@ package be.beanleaf.vim.repository;
 
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import java.util.Date;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -16,4 +17,6 @@ public interface InventoryitemRepository extends PagingAndSortingRepository<Inve
 
   @Query("select sum(i.value) from InventoryItem i where i.addedOn <= :date")
   Double findValueOnDate(@Param("date") Date date);
+
+  List<InventoryItem> findAllByActiveTrueOrderByDescriptionAsc();
 }

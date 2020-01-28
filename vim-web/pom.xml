@@ -10,6 +10,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <artifactId>itextpdf</artifactId>
+      <groupId>com.itextpdf</groupId>
+      <version>5.5.13.1</version>
+    </dependency>
+    <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.postgresql</groupId>
     </dependency>

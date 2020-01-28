@@ -151,4 +151,9 @@ public class InventoryItemService {
         inventoryItem.getDescription().toUpperCase().substring(0, 5)
     );
   }
+
+  @Transactional(readOnly = true)
+  public List<InventoryItem> findAllActiveItems() {
+    return inventoryitemRepository.findAllByActiveTrueOrderByDescriptionAsc();
+  }
 }

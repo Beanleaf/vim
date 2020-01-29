@@ -16,8 +16,6 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-  </dependencies>
   <groupId>be.beanleaf</groupId>
 
   <modelVersion>4.0.0</modelVersion>
@@ -39,7 +37,7 @@
   </parent>
 
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
   </properties>
   <version>0.0.3-SNAPSHOT</version>
 </project>

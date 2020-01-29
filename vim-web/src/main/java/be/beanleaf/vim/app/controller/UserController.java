@@ -63,7 +63,7 @@ public class UserController extends VimController {
       @RequestParam(required = false) boolean inactive,
       @RequestParam(required = false) String q,
       Model model) {
-    DataTable<User> table = new DataTable<User>(page, 15) {
+    DataTable<User> table = new DataTable<>(page, 15) {
       @Override
       public long getCount() {
         return userService.countUsers(q, !inactive, null);

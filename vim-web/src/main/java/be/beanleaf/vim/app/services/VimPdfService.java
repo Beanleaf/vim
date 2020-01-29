@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class VimPdfService {
@@ -32,6 +33,11 @@ public class VimPdfService {
   }
 
   public byte[] getQrList(List<InventoryItem> items, int numberOfColumns) {
+
+    if (CollectionUtils.isEmpty(items)) {
+      return null;
+    }
+
     try {
       Document document = new Document();
       ByteArrayOutputStream baos = new ByteArrayOutputStream();

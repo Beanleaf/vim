@@ -89,7 +89,7 @@ public class InventoryManagementController extends VimController {
         cat != null ? itemCategoryService.getItemCategory(cat) : null;
     ItemStatus itemStatus = status != null ? ItemStatus.forId(status) : null;
     model.addAttribute("nameFilter", q);
-    DataTable<InventoryItem> table = new DataTable<InventoryItem>(page, 15) {
+    DataTable<InventoryItem> table = new DataTable<>(page, 15) {
       @Override
       public long getCount() {
         return inventoryItemService.countItems(q, itemCategory, itemStatus);
@@ -109,7 +109,7 @@ public class InventoryManagementController extends VimController {
     model.addAttribute("dataTable", table);
     List<ItemCategory> categories = itemCategoryService.findAllCategories();
     model.addAttribute("categoryFilter",
-        new SelectFilter<ItemCategory>("cat", categories, itemCategory) {
+        new SelectFilter<>("cat", categories, itemCategory) {
           @Override
           public String getValue(ItemCategory object) {
             return object.getId().toString();
@@ -121,7 +121,7 @@ public class InventoryManagementController extends VimController {
           }
         });
     model.addAttribute("statusFilter",
-        new SelectFilter<ItemStatus>("status", Arrays.asList(ItemStatus.values()), itemStatus) {
+        new SelectFilter<>("status", Arrays.asList(ItemStatus.values()), itemStatus) {
           @Override
           public String getValue(ItemStatus object) {
             return Integer.toString(object.getId());
@@ -275,7 +275,7 @@ public class InventoryManagementController extends VimController {
         StringUtils.isEmpty(dateTo) ? null
             : new DateTime(dateTo).millisOfDay().withMaximumValue().toDate();
     String search = StringUtils.isEmpty(q) ? null : "%" + q + "%";
-    DataTable<InventoryLog> logDataTable = new DataTable<InventoryLog>(page, 15) {
+    DataTable<InventoryLog> logDataTable = new DataTable<>(page, 15) {
       @Override
       public long getCount() {
         return inventoryLogService.countLogs(search, from, to);

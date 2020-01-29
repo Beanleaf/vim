@@ -255,7 +255,7 @@ public class InventoryManagementController extends VimController {
 
   @GetMapping(URL_DOWNLOAD_QR)
   public ResponseEntity<byte[]> downloadQrCodes() {
-    byte[] pdfSrc = vimPdfService.getQrList(inventoryItemService.findAllActiveItems());
+    byte[] pdfSrc = vimPdfService.getQrList(inventoryItemService.findAllActiveItems(), 4);
     String filename = "qr_codes.pdf";
     return new ResponseEntity<>(pdfSrc, WebUtils.getDownloadHeaders(filename), HttpStatus.OK);
   }

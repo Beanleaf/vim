@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class VimPdfService {
 
-  private static final int numberOfColumns = 4;
   private final QrService qrService;
 
   @Autowired
@@ -32,7 +31,7 @@ public class VimPdfService {
     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
   }
 
-  public byte[] getQrList(List<InventoryItem> items) {
+  public byte[] getQrList(List<InventoryItem> items, int numberOfColumns) {
     try {
       Document document = new Document();
       ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11
 LABEL maintainer="mathias@beanleaf.be"
 VOLUME /tmp
 EXPOSE 8080

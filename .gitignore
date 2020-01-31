@@ -7,6 +7,7 @@ target/
 ### properties ###
 *-dev.properties
 *-prod.properties
+*-test.properties
 
 ### Generated CSS files ###
 *.css

@@ -33,6 +33,9 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: url
+          envFrom:
+            - configMapRef:
+                name: spring-app-config
           ports:
             - containerPort: 5000
           resources:

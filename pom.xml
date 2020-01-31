@@ -36,5 +36,8 @@
     <version>2.2.1.RELEASE</version> <!-- lookup parent from repository -->
   </parent>
 
+  <properties>
+    <java.version>11</java.version>
+  </properties>
   <version>0.0.3-SNAPSHOT</version>
 </project>

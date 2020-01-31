@@ -11,7 +11,7 @@ env:
   GITHUB_SHA: ${{ github.sha }}
   GKE_ZONE: europe-west1-b
   GKE_CLUSTER: vim-cluster
-  IMAGE: vizit-vim
+  IMAGE: vim-app
 
 jobs:
   setup-build-publish-deploy:

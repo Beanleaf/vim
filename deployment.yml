@@ -21,13 +21,18 @@ spec:
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
-                    name: db-user-pass
-                    key: db-user
+                  name: db-secrets
+                  key: username
             - name: spring.datasource.password
               valueFrom:
                 secretKeyRef:
-                    name: db-user-pass
-                    key: db-pass
+                  name: db-secrets
+                  key: password
+            - name: spring.datasource.url
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: url
           ports:
             - containerPort: 5000
           resources:

@@ -1,5 +1,6 @@
 # VIM
-
+![Java CI](https://github.com/mathiasbosman/vim/workflows/Java%20CI/badge.svg)
+![Build and Deploy to GKE](https://github.com/mathiasbosman/vim/workflows/Build%20and%20Deploy%20to%20GKE/badge.svg)
 Vizit Inventory Management
 ### Database
 

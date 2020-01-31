@@ -9,4 +9,13 @@
       <username>${env.GITHUB_USERNAME}</username>
     </server>
   </servers>
+
+  <profiles>
+    <profile>
+      <id>main-profile</id>
+      <properties>
+        <java.version>11</java.version>
+      </properties>
+    </profile>
+  </profiles>
 </settings>

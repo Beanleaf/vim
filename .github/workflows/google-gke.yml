@@ -12,7 +12,6 @@ env:
   GKE_ZONE: europe-west1-b
   GKE_CLUSTER: vim-cluster
   IMAGE: vim-app
-  EXTRA_JAVA_OPTS: ${{ secrets.JAVA_OPTS }}
 
 jobs:
   setup-build-publish-deploy:
@@ -36,7 +35,6 @@ jobs:
         run: |
           # Set up docker to authenticate
           # via gcloud command-line tool.
-          # using extra JAVA_OPTS: "$EXTRA_JAVA_OPTS"
           gcloud auth configure-docker
 
       # Cache dependencies
@@ -50,7 +48,7 @@ jobs:
 
       # Build the package
       - name: Maven package
-        run: mvn --settings mvn-settings.xml -B package -DskipTests --file pom.xml
+        run: mvn --settings settings.xml -B package -DskipTests --file pom.xml
 
       # Build the Docker image
       - name: Build

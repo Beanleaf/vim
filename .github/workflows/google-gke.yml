@@ -36,6 +36,7 @@ jobs:
         run: |
           # Set up docker to authenticate
           # via gcloud command-line tool.
+          # using extra JAVA_OPTS: "$EXTRA_JAVA_OPTS"
           gcloud auth configure-docker
 
       # Cache dependencies

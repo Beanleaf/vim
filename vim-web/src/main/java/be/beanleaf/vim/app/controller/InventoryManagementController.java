@@ -45,18 +45,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class InventoryManagementController extends VimController {
 
-  private static final String VIEW_NEW_ITEM = "/admin/inventory/newInventoryItem";
+  private static final String VIEW_NEW_ITEM = "admin/inventory/newInventoryItem";
   private static final String URL_NEW_ITEM = "/admin/inventory/new";
-  private static final String VIEW_EDIT_ITEM = "/admin/inventory/editInventoryItem";
+  private static final String VIEW_EDIT_ITEM = "admin/inventory/editInventoryItem";
   private static final String URL_EDIT_ITEM = "/admin/inventory/edit";
-  private static final String VIEW_OVERVIEW = "/admin/inventory/overview";
+  private static final String VIEW_OVERVIEW = "admin/inventory/overview";
   private static final String URL_OVERVIEW = "/admin/inventory";
   private static final String URL_DELETE_ITEM = "/admin/inventory/delete";
   private static final String URL_QR = "/admin/qrCode";
-  private static final String VIEW_QR = "/admin/inventory/qrCode";
+  private static final String VIEW_QR = "admin/inventory/qrCode";
   private static final String URL_QR_DOWNLOAD = "/admin/downloadQr";
   private static final String URL_HISTORY = "/admin/inventory/history";
-  private static final String VIEW_LOGS = "/admin/inventory/logs";
+  private static final String VIEW_LOGS = "admin/inventory/logs";
   private static final String URL_DOWNLOAD_QR = "/admin/inventory/downloadQrCodes";
 
   private final InventoryItemService inventoryItemService;

@@ -18,11 +18,6 @@ spec:
         - name: vizit-vim
           image: gcr.io/vizit-vim/vim-app:TAG
           env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              valueFrom:
-                secretKeyRef:
-                  name: app-key
-                  key: appcredentials.json
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:

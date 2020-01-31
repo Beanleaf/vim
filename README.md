@@ -26,6 +26,12 @@ To disable this (for local development) an extra spring parameter can be added:
 spring.resources.chain.strategy.content.enabled=true
 ```
 
+## Deployment
+CD to the `vim-web` module and execute below
+```
+mvn clean package appengine:deploy -Dapp.deploy.projectId=beanleaf-vizit
+```
+
 ## Resources
 ### Backend
 * [Spring Boot](https://spring.io/guides/gs/serving-web-content/)

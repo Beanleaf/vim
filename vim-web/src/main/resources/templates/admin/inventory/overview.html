@@ -13,8 +13,9 @@
     <div class="Subhead-heading" th:text="#{inventory.allItems.title}"></div>
     <div class="Subhead-actions">
       <a class="btn btn-sm"
-         th:href="@{/admin/inventory/history}"
-         th:text="#{inventory.history}">
+         th:href="@{/admin/inventory/history}">
+        <i class="octicon octicon-history"></i>
+        <span th:text="#{inventory.history}">inventory.history</span>
       </a>
       <a class="btn btn-sm" target="_blank" th:href="@{/admin/inventory/downloadQrCodes}"
          th:text="#{inventory.downloadActiveQr}">

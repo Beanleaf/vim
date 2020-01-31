@@ -14,10 +14,14 @@
     </h3>
     <p th:text="#{home.actions}">home.actions</p>
     <div class="BtnGroup my-3">
-      <a class="btn BtnGroup-item btn-large" th:href="@{/inventory/scan/in}"
-         th:text="#{inventory.actions.in.title}">Scan in</a>
-      <a class="btn BtnGroup-item btn-large" th:href="@{/inventory/scan/out}"
-         th:text="#{inventory.actions.out.title}">Scan out</a>
+      <a class="btn BtnGroup-item btn-large" th:href="@{/inventory/scan/in}">
+        <i class="octicon octicon-repo-push"></i>
+        <span th:text="#{inventory.actions.in.title}">Scan in</span>
+      </a>
+      <a class="btn BtnGroup-item btn-large" th:href="@{/inventory/scan/out}">
+        <span th:text="#{inventory.actions.out.title}"></span>
+        <i class="octicon octicon-repo-pull"></i>
+      </a>
     </div>
 
     <div sec:authorize="hasAuthority('ADMIN')">

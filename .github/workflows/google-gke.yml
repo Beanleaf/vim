@@ -48,7 +48,9 @@ jobs:
 
       # Build the package
       - name: Maven package
-        run: mvn --settings settings.xml -B package -DskipTests --file pom.xml
+        with:
+          java-version: 11
+        run: mvn --settings mvn-settings.xml -B package -DskipTests --file pom.xml
 
       # Build the Docker image
       - name: Build

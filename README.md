@@ -27,9 +27,10 @@ spring.resources.chain.strategy.content.enabled=true
 ```
 
 ## Deployment
-CD to the `vim-web` module and execute below
+CD to the `vim-web` module and execute below (either with or without promote)
 ```
 mvn clean package appengine:deploy -Dapp.deploy.projectId=beanleaf-vizit
+mvn clean package appengine:deploy -Dapp.deploy.projectId=beanleaf-vizit -Dapp.deploy.promote=false
 ```
 
 ## Resources

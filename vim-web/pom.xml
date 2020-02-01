@@ -113,6 +113,9 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <groupId>com.google.cloud.tools</groupId>
         <version>1.3.2</version>
+        <configuration>
+          <version>test</version>
+        </configuration>
       </plugin>
     </plugins>
   </build>

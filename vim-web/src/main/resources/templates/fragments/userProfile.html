@@ -18,8 +18,8 @@
     <h1 th:text="${user.getName()}"></h1>
     <h2 class="text-gray text-normal" th:text="${user.getUsername()}"></h2>
     <span class="State"
-          th:if="${user.getUserRole().equals(UserRole.ADMIN)}"
-          th:text="#{user.role.ADMIN}"></span>
+          th:if="${user.getUserRole().getId() > 1}"
+          th:text="#{user.role.__${user.getUserRole().name()}__}"></span>
   </div>
 </div>
 <nav class="UnderlineNav"

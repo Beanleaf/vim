@@ -81,11 +81,6 @@
            th:href="@{/login}"
            th:text="#{navigation.login}"
            th:unless="${activeUser}">navigation.login</a>
-
-        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
-           sec:authorize="hasAuthority('ADMIN')"
-           th:href="@{/admin/inventory/history}"
-           th:text="#{inventory.history}">inventory.history</a>
         <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
            sec:authorize="hasAuthority('ADMIN')"
            th:href="@{/admin/inventory}"

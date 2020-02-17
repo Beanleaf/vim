@@ -1,7 +1,6 @@
 package be.beanleaf.vim.app.controller;
 
-import be.beanleaf.datatable.DataTable;
-import be.beanleaf.datatable.DataTableColumn;
+import be.beanleaf.vim.app.VimDataTable;
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.dto.InventoryItemDto;
 import be.beanleaf.vim.app.services.VimPdfService;
@@ -89,7 +88,7 @@ public class InventoryManagementController extends VimController {
         cat != null ? itemCategoryService.getItemCategory(cat) : null;
     ItemStatus itemStatus = status != null ? ItemStatus.forId(status) : null;
     model.addAttribute("nameFilter", q);
-    DataTable<InventoryItem> table = new DataTable<>(page, 15) {
+    VimDataTable<InventoryItem> table = new VimDataTable<>(page, 15) {
       @Override
       public long getCount() {
         return inventoryItemService.countItems(q, itemCategory, itemStatus);
@@ -99,11 +98,6 @@ public class InventoryManagementController extends VimController {
       public List<InventoryItem> getData() {
         PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("description"));
         return inventoryItemService.findItems(q, itemCategory, itemStatus, page);
-      }
-
-      @Override
-      public List<DataTableColumn<InventoryItem>> getColumns() {
-        return null;
       }
     };
     model.addAttribute("dataTable", table);
@@ -275,7 +269,7 @@ public class InventoryManagementController extends VimController {
         StringUtils.isEmpty(dateTo) ? null
             : new DateTime(dateTo).millisOfDay().withMaximumValue().toDate();
     String search = StringUtils.isEmpty(q) ? null : "%" + q + "%";
-    DataTable<InventoryLog> logDataTable = new DataTable<>(page, 15) {
+    VimDataTable<InventoryLog> logDataTable = new VimDataTable<>(page, 15) {
       @Override
       public long getCount() {
         return inventoryLogService.countLogs(search, from, to);
@@ -286,11 +280,6 @@ public class InventoryManagementController extends VimController {
         PageRequest page = PageRequest
             .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
         return inventoryLogService.searchLogs(search, from, to, page);
-      }
-
-      @Override
-      public List<DataTableColumn<InventoryLog>> getColumns() {
-        return null;
       }
     };
     model.addAttribute("searchQ", q);

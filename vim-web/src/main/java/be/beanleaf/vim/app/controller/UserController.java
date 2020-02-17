@@ -1,7 +1,6 @@
 package be.beanleaf.vim.app.controller;
 
-import be.beanleaf.datatable.DataTable;
-import be.beanleaf.datatable.DataTableColumn;
+import be.beanleaf.vim.app.VimDataTable;
 import be.beanleaf.vim.app.VimSecurityConfiguration;
 import be.beanleaf.vim.app.VimSession;
 import be.beanleaf.vim.app.dto.ProfileDto;
@@ -50,7 +49,9 @@ public class UserController extends VimController {
   private final VimMailService vimMailService;
 
   @Autowired
-  public UserController(VimSession vimSession, UserService userService,
+  public UserController(
+      VimSession vimSession,
+      UserService userService,
       VimMailService vimMailService) {
     super(vimSession);
     this.userService = userService;
@@ -63,7 +64,7 @@ public class UserController extends VimController {
       @RequestParam(required = false) boolean inactive,
       @RequestParam(required = false) String q,
       Model model) {
-    DataTable<User> table = new DataTable<>(page, 15) {
+    VimDataTable<User> table = new VimDataTable<>(page, 15) {
       @Override
       public long getCount() {
         return userService.countUsers(q, !inactive, null);
@@ -71,14 +72,8 @@ public class UserController extends VimController {
 
       @Override
       public List<User> getData() {
-        PageRequest page = PageRequest
-            .of(getCurrentPage(), getPageSize(), Sort.by("name"));
+        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("name"));
         return userService.findUsers(q, !inactive, null, page);
-      }
-
-      @Override
-      public List<DataTableColumn<User>> getColumns() {
-        return null;
       }
     };
     model.addAttribute("dataTable", table);

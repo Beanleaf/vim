@@ -44,6 +44,11 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
+      <artifactId>commons-fileupload</artifactId>
+      <groupId>commons-fileupload</groupId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
       <artifactId>thymeleaf-extras-springsecurity5</artifactId>
       <groupId>org.thymeleaf.extras</groupId>
     </dependency>

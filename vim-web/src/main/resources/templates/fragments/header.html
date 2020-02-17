@@ -89,6 +89,10 @@
            sec:authorize="hasAuthority('ADMIN')"
            th:href="@{/admin/users}"
            th:text="#{navigation.userManagement}">navigation.userManagement</a>
+        <a class="Header-link  mr-0 mr-lg-3 py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
+           th:href="@{/admin/events/}"
+           th:if="${activeUser}"
+           th:text="#{navigation.eventManagement}">navigation.eventManagement</a>
 
         <a class="Header-link d-block d-lg-none py-2 py-lg-0 border-top border-lg-top-0 border-white-fade-15"
            th:href="@{/inventory/scan/in}" th:if="${activeUser}"
@@ -144,8 +148,8 @@
           </a></li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" th:href="@{/profile}" th:text="#{navigation.profile}">My
-              profile</a>
+            <a class="dropdown-item" th:href="@{/profile}" th:text="#{navigation.profile}">
+              My profile</a>
           </li>
         </ul>
       </details>

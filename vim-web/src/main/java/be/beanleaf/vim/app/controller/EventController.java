@@ -73,6 +73,7 @@ public class EventController extends VimController {
   @GetMapping(URL_NEW_EVENT)
   public String newEvent(Model model) {
     model.addAttribute(new EventDto());
+    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
     return VIEW_EDIT_EVENT;
   }
 

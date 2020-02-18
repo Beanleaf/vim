@@ -83,6 +83,7 @@ public class EventController extends VimController {
       Model model,
       RedirectAttributes redirectAttributes) {
     model.addAttribute(eventDto);
+    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
     if (bindingResult.hasErrors()) {
       return VIEW_EDIT_EVENT;
     }

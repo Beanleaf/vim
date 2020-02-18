@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository extends PagingAndSortingRepository<Event, Long>,
     JpaSpecificationExecutor<Event> {
 
+  Event findById(long id);
+
   List<Event> findAllByDeleted(boolean deleted, Pageable pageable);
 }

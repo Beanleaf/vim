@@ -56,18 +56,17 @@
           <div class="float-left col-8 lh-condensed py-2 px-3">
             <!--/*@thymesVar id="dataObject" type="be.beanleaf.vim.domain.entities.Event"*/-->
             <a class="link-gray-dark v-align-middle no-underline h5"
-               th:href="@{/admin/events/edit/{id}(id=${dataObject.getId()})}"
+               th:href="@{/admin/event/edit/{id}(id=${dataObject.getId()})}"
                th:text="${dataObject.getName()}">
             </a>
             <div class="mt-1 text-small text-gray"
                  th:with="planner=${dataObject.getPlannedByUser()}">
               <a class="tooltipped tooltipped-n muted-link"
                  th:attr="aria-label=#{user.email}"
-                 th:href="'mailto:'+${email}"
-                 th:if="!${#strings.isEmpty(email)}"
-                 th:with="email=${planner.getEmailAddress()}">
+                 th:href="'mailto:'+${planner.getEmailAddress()}"
+                 th:if="!${#strings.isEmpty(planner.getEmailAddress())}">
                 <i class="octicon octicon-mail"></i>
-                <span th:text="${email}"></span>
+                <span th:text="${planner.getEmailAddress()}"></span>
               </a>
               <span th:if="!${#strings.isEmpty(planner.getPhonenumber())}">
                 <i class="ml-2 octicon octicon-device-mobile"></i>

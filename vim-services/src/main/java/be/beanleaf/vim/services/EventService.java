@@ -6,6 +6,7 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.EventRepository;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,11 @@ public class EventService {
   @Autowired
   public EventService(EventRepository eventRepository) {
     this.eventRepository = eventRepository;
+  }
+
+  @Transactional(readOnly = true)
+  public Event getEvent(long id) {
+    return eventRepository.findById(id);
   }
 
   public Event createNewEvent(String name, Date startTime, Date endTime, User planner,
@@ -61,8 +67,14 @@ public class EventService {
 
   private Specification<Event> buildSpec(String name) {
     if (StringUtils.isEmpty(name)) {
-      return null; //TODO: or Specification.where(null);
+      return Specification.where(null);
     }
     return (event, cq, cb) -> cb.like(cb.upper(event.get("name")), "%" + name.toUpperCase() + "%");
+  }
+
+  @Transactional
+  public void delete(Event event) {
+    //TODO
+    throw new NotImplementedException("Not yet implemented");
   }
 }

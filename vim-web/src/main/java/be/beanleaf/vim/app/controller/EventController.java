@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,9 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class EventController extends VimController {
 
+  private static final String URL_DELETE_EVENT = "/admin/event/delete";
+  private static final String URL_EDIT_EVENT = "/admin/event/edit";
   private static final String URL_OVERVIEW = "/admin/events";
   private static final String URL_NEW_EVENT = "/admin/event/new";
-  private static final String VIEW_NEW_EVENT = "admin/events/editEvent";
+  private static final String VIEW_EDIT_EVENT = "admin/events/editEvent";
 
   private final EventService eventService;
 
@@ -64,7 +67,7 @@ public class EventController extends VimController {
   @GetMapping(URL_NEW_EVENT)
   public String newEvent(Model model) {
     model.addAttribute(new EventDto());
-    return VIEW_NEW_EVENT;
+    return VIEW_EDIT_EVENT;
   }
 
   @PostMapping(URL_NEW_EVENT)
@@ -75,7 +78,7 @@ public class EventController extends VimController {
       RedirectAttributes redirectAttributes) {
     model.addAttribute(eventDto);
     if (bindingResult.hasErrors()) {
-      return VIEW_NEW_EVENT;
+      return VIEW_EDIT_EVENT;
     }
     Event event = eventService.createNewEvent(
         eventDto.getName(), eventDto.getStartTime(), eventDto.getEndTime(),
@@ -84,5 +87,50 @@ public class EventController extends VimController {
     redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
         "notifications.events.newEventSuccess", true));
     return redirect(URL_OVERVIEW);
+  }
+
+  @GetMapping(URL_DELETE_EVENT + "/{id}")
+  public String deleteEvent(
+      @PathVariable long id,
+      RedirectAttributes redirectAttributes) {
+    Event event = eventService.getEvent(id);
+    eventService.delete(event);
+    redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
+        "notifications.events.deleteSuccess"));
+    return redirect(URL_OVERVIEW);
+  }
+
+  @GetMapping(URL_EDIT_EVENT + "/{id}")
+  public String editEvent(
+      @PathVariable long id,
+      Model model) {
+    Event event = eventService.getEvent(id);
+    model.addAttribute("originalEvent", event);
+    model.addAttribute(new EventDto(
+        event.getName(), event.getStartTime(), event.getEndTime(), event.getVenue()
+    ));
+    return VIEW_EDIT_EVENT;
+  }
+
+  @PostMapping(URL_EDIT_EVENT + "/{id}")
+  public String editEventPost(
+      @Valid @ModelAttribute EventDto eventDto,
+      BindingResult bindingResult,
+      @PathVariable long id,
+      Model model,
+      RedirectAttributes redirectAttributes
+  ) {
+    Event event = eventService.getEvent(id);
+    model.addAttribute("originalEvent", event);
+    model.addAttribute(eventDto);
+    if (!bindingResult.hasErrors()) {
+      eventService.updateEvent(event, eventDto.getName(), eventDto.getStartTime(),
+          eventDto.getEndTime(), eventDto.getVenue());
+      redirectAttributes.addFlashAttribute(
+          new ToastMessage(MessageType.SUCCESS,
+              "notifications.events.editSuccess", true));
+      return redirect(URL_OVERVIEW);
+    }
+    return VIEW_EDIT_EVENT;
   }
 }

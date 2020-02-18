@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "venues")
+@Table(name = "sales_outlets")
 public class SalesOutlet {
 
   @Id
@@ -17,6 +17,8 @@ public class SalesOutlet {
   @Column(nullable = false)
   private String name;
   private String description;
+  @Column(nullable = false)
+  private boolean deleted;
 
   public SalesOutlet() {
   }
@@ -43,5 +45,13 @@ public class SalesOutlet {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 }

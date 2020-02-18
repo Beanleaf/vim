@@ -1,1 +1,68 @@
-<!-- TODO: aanvullen -->
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg px-3 p-responsive width-full"
+     th:with="frmAction=${originalEvent == null ? '/admin/event/new' : '/admin/event/edit/' + originalEvent.getId()}"
+>
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{events.newEvent}" th:unless="${originalEvent}"></div>
+    <div class="Subhead-heading" th:if="${originalEvent}">
+      <span th:text="#{events.editEvent}"></span>
+      <span th:text="${originalEvent.getName()}"></span>
+    </div>
+  </div>
+
+  <form autocomplete="off" id="userForm" method="post" th:action="@{${frmAction}}"
+        th:object="${eventDto}">
+    <input id="userId" th:if="${originalEvent != null}" th:value="${originalEvent.getId()}"
+           type="hidden">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'errored'">
+      <dt><label for="name" th:text="#{event.name}"></label></dt>
+      <dd>
+        <input class="form-control" id="name" th:field="*{name}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{name}">First name error</dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('startTime')} ? 'errored'">
+      <dt><label for="startTime" th:text="#{event.startTime}"></label></dt>
+      <dd>
+        <input class="form-control" id="startTime" th:field="*{startTime}" type="datetime-local"/>
+      </dd>
+      <dd class="error" th:errors="*{startTime}">Start time error</dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('endTime')} ? 'errored'">
+      <dt><label for="endTime" th:text="#{event.endTime}"></label></dt>
+      <dd>
+        <input class="form-control" id="endTime" th:field="*{endTime}" type="datetime-local"/>
+      </dd>
+      <dd class="error" th:errors="*{endTime}">End time error</dd>
+    </dl>
+    <dl class="form-group">
+      <dt><label for="eventVenue" th:text="#{event.venue}"></label></dt>
+      <dd>
+        <select class="form-select" id="eventVenue">
+          <option value="">-</option>
+        </select>
+      </dd>
+    </dl>
+
+    <div class="form-actions">
+      <a class="btn btn-danger"
+         th:href="@{/admin/event/delete/{id}(id=${originalEvent.getId()})}"
+         th:if="${originalEvent}"
+         th:text="#{event.delete}">delete</a>
+      <button class="btn btn-primary float-left" th:text="#{form.save}" type="submit">form.save
+      </button>
+      <a class="btn btn-invisible float-left" th:href="@{/admin/events}"
+         th:text="#{form.cancel}">form.cancel</a>
+    </div>
+  </form>
+
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

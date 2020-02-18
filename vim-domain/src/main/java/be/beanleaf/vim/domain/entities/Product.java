@@ -27,7 +27,7 @@ public class Product {
   private ProductCategory productCategory;
   @ManyToOne(optional = false)
   private SalesOutlet salesOutlet;
-  private boolean active;
+  private boolean deleted;
 
   public Product() {
   }
@@ -96,11 +96,11 @@ public class Product {
     this.salesOutlet = salesOutlet;
   }
 
-  public boolean isActive() {
-    return active;
+  public boolean isDeleted() {
+    return deleted;
   }
 
-  public void setActive(boolean active) {
-    this.active = active;
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 }

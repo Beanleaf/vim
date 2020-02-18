@@ -4,7 +4,8 @@ create table sales_outlets
         constraint sales_outlets_pk
             primary key,
     name        varchar(255) not null,
-    description varchar(255)
+    description varchar(255),
+    deleted     bool         not null
 );
 
 create unique index sales_outlets_id_uindex
@@ -30,7 +31,7 @@ create table product_categories
         constraint product_categories_pk primary key,
     short_code  varchar(10)  not null,
     description varchar(255) not null,
-    active      bool
+    active bool not null
 );
 create unique index product_categories_id_uindex on product_categories (id);
 create unique index product_categories_short_code_uindex on product_categories (short_code);
@@ -51,7 +52,7 @@ create table products
     sales_outlet_id      int          not null
         constraint products_sales_outlets_is_fk
             references sales_outlets,
-    active               bool
+    deleted bool not null
 );
 create unique index products_id_uindex
     on products (id);
@@ -79,6 +80,29 @@ create table payments
     payment_type         int    not null
 );
 create unique index payments_id_uindex on payments (id);
+
+create table events
+(
+    id                 serial       not null
+        constraint events_pk
+            primary key,
+    name               varchar(256) not null,
+    start_time         timestamp with time zone,
+    end_time           timestamp with time zone,
+    planned_by_user_id integer      not null
+        constraint events_users_id_fk
+            references users,
+    venue_id           integer      not null
+        constraint events_sales_outlets_id_fk
+            references sales_outlets,
+    deleted            bool         not null
+);
+
+create unique index events_id_uindex
+    on events (id);
+
+create index events_planned_by_user_id_index
+    on events (planned_by_user_id);
 
 create table product_counts
 (

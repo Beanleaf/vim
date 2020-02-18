@@ -31,14 +31,14 @@ public class UserDto {
   public UserDto(String name, String username, String email,
       String phonenumber, UserRole userRole, boolean active, boolean notifyMail,
       String languageTag) {
-    this.name = name;
-    this.username = username;
-    this.email = email;
-    this.phonenumber = phonenumber;
-    this.userRole = userRole;
-    this.active = active;
-    this.notifyMail = notifyMail;
-    this.languageTag = languageTag;
+    setName(name);
+    setUsername(username);
+    setEmail(email);
+    setPhonenumber(phonenumber);
+    setUserRole(userRole);
+    setActive(active);
+    setNotifyMail(notifyMail);
+    setLanguageTag(languageTag);
   }
 
   public String getName() {

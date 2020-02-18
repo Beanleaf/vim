@@ -11,13 +11,11 @@ public class ProfileDto {
   @Email(message = "{validations.email.valid}")
   private String email;
   private String languageTag;
-  private long userId;
 
-  public ProfileDto(String name, String email, String languageTag, long userId) {
-    this.name = name;
-    this.email = email;
-    this.languageTag = languageTag;
-    this.userId = userId;
+  public ProfileDto(String name, String email, String languageTag) {
+    setName(name);
+    setEmail(email);
+    setLanguageTag(languageTag);
   }
 
   public String getName() {
@@ -42,13 +40,5 @@ public class ProfileDto {
 
   public void setLanguageTag(String languageTag) {
     this.languageTag = languageTag;
-  }
-
-  public long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(long userId) {
-    this.userId = userId;
   }
 }

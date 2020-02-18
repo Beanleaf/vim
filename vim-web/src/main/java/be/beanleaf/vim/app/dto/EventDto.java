@@ -3,14 +3,22 @@ package be.beanleaf.vim.app.dto;
 import be.beanleaf.vim.domain.entities.SalesOutlet;
 import java.util.Date;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class EventDto {
 
   @NotEmpty(message = "{validations.notEmpty.message}")
   private String name;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date startDate;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date endDate;
+  @DateTimeFormat(pattern = "HH:mm")
   private Date startTime;
+  @DateTimeFormat(pattern = "HH:mm")
   private Date endTime;
-  @NotEmpty(message = "{validations.notEmpty.message}")
+  @NotNull
   private SalesOutlet venue;
 
   public EventDto() {
@@ -19,13 +27,15 @@ public class EventDto {
 
   public EventDto(
       String name,
-      Date startTime,
-      Date endTime,
+      Date startDate,
+      Date endDate,
       SalesOutlet venue) {
-    this.name = name;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.venue = venue;
+    setName(name);
+    setStartDate(startDate);
+    setStartTime(startDate);
+    setEndDate(endDate);
+    setEndTime(endDate);
+    setVenue(venue);
   }
 
   public String getName() {
@@ -34,6 +44,22 @@ public class EventDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public Date getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
   }
 
   public Date getStartTime() {

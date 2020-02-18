@@ -26,12 +26,12 @@ public class InventoryItemDto {
   public InventoryItemDto(
       ItemCategory itemCategory, String description, boolean active, String brand, String value,
       ItemStatus status) {
-    this.itemCategory = itemCategory;
-    this.description = description;
-    this.active = active;
-    this.brand = brand;
-    this.value = value;
-    this.status = status;
+    setItemCategory(itemCategory);
+    setDescription(description);
+    setActive(active);
+    setBrand(brand);
+    setValue(value);
+    setStatus(status);
   }
 
   public ItemCategory getItemCategory() {

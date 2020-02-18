@@ -10,6 +10,4 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     JpaSpecificationExecutor<Product> {
 
   Product findProductById(Long id);
-
-  Product findProductByNameLike(String inputName);
 }

@@ -30,22 +30,30 @@
     <dl class="form-group" th:classappend="${#fields.hasErrors('startTime')} ? 'errored'">
       <dt><label for="startTime" th:text="#{event.startTime}"></label></dt>
       <dd>
-        <input class="form-control" id="startTime" th:field="*{startTime}" type="datetime-local"/>
+        <input class="form-control width-md-auto" id="startTime" th:field="*{startDate}"
+               type="date"/>
+        <input class="form-control width-sm-auto" id="startTimestamp" th:field="*{startTime}"
+               type="time"/>
       </dd>
       <dd class="error" th:errors="*{startTime}">Start time error</dd>
     </dl>
     <dl class="form-group" th:classappend="${#fields.hasErrors('endTime')} ? 'errored'">
       <dt><label for="endTime" th:text="#{event.endTime}"></label></dt>
       <dd>
-        <input class="form-control" id="endTime" th:field="*{endTime}" type="datetime-local"/>
+        <input class="form-control width-md-auto" id="endTime" th:field="*{endDate}"
+               type="date"/>
+        <input class="form-control width-sm-auto" id="endTimestamp" th:field="*{endTime}"
+               type="time"/>
       </dd>
       <dd class="error" th:errors="*{endTime}">End time error</dd>
     </dl>
     <dl class="form-group">
       <dt><label for="eventVenue" th:text="#{event.venue}"></label></dt>
       <dd>
-        <select class="form-select" id="eventVenue">
-          <option value="">-</option>
+        <select class="form-select" id="eventVenue" th:field="*{venue}">
+          <option th:each="outlet: ${saleOutlets}" th:text="${outlet.getName()}"
+                  th:value="${outlet.getId()}">-
+          </option>
         </select>
       </dd>
     </dl>

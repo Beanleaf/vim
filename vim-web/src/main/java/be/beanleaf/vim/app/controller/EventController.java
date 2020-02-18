@@ -7,6 +7,9 @@ import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.domain.entities.Event;
 import be.beanleaf.vim.services.EventService;
+import be.beanleaf.vim.services.SalesOutletService;
+import be.beanleaf.vim.utils.DateUtils;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +35,16 @@ public class EventController extends VimController {
   private static final String VIEW_EDIT_EVENT = "admin/events/editEvent";
 
   private final EventService eventService;
+  private final SalesOutletService salesOutletService;
 
   @Autowired
   public EventController(
       VimSession vimSession,
-      EventService eventService) {
+      EventService eventService,
+      SalesOutletService salesOutletService) {
     super(vimSession);
     this.eventService = eventService;
+    this.salesOutletService = salesOutletService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -106,6 +112,7 @@ public class EventController extends VimController {
       Model model) {
     Event event = eventService.getEvent(id);
     model.addAttribute("originalEvent", event);
+    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
     model.addAttribute(new EventDto(
         event.getName(), event.getStartTime(), event.getEndTime(), event.getVenue()
     ));
@@ -122,10 +129,13 @@ public class EventController extends VimController {
   ) {
     Event event = eventService.getEvent(id);
     model.addAttribute("originalEvent", event);
+    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
     model.addAttribute(eventDto);
     if (!bindingResult.hasErrors()) {
-      eventService.updateEvent(event, eventDto.getName(), eventDto.getStartTime(),
-          eventDto.getEndTime(), eventDto.getVenue());
+      Date newStartDate = DateUtils.swapTime(eventDto.getStartDate(), eventDto.getStartTime());
+      Date newEndDate = DateUtils.swapTime(eventDto.getEndDate(), eventDto.getEndTime());
+      eventService.updateEvent(event, eventDto.getName(), newStartDate,
+          newEndDate, eventDto.getVenue());
       redirectAttributes.addFlashAttribute(
           new ToastMessage(MessageType.SUCCESS,
               "notifications.events.editSuccess", true));

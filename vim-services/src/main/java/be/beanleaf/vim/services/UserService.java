@@ -12,13 +12,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Service
-public class UserService {
+public class UserService implements VimService {
 
   private final UserRepository userRepository;
   private final InventoryLogService inventoryLogService;
@@ -27,6 +29,11 @@ public class UserService {
   public UserService(UserRepository userRepository, InventoryLogService inventoryLogService) {
     this.userRepository = userRepository;
     this.inventoryLogService = inventoryLogService;
+  }
+
+  @Override
+  public Sort getDefaultSort() {
+    return Sort.by(Order.asc("name"), Order.asc("firstname"));
   }
 
   @Transactional(readOnly = true)

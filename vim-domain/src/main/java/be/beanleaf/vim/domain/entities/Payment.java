@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "payments")
-public class Payment {
+public class Payment extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,7 @@ public class Payment {
   @Column(nullable = false)
   private PaymentType paymentType;
 
-  public Payment() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

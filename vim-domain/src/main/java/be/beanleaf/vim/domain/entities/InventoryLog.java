@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "inventory_logs")
-public class InventoryLog {
+public class InventoryLog extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,7 @@ public class InventoryLog {
   private String comment;
   private boolean defect;
 
-  public InventoryLog() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

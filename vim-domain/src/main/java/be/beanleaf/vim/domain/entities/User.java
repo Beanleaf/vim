@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,7 @@ public class User {
   private String uuid;
   private String languageTag;
 
-  public User() {
-    //JPA
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

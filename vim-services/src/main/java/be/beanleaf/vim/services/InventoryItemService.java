@@ -7,7 +7,7 @@ import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryitemRepository;
 import be.beanleaf.vim.utils.DateUtils;
-import be.beanleaf.vim.utils.SpecificationUtils;
+import be.beanleaf.vim.utils.DbUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,13 +15,14 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Service
-public class InventoryItemService {
+public class InventoryItemService extends AbstractVimService {
 
   private final InventoryitemRepository inventoryitemRepository;
   private final InventoryLogService inventoryLogService;
@@ -31,6 +32,11 @@ public class InventoryItemService {
       InventoryLogService inventoryLogService) {
     this.inventoryitemRepository = inventoryitemRepository;
     this.inventoryLogService = inventoryLogService;
+  }
+
+  @Override
+  public Sort getDefaultSort() {
+    return Sort.by("description");
   }
 
   @Transactional(readOnly = true)
@@ -85,7 +91,7 @@ public class InventoryItemService {
     }
 
     specs.add((item, cq, cb) -> cb.equal(item.get("isDeleted"), false));
-    return SpecificationUtils.combineAnd(specs);
+    return DbUtils.combineAnd(specs);
   }
 
   public InventoryItem createNewItem(ItemCategory itemCategory, String description, boolean active,
@@ -140,7 +146,7 @@ public class InventoryItemService {
   }
 
   @Transactional
-  void save(InventoryItem inventoryItem) {
+  public void save(InventoryItem inventoryItem) {
     inventoryitemRepository.save(inventoryItem);
   }
 

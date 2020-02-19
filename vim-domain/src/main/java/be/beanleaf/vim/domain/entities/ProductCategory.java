@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "product_categories")
-public class ProductCategory {
+public class ProductCategory extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,7 @@ public class ProductCategory {
   private String description;
   private boolean active;
 
-  public ProductCategory() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

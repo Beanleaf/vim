@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "item_categories")
-public class ItemCategory {
+public class ItemCategory extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,7 @@ public class ItemCategory {
   private String shortCode;
   private String description;
 
-  public ItemCategory() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

@@ -96,7 +96,8 @@ public class InventoryManagementController extends VimController {
 
       @Override
       public List<InventoryItem> getData() {
-        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("description"));
+        PageRequest page = PageRequest
+            .of(getCurrentPage(), getPageSize(), inventoryItemService.getDefaultSort());
         return inventoryItemService.findItems(q, itemCategory, itemStatus, page);
       }
     };

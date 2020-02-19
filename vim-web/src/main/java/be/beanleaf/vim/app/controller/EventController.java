@@ -14,7 +14,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -60,7 +59,8 @@ public class EventController extends VimController {
 
       @Override
       public List<Event> getData() {
-        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("name"));
+        PageRequest page = PageRequest
+            .of(getCurrentPage(), getPageSize(), eventService.getDefaultSort());
         return eventService.findAllEvents(false, page);
       }
     };
@@ -102,7 +102,7 @@ public class EventController extends VimController {
       @PathVariable long id,
       RedirectAttributes redirectAttributes) {
     Event event = eventService.getEvent(id);
-    eventService.delete(event);
+//    eventService.delete(event);
     redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
         "notifications.events.deleteSuccess"));
     return redirect(URL_OVERVIEW);

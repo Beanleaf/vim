@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "product_counts")
-public class ProductCount {
+public class ProductCount extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,7 @@ public class ProductCount {
   @ManyToOne
   private Event event;
 
-  public ProductCount() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

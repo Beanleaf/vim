@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +29,7 @@ public class Product {
   private SalesOutlet salesOutlet;
   private boolean deleted;
 
-  public Product() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

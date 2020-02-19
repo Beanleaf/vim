@@ -9,13 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ItemCategoryService {
+public class ItemCategoryService implements VimService {
 
   private final ItemCategoryRepository itemCategoryRepository;
 
   @Autowired
   public ItemCategoryService(ItemCategoryRepository itemCategoryRepository) {
     this.itemCategoryRepository = itemCategoryRepository;
+  }
+
+  @Override
+  public Sort getDefaultSort() {
+    return Sort.by("description");
   }
 
   @Transactional(readOnly = true)
@@ -25,7 +30,7 @@ public class ItemCategoryService {
 
   @Transactional(readOnly = true)
   public List<ItemCategory> findAllCategories() {
-    return itemCategoryRepository.findAll(Sort.by("description"));
+    return itemCategoryRepository.findAll(getDefaultSort());
   }
 
   @Transactional(readOnly = true)

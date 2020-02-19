@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "events")
-public class Event {
+public class Event extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,7 @@ public class Event {
   private SalesOutlet venue;
   private boolean deleted;
 
-  public Event() {
-  }
-
+  @Override
   public Long getId() {
     return id;
   }

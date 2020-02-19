@@ -7,7 +7,7 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryLogRepository;
 import be.beanleaf.vim.utils.DateUtils;
-import be.beanleaf.vim.utils.SpecificationUtils;
+import be.beanleaf.vim.utils.DbUtils;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class InventoryLogService {
+public class InventoryLogService extends AbstractVimService {
 
   private final InventoryLogRepository inventoryLogRepository;
 
@@ -141,7 +141,7 @@ public class InventoryLogService {
       specs.add(Specification.where(
           (root, query, builder) -> builder.lessThanOrEqualTo(root.get("timestamp"), to)));
     }
-    return SpecificationUtils.combineAnd(specs);
+    return DbUtils.combineAnd(specs);
   }
 
   public List<User> getUniqueUsers(List<InventoryLog> logs) {

@@ -6,22 +6,27 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.EventRepository;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class EventService {
+public class EventService extends AbstractVimService {
 
   private EventRepository eventRepository;
 
   @Autowired
   public EventService(EventRepository eventRepository) {
     this.eventRepository = eventRepository;
+  }
+
+  @Override
+  public Sort getDefaultSort() {
+    return Sort.by("name", "startTime", "venue");
   }
 
   @Transactional(readOnly = true)
@@ -72,9 +77,4 @@ public class EventService {
     return (event, cq, cb) -> cb.like(cb.upper(event.get("name")), "%" + name.toUpperCase() + "%");
   }
 
-  @Transactional
-  public void delete(Event event) {
-    //TODO
-    throw new NotImplementedException("Not yet implemented");
-  }
 }

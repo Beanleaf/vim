@@ -18,7 +18,6 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -72,7 +71,8 @@ public class UserController extends VimController {
 
       @Override
       public List<User> getData() {
-        PageRequest page = PageRequest.of(getCurrentPage(), getPageSize(), Sort.by("name"));
+        PageRequest page = PageRequest
+            .of(getCurrentPage(), getPageSize(), userService.getDefaultSort());
         return userService.findUsers(q, !inactive, null, page);
       }
     };

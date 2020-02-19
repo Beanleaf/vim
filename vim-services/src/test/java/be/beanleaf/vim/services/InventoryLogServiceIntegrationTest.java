@@ -11,8 +11,7 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,16 +68,14 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void searchLogs() {
     persistTestLogs();
-    Date date = Date.from(Instant.now());
     List<InventoryLog> searchResult = inventoryLogService
-        .searchLogs("%bob%", null, date, Pageable.unpaged());
+        .searchLogs("%bob%", null, LocalDateTime.now(), Pageable.unpaged());
     assertThat(searchResult.size()).isEqualTo(2);
   }
 
   @Test
   void countLogsByDate() {
     persistTestLogs();
-    Date today = Date.from(Instant.now());
-    assertThat(inventoryLogService.countLogsByDate(today)).isEqualTo(2);
+    assertThat(inventoryLogService.countLogsByDate(LocalDateTime.now())).isEqualTo(2);
   }
 }

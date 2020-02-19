@@ -7,10 +7,8 @@ import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.services.InventoryLogService;
 import java.text.DateFormat;
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +29,15 @@ public class HomeController extends VimController {
   }
 
   private void addRecentLogsGraph(Model model) {
-    Instant today = Instant.now();
     ChartDto chartDto = new ChartDto("bar", true);
     ChartDataSetDto logsDataSet = new ChartDataSetDto("");
     DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, getLocale());
+    LocalDateTime today = LocalDateTime.now();
     for (int i = 0; i <= 30; i++) {
-      Date date = Date.from(today.minus(Duration.ofDays(i)));
+      LocalDateTime date = today.minusDays(i);
       long count = inventoryLogService.countLogsByDate(date);
       if (count > 0) {
-        chartDto.addLabel(df.format(date));
+        chartDto.addLabel(date.toLocalDate().toString());
         logsDataSet.addData(count, "#b392f0", "#6f42c1");
       }
     }

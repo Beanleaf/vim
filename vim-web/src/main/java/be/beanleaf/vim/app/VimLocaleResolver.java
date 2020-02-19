@@ -19,6 +19,7 @@ public class VimLocaleResolver extends SessionLocaleResolver implements WebMvcCo
   private VimSession vimSession;
 
   @Override
+  @SuppressWarnings("NullableProblems")
   public Locale resolveLocale(HttpServletRequest request) {
     User activeUser = vimSession.getActiveUser();
     if (activeUser != null) {

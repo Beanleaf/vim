@@ -8,8 +8,8 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryitemRepository;
 import be.beanleaf.vim.utils.DateUtils;
 import be.beanleaf.vim.utils.DbUtils;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
@@ -105,7 +105,7 @@ public class InventoryItemService extends AbstractVimService {
     item.setCurrentStatus(ItemStatus.AVAILABLE);
     item.setBrand(brand);
     item.setDeleted(false);
-    item.setAddedOn(new Date());
+    item.setAddedOn(LocalDateTime.now());
     return item;
   }
 
@@ -141,7 +141,7 @@ public class InventoryItemService extends AbstractVimService {
   }
 
   @Transactional
-  public Double findValueOnDate(Date date) {
+  public Double findValueOnDate(LocalDateTime date) {
     return inventoryitemRepository.findValueOnDate(DateUtils.atEndOfDay(date));
   }
 

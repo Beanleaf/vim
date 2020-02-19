@@ -6,7 +6,7 @@ import java.util.List;
 public class ChartDto {
 
   private List<ChartDataSetDto> datasets;
-  private List<String> labels = new ArrayList<>();
+  private final List<String> labels = new ArrayList<>();
   private boolean beginYAtZero;
   private String type;
   private boolean show0Values;

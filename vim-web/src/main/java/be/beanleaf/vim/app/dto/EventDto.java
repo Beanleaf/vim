@@ -1,40 +1,38 @@
 package be.beanleaf.vim.app.dto;
 
 import be.beanleaf.vim.domain.entities.SalesOutlet;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class EventDto {
 
   @NotEmpty(message = "{validations.notEmpty.message}")
   private String name;
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private Date startDate;
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private Date endDate;
-  @DateTimeFormat(pattern = "HH:mm")
-  private Date startTime;
-  @DateTimeFormat(pattern = "HH:mm")
-  private Date endTime;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private LocalTime startTime;
+  private LocalTime endTime;
   @NotNull
   private SalesOutlet venue;
 
+  //TODO: BAH BAH BAH
   public EventDto() {
     this(null, null, null, null);
   }
 
   public EventDto(
       String name,
-      Date startDate,
-      Date endDate,
+      LocalDateTime startDate,
+      LocalDateTime endDate,
       SalesOutlet venue) {
     setName(name);
-    setStartDate(startDate);
-    setStartTime(startDate);
-    setEndDate(endDate);
-    setEndTime(endDate);
+    setStartDate(startDate.toLocalDate());
+    setStartTime(startDate.toLocalTime());
+    setEndDate(endDate.toLocalDate());
+    setEndTime(endDate.toLocalTime());
     setVenue(venue);
   }
 
@@ -46,35 +44,35 @@ public class EventDto {
     this.name = name;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
-  public Date getStartTime() {
+  public LocalTime getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(Date startTime) {
+  public void setStartTime(LocalTime startTime) {
     this.startTime = startTime;
   }
 
-  public Date getEndTime() {
+  public LocalTime getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(Date endTime) {
+  public void setEndTime(LocalTime endTime) {
     this.endTime = endTime;
   }
 

@@ -4,7 +4,7 @@ import be.beanleaf.vim.domain.entities.Event;
 import be.beanleaf.vim.domain.entities.SalesOutlet;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.EventRepository;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,8 @@ public class EventService extends AbstractVimService {
     return eventRepository.findById(id);
   }
 
-  public Event createNewEvent(String name, Date startTime, Date endTime, User planner,
+  public Event createNewEvent(String name, LocalDateTime startTime, LocalDateTime endTime,
+      User planner,
       SalesOutlet venue) {
     Event event = new Event();
     event.setName(name);
@@ -47,7 +48,7 @@ public class EventService extends AbstractVimService {
   }
 
   @Transactional
-  public void updateEvent(Event event, String name, Date startTime, Date endTime,
+  public void updateEvent(Event event, String name, LocalDateTime startTime, LocalDateTime endTime,
       SalesOutlet venue) {
     event.setName(name);
     event.setVenue(venue);

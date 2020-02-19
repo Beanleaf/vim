@@ -17,17 +17,16 @@ import be.beanleaf.vim.services.InventoryItemService;
 import be.beanleaf.vim.services.InventoryLogService;
 import be.beanleaf.vim.services.ItemCategoryService;
 import be.beanleaf.vim.services.QrService;
+import be.beanleaf.vim.utils.DateUtils;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -263,12 +262,12 @@ public class InventoryManagementController extends VimController {
       @RequestParam(required = false) String dateTo,
       Model model) {
 
-    final Date from =
+    final LocalDateTime from =
         StringUtils.isEmpty(dateFrom) ? null
-            : new DateTime(dateFrom).withTimeAtStartOfDay().toDate();
-    final Date to =
+            : DateUtils.atStartOfDay(LocalDateTime.parse(dateFrom));
+    final LocalDateTime to =
         StringUtils.isEmpty(dateTo) ? null
-            : new DateTime(dateTo).millisOfDay().withMaximumValue().toDate();
+            : DateUtils.atEndOfDay(LocalDateTime.parse(dateTo));
     String search = StringUtils.isEmpty(q) ? null : "%" + q + "%";
     VimDataTable<InventoryLog> logDataTable = new VimDataTable<>(page, 15) {
       @Override
@@ -279,7 +278,7 @@ public class InventoryManagementController extends VimController {
       @Override
       public List<InventoryLog> getData() {
         PageRequest page = PageRequest
-            .of(getCurrentPage(), getPageSize(), Sort.by("timestamp").descending());
+            .of(getCurrentPage(), getPageSize(), inventoryLogService.getDefaultSort());
         return inventoryLogService.searchLogs(search, from, to, page);
       }
     };

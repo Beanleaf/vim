@@ -4,7 +4,7 @@ import be.beanleaf.vim.domain.InventoryDirection;
 import be.beanleaf.vim.domain.entities.InventoryItem;
 import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,7 +20,7 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
   List<InventoryLog> findAllByInventoryItem(InventoryItem inventoryItem, Pageable pageable);
 
   List<InventoryLog> findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(
-      User user, Date startDate, Date endDate, InventoryDirection direction);
+      User user, LocalDateTime startDate, LocalDateTime endDate, InventoryDirection direction);
 
   List<InventoryLog> findAllByUser(User user, Pageable pageable);
 
@@ -28,5 +28,5 @@ public interface InventoryLogRepository extends PagingAndSortingRepository<Inven
 
   long countAllByUser(User user);
 
-  long countAllByTimestampBetween(Date startDate, Date endDate);
+  long countAllByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -8,8 +8,7 @@ import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.domain.entities.Event;
 import be.beanleaf.vim.services.EventService;
 import be.beanleaf.vim.services.SalesOutletService;
-import be.beanleaf.vim.utils.DateUtils;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ public class EventController extends VimController {
   private static final String URL_OVERVIEW = "/admin/events";
   private static final String URL_NEW_EVENT = "/admin/event/new";
   private static final String VIEW_EDIT_EVENT = "admin/events/editEvent";
+  private static final String VIEW_OVERVIEW = "admin/events/overview";
 
   private final EventService eventService;
   private final SalesOutletService salesOutletService;
@@ -67,7 +67,7 @@ public class EventController extends VimController {
 
     model.addAttribute("dataTable", table);
     model.addAttribute("nameFilter", q);
-    return "admin/events/overview";
+    return VIEW_OVERVIEW;
   }
 
   @GetMapping(URL_NEW_EVENT)
@@ -88,8 +88,11 @@ public class EventController extends VimController {
     if (bindingResult.hasErrors()) {
       return VIEW_EDIT_EVENT;
     }
+
+    LocalDateTime startTime = LocalDateTime.of(eventDto.getStartDate(), eventDto.getStartTime());
+    LocalDateTime endTime = LocalDateTime.of(eventDto.getEndDate(), eventDto.getEndTime());
     Event event = eventService.createNewEvent(
-        eventDto.getName(), eventDto.getStartTime(), eventDto.getEndTime(),
+        eventDto.getName(), startTime, endTime,
         getVimSession().getActiveUser(), eventDto.getVenue());
     eventService.save(event);
     redirectAttributes.addFlashAttribute(new ToastMessage(MessageType.SUCCESS,
@@ -134,8 +137,9 @@ public class EventController extends VimController {
     model.addAttribute("saleOutlets", salesOutletService.findAll(false));
     model.addAttribute(eventDto);
     if (!bindingResult.hasErrors()) {
-      Date newStartDate = DateUtils.swapTime(eventDto.getStartDate(), eventDto.getStartTime());
-      Date newEndDate = DateUtils.swapTime(eventDto.getEndDate(), eventDto.getEndTime());
+      LocalDateTime newStartDate = LocalDateTime
+          .of(eventDto.getStartDate(), eventDto.getStartTime());
+      LocalDateTime newEndDate = LocalDateTime.of(eventDto.getEndDate(), eventDto.getEndTime());
       eventService.updateEvent(event, eventDto.getName(), newStartDate,
           newEndDate, eventDto.getVenue());
       redirectAttributes.addFlashAttribute(

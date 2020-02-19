@@ -1,6 +1,6 @@
 package be.beanleaf.vim.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +19,7 @@ public class SalesTransaction extends AbstractVimEntity {
   @ManyToOne(optional = false)
   private SalesOutlet outlet;
   @Column(nullable = false)
-  private Date timestamp;
+  private LocalDateTime timestamp;
   @Column(nullable = false)
   private Double wholesalePrice;
   @Column(nullable = false)
@@ -42,11 +42,11 @@ public class SalesTransaction extends AbstractVimEntity {
     this.outlet = outlet;
   }
 
-  public Date getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

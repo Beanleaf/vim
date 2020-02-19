@@ -8,15 +8,15 @@ import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.repository.InventoryLogRepository;
 import be.beanleaf.vim.utils.DateUtils;
 import be.beanleaf.vim.utils.DbUtils;
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.criteria.Join;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +29,11 @@ public class InventoryLogService extends AbstractVimService {
   @Autowired
   public InventoryLogService(InventoryLogRepository inventoryLogRepository) {
     this.inventoryLogRepository = inventoryLogRepository;
+  }
+
+  @Override
+  public Sort getDefaultSort() {
+    return Sort.by(Order.desc("timestamp"));
   }
 
   @Transactional(readOnly = true)
@@ -53,7 +58,7 @@ public class InventoryLogService extends AbstractVimService {
     log.setInventoryItem(inventoryItem);
     log.setInventoryDirection(direction);
     log.setUser(user);
-    log.setTimestamp(new Date());
+    log.setTimestamp(LocalDateTime.now());
     log.setDefect(false);
     inventoryItem.setCurrentStatus(status);
     return inventoryLogRepository.save(log);
@@ -66,11 +71,11 @@ public class InventoryLogService extends AbstractVimService {
 
   @Transactional(readOnly = true)
   public List<InventoryLog> findRecentLogsForUser(User user, InventoryDirection direction) {
-    Instant now = Instant.now();
-    Instant yesterday = now.minus(Duration.ofHours(24));
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime yesterday = now.minusHours(24);
     return inventoryLogRepository
         .findAllByUserAndTimestampBetweenAndInventoryDirectionOrderByTimestampDesc(
-            user, Date.from(yesterday), Date.from(now), direction
+            user, yesterday, now, direction
         );
   }
 
@@ -92,33 +97,25 @@ public class InventoryLogService extends AbstractVimService {
   }
 
   @Transactional(readOnly = true)
-  public long countLogsByInventoryItem(InventoryItem inventoryItem) {
-    return inventoryLogRepository.countAllByInventoryItem(inventoryItem);
-  }
-
-  @Transactional(readOnly = true)
-  public long countLogsByUser(User user) {
-    return inventoryLogRepository.countAllByUser(user);
-  }
-
-  @Transactional(readOnly = true)
-  public long countLogsByDate(Date date) {
+  public long countLogsByDate(LocalDateTime date) {
     return inventoryLogRepository
         .countAllByTimestampBetween(DateUtils.atStartOfDay(date), DateUtils.atEndOfDay(date));
   }
 
   @Transactional(readOnly = true)
-  public long countLogs(String search, Date from, Date to) {
+  public long countLogs(String search, LocalDateTime from, LocalDateTime to) {
     return inventoryLogRepository.count(buildSearchSpecification(search, from, to));
   }
 
   @Transactional(readOnly = true)
-  public List<InventoryLog> searchLogs(String search, Date from, Date to, Pageable page) {
+  public List<InventoryLog> searchLogs(String search, LocalDateTime from, LocalDateTime to,
+      Pageable page) {
     return inventoryLogRepository.findAll(buildSearchSpecification(search, from, to), page)
         .getContent();
   }
 
-  private Specification<InventoryLog> buildSearchSpecification(String search, Date from, Date to) {
+  private Specification<InventoryLog> buildSearchSpecification(String search, LocalDateTime from,
+      LocalDateTime to) {
     List<Specification<InventoryLog>> specs = new ArrayList<>();
     if (!StringUtils.isEmpty(search)) {
       String upperCased = search.toUpperCase();

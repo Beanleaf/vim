@@ -12,6 +12,7 @@ class QrServiceTest extends AbstractTest {
   private QrService qrService;
 
   @Test
+  @SuppressWarnings("CatchMayIgnoreException")
   void generateQr() {
     assertThat(qrService.generateQr("input", "png", 50, 50)).isNotNull();
     try {

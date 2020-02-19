@@ -1,6 +1,6 @@
 package be.beanleaf.vim.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +18,8 @@ public class Event extends AbstractVimEntity {
   private Long id;
   @Column(nullable = false)
   private String name;
-  private Date startTime;
-  private Date endTime;
+  private LocalDateTime startTime;
+  private LocalDateTime endTime;
   @ManyToOne(optional = false)
   private User plannedByUser;
   @ManyToOne(optional = false)
@@ -43,19 +43,19 @@ public class Event extends AbstractVimEntity {
     this.name = name;
   }
 
-  public Date getStartTime() {
+  public LocalDateTime getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(Date startTime) {
+  public void setStartTime(LocalDateTime startTime) {
     this.startTime = startTime;
   }
 
-  public Date getEndTime() {
+  public LocalDateTime getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(Date endTime) {
+  public void setEndTime(LocalDateTime endTime) {
     this.endTime = endTime;
   }
 

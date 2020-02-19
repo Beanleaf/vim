@@ -1,6 +1,6 @@
 package be.beanleaf.vim.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +17,7 @@ public class ProductCount extends AbstractVimEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(nullable = false)
-  private Date timestamp;
+  private LocalDateTime timestamp;
   @ManyToOne(optional = false)
   private User user;
   private Integer crateCount;
@@ -35,11 +35,11 @@ public class ProductCount extends AbstractVimEntity {
     this.id = id;
   }
 
-  public Date getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

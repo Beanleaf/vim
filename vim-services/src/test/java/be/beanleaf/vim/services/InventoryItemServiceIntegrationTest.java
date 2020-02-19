@@ -10,9 +10,8 @@ import be.beanleaf.vim.fixtures.InventoryItemFixture;
 import be.beanleaf.vim.fixtures.InventoryLogFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -89,9 +88,9 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     store(item2);
     InventoryItem item3 = InventoryItemFixture.newInventoryItem("uuid3", itemCategory, user);
     item3.setValue(10.00);
-    item3.setAddedOn(DateUtils.addDays(new Date(), 5));
+    item3.setAddedOn(LocalDateTime.now().plusDays(5));
     store(item3);
-    assertThat(inventoryItemService.findValueOnDate(new Date())).isEqualTo(75.50);
+    assertThat(inventoryItemService.findValueOnDate(LocalDateTime.now())).isEqualTo(75.50);
   }
 
   @Test

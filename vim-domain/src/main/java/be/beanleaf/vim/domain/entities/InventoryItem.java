@@ -1,7 +1,7 @@
 package be.beanleaf.vim.domain.entities;
 
 import be.beanleaf.vim.domain.ItemStatus;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +32,7 @@ public class InventoryItem extends AbstractVimEntity {
   private Double value;
   private boolean isDeleted;
   @Column(nullable = false)
-  private Date addedOn;
+  private LocalDateTime addedOn;
 
   @Override
   public Long getId() {
@@ -115,11 +115,11 @@ public class InventoryItem extends AbstractVimEntity {
     isDeleted = deleted;
   }
 
-  public Date getAddedOn() {
+  public LocalDateTime getAddedOn() {
     return addedOn;
   }
 
-  public void setAddedOn(Date addedOn) {
+  public void setAddedOn(LocalDateTime addedOn) {
     this.addedOn = addedOn;
   }
 }

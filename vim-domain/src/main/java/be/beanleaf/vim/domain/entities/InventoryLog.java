@@ -1,7 +1,7 @@
 package be.beanleaf.vim.domain.entities;
 
 import be.beanleaf.vim.domain.InventoryDirection;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,7 @@ public class InventoryLog extends AbstractVimEntity {
   @ManyToOne(optional = false)
   private User user;
   @Column(nullable = false)
-  private Date timestamp;
+  private LocalDateTime timestamp;
   @Column(nullable = false)
   private InventoryDirection inventoryDirection;
   private String comment;
@@ -53,11 +53,11 @@ public class InventoryLog extends AbstractVimEntity {
     this.user = user;
   }
 
-  public Date getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

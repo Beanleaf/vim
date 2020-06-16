@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  vim-database:
+    build:
+      context: ../
+      dockerfile: .docker/database.dockerfile
+    container_name: vim_db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

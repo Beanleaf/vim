@@ -10,3 +10,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  vim-maildev:
+    image: maildev/maildev
+    ports:
+      - "9025:25"
+      - "9080:80"

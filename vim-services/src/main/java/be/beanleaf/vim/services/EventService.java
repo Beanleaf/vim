@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EventService extends AbstractVimService {
 
-  private EventRepository eventRepository;
+  private final EventRepository eventRepository;
 
   @Autowired
   public EventService(EventRepository eventRepository) {
@@ -54,6 +54,16 @@ public class EventService extends AbstractVimService {
     event.setVenue(venue);
     event.setEndTime(endTime);
     event.setStartTime(startTime);
+  }
+
+  @Transactional
+  public void delete(long id) {
+    delete(getEvent(id));
+  }
+
+  @Transactional
+  public void delete(Event event) {
+    eventRepository.delete(event);
   }
 
   @Transactional

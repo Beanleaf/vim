@@ -1,5 +1,8 @@
 package be.beanleaf.vim.app;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +12,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.Formatter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -44,6 +48,21 @@ public class VimWebApp extends SpringBootServletInitializer {
   @Bean
   public LocaleResolver localeResolver() {
     return new VimLocaleResolver();
+  }
+
+  @Bean
+  public Formatter<LocalDate> localDateFormatter() {
+    return new Formatter<>() {
+      @Override
+      public LocalDate parse(String s, Locale locale) {
+        return LocalDate.parse(s, DateTimeFormatter.ISO_DATE);
+      }
+
+      @Override
+      public String print(LocalDate localDate, Locale locale) {
+        return DateTimeFormatter.ISO_DATE.format(localDate);
+      }
+    };
   }
 
   public static void main(String[] args) {

@@ -31,7 +31,7 @@
           </span>
             <div class="mt-1 text-small text-gray">
               <i class="octicon octicon-clock"></i>
-              <span th:text="${#dates.format(log.getTimestamp(), 'dd MMMM YYYY, HH:mm')}"></span>
+              <span th:text="${log.getTimestamp()}"></span>
               <span class="tooltipped tooltipped-n d-none d-lg-inline"
                     th:attr="aria-label=#{inventory.item.brand}"
                     th:unless="${#strings.isEmpty(item.getBrand())}">

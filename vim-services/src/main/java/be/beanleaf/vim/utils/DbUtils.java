@@ -4,7 +4,10 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
-public abstract class DbUtils {
+public final class DbUtils {
+
+  private DbUtils() {
+  }
 
   public static <T> Specification<T> combineAnd(List<Specification<T>> input) {
     Specification<T> result = Specification.where(null);

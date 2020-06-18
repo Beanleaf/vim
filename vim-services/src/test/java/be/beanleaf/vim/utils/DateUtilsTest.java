@@ -2,6 +2,7 @@ package be.beanleaf.vim.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -32,5 +33,11 @@ class DateUtilsTest {
     assertThat(endOfDay.getHour()).isEqualTo(23);
     assertThat(endOfDay.getMinute()).isEqualTo(59);
     assertThat(endOfDay.getSecond()).isEqualTo(59);
+  }
+
+  @Test
+  void setHour() {
+    LocalDate date = LocalDate.now();
+    assertThat(DateUtils.setHour(date, 15).getHour()).isEqualTo(15);
   }
 }

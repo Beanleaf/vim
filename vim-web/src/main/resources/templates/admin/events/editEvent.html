@@ -27,27 +27,31 @@
       </dd>
       <dd class="error" th:errors="*{name}">First name error</dd>
     </dl>
-    <dl class="form-group" th:classappend="${#fields.hasErrors('startTime')} ? 'errored'">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('startDate')} ? 'errored'">
       <dt><label for="startTime" th:text="#{event.startTime}"></label></dt>
       <dd>
         <input class="form-control width-md-auto" id="startTime" th:field="*{startDate}"
                type="date"/>
-        <input class="form-control width-sm-auto" id="startTimestamp" th:field="*{startTime}"
-               type="time"/>
+        <select class="form-select" id="startHour" th:field="*{startHour}">
+          <option th:each="i: ${#numbers.sequence(0, 24)}"
+                  th:text="${#numbers.formatInteger(i, 2) + ' h'}" th:value="${i}"></option>
+        </select>
       </dd>
-      <dd class="error" th:errors="*{startTime}">Start time error</dd>
+      <dd class="error" th:errors="*{startDate}">Start time error</dd>
     </dl>
-    <dl class="form-group" th:classappend="${#fields.hasErrors('endTime')} ? 'errored'">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('endDate')} ? 'errored'">
       <dt><label for="endTime" th:text="#{event.endTime}"></label></dt>
       <dd>
         <input class="form-control width-md-auto" id="endTime" th:field="*{endDate}"
                type="date"/>
-        <input class="form-control width-sm-auto" id="endTimestamp" th:field="*{endTime}"
-               type="time"/>
+        <select class="form-select" id="endHour" th:field="*{endHour}">
+          <option th:each="i: ${#numbers.sequence(0, 24)}"
+                  th:text="${#numbers.formatInteger(i, 2) + ' h'}" th:value="${i}"></option>
+        </select>
       </dd>
-      <dd class="error" th:errors="*{endTime}">End time error</dd>
+      <dd class="error" th:errors="*{endDate}">End time error</dd>
     </dl>
-    <dl class="form-group">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('venue')} ? 'errored'">
       <dt><label for="eventVenue" th:text="#{event.venue}"></label></dt>
       <dd>
         <select class="form-select" id="eventVenue" th:field="*{venue}">
@@ -56,6 +60,7 @@
           </option>
         </select>
       </dd>
+      <dd class="error" th:errors="*{venue}">Venue error</dd>
     </dl>
 
     <div class="form-actions">

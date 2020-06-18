@@ -6,9 +6,12 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class FeedbackUtils {
+public final class FeedbackUtils {
 
   private final static Logger logger = LoggerFactory.getLogger(FeedbackUtils.class);
+
+  private FeedbackUtils() {
+  }
 
   public static Feedbackmessage createMessage(MessageType type, String message,
       boolean isValidation) {

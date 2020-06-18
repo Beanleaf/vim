@@ -4,8 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("vim.app")
+@ConfigurationProperties(VimProperties.PREFIX)
 public class VimProperties {
+
+  public static final String PREFIX = "vim.app";
 
   /**
    * Catch mail address for all outgoing mail

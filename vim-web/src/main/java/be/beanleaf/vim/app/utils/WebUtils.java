@@ -6,9 +6,12 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 
-public abstract class WebUtils {
+public final class WebUtils {
 
   private static final String gravatarBaseUrl = "https://www.gravatar.com/avatar/";
+
+  private WebUtils() {
+  }
 
   public static String getGravatarImgSrc(String email, int size, String deault) {
     String hash = DigestUtils.md5Hex(email);

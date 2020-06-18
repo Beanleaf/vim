@@ -1,9 +1,13 @@
 package be.beanleaf.vim.utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public abstract class DateUtils {
+public final class DateUtils {
+
+  private DateUtils() {
+  }
 
   public static LocalDateTime atEndOfMonth(LocalDateTime date) {
     LocalDateTime localDateTime = atEndOfDay(date);
@@ -11,10 +15,15 @@ public abstract class DateUtils {
   }
 
   public static LocalDateTime atStartOfDay(LocalDateTime date) {
-    return date.with(LocalTime.MIN);
+    LocalDate asDate = date.toLocalDate();
+    return asDate.atStartOfDay();
   }
 
   public static LocalDateTime atEndOfDay(LocalDateTime date) {
     return date.with(LocalTime.MAX);
+  }
+
+  public static LocalDateTime setHour(LocalDate date, Integer hour) {
+    return hour != null ? date.atTime(hour, 0) : date.atStartOfDay();
   }
 }

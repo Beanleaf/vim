@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="history-time mx-2">
-          <span th:text="${#dates.format(log.getTimestamp(), 'dd/MM/YYYY, HH:mm')}"></span>
+          <span th:text="${log.getTimestamp()}"></span>
         </div>
 
       </li>

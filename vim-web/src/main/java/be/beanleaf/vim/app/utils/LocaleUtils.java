@@ -7,7 +7,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 
-public abstract class LocaleUtils {
+public final class LocaleUtils {
+
+  private LocaleUtils() {
+  }
 
   public static Locale getUserLocale(User user) {
     if (user != null) {

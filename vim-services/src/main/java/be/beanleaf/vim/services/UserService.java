@@ -33,7 +33,7 @@ public class UserService implements VimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by(Order.asc("name"), Order.asc("firstname"));
+    return Sort.by(Order.asc("name"), Order.asc("name"));
   }
 
   @Transactional(readOnly = true)

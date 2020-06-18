@@ -121,12 +121,12 @@ public class InventoryItemService extends AbstractVimService {
   }
 
   @Transactional
-  public void delete(InventoryItem inventoryitem) {
-    List<InventoryLog> logs = inventoryLogService.findForItem(inventoryitem, Pageable.unpaged());
+  public void delete(InventoryItem inventoryItem) {
+    List<InventoryLog> logs = inventoryLogService.findForItem(inventoryItem, Pageable.unpaged());
     if (!CollectionUtils.isEmpty(logs)) {
       inventoryLogService.deleteLogs(logs);
     }
-    inventoryitemRepository.delete(inventoryitem);
+    inventoryitemRepository.delete(inventoryItem);
   }
 
   @Transactional

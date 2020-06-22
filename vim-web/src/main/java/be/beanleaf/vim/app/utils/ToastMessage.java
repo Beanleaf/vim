@@ -2,9 +2,9 @@ package be.beanleaf.vim.app.utils;
 
 public class ToastMessage {
 
-  private MessageType type;
-  private String messagePropertie;
-  private boolean isCloseable;
+  private final MessageType type;
+  private final String messagePropertie;
+  private final boolean isCloseable;
 
   public ToastMessage(MessageType type, String messagePropertie, boolean isCloseable) {
     this.type = type;

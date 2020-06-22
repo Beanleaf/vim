@@ -2,11 +2,11 @@ package be.beanleaf.vim.app.utils;
 
 public class Feedbackmessage {
 
-  private MessageType type;
-  private String message;
-  private String stackTrace;
+  private final MessageType type;
+  private final String message;
+  private final String stackTrace;
+  private final boolean isValidation;
   private boolean isCloseable;
-  private boolean isValidation;
 
   public Feedbackmessage(MessageType type, String message, String stackTrace, boolean isValidation,
       boolean isCloseable) {

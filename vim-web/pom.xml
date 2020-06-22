@@ -87,7 +87,22 @@
       <groupId>org.springframework.boot</groupId>
       <optional>true</optional>
     </dependency>
-
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>junit-vintage-engine</artifactId>
+          <groupId>org.junit.vintage</groupId>
+        </exclusion>
+      </exclusions>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
+      <scope>test</scope>
+      <version>1.4.200</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

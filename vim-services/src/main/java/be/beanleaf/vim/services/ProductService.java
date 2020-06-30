@@ -19,7 +19,7 @@ public class ProductService extends AbstractVimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by("description");
+    return Product.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)

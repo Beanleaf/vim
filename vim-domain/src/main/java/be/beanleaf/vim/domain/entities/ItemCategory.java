@@ -6,10 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
 
 @Entity
 @Table(name = "item_categories")
 public class ItemCategory extends AbstractVimEntity {
+
+  public static final Sort DEFAULT_SORT = Sort.by("description");
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

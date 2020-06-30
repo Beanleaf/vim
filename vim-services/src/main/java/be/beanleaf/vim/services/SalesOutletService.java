@@ -25,6 +25,6 @@ public class SalesOutletService extends AbstractVimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by("description");
+    return SalesOutlet.DEFAULT_SORT;
   }
 }

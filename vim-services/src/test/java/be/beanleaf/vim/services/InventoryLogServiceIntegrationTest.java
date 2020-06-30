@@ -9,13 +9,18 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.ItemCategory;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.fixtures.InventoryItemFixture;
+import be.beanleaf.vim.fixtures.InventoryLogFixture;
 import be.beanleaf.vim.fixtures.ItemCategoryFixture;
 import be.beanleaf.vim.fixtures.UserFixture;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
 
@@ -23,6 +28,40 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
   InventoryLogService inventoryLogService;
   @Autowired
   InventoryItemService inventoryItemService;
+
+  @Test
+  void getDefaultSort() {
+    assertThat(inventoryLogService.getDefaultSort()).isEqualTo(Sort.by(Order.desc("timestamp")));
+  }
+
+  @Test
+  void getInventoryLog() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
+    InventoryLog log = InventoryLogFixture.newInventoryLog(item, user);
+    createAndStore(log);
+    assertThat(inventoryLogService.getInventoryLog(log.getId())).isNotNull();
+  }
+
+  @Test
+  void logIn() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND));
+    inventoryLogService.logIn(item, user);
+  }
+
+  @Test
+  void logOut() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = createAndStore(
+        InventoryItemFixture.newInventoryItem("uuid", itemCategory, user, ItemStatus.AVAILABLE));
+    inventoryLogService.logOut(item, user);
+  }
 
   @Test
   void log() {
@@ -38,6 +77,12 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(log.getUser().getUuid()).isEqualTo("uuid");
     assertThat(inventoryItemService.getInventoryItem(item.getId()).getCurrentStatus()).isEqualTo(
         ItemStatus.AVAILABLE);
+  }
+
+  @Test
+  void findRecentLogsForUser() {
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    assertThat(inventoryLogService.findRecentLogsForUser(user, InventoryDirection.IN)).isEmpty();
   }
 
   @Test
@@ -74,8 +119,32 @@ class InventoryLogServiceIntegrationTest extends ServiceIntegrationTest {
   }
 
   @Test
+  void countLogs() {
+    persistTestLogs();
+    LocalDateTime from = LocalDateTime.now().minusDays(1);
+    LocalDateTime to = LocalDateTime.now().plusDays(1);
+    assertThat(inventoryLogService.countLogs(null, from, to)).isEqualTo(2);
+  }
+
+  @Test
   void countLogsByDate() {
     persistTestLogs();
     assertThat(inventoryLogService.countLogsByDate(LocalDateTime.now())).isEqualTo(2);
+  }
+
+  @Test
+  void getUniqueusers() {
+    assertThat(inventoryLogService.getUniqueUsers(Lists.emptyList())).isEmpty();
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = UserFixture.newUser("bob", "uuid", "mail");
+    User user2 = UserFixture.newUser("bob", "uuid", "mail");
+    InventoryItem item = InventoryItemFixture
+        .newInventoryItem("uuid", itemCategory, user, ItemStatus.LEND);
+    assertThat(inventoryLogService.getUniqueUsers(
+        Arrays.asList(
+            InventoryLogFixture.newInventoryLog(item, user),
+            InventoryLogFixture.newInventoryLog(item, user2)
+        )
+    )).hasSize(2);
   }
 }

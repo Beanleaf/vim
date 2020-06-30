@@ -7,10 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
 
 @Entity
 @Table(name = "products")
 public class Product extends AbstractVimEntity {
+
+  public static final Sort DEFAULT_SORT = Sort.by("description");
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,7 @@ public class Product extends AbstractVimEntity {
   private boolean inCrates;
   @ManyToOne(optional = false)
   private ProductCategory productCategory;
-  @ManyToOne(optional = false)
+  @ManyToOne
   private SalesOutlet salesOutlet;
   private boolean deleted;
 

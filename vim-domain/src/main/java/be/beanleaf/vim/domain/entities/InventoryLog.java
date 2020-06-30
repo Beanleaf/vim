@@ -9,10 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 @Entity
 @Table(name = "inventory_logs")
 public class InventoryLog extends AbstractVimEntity {
+
+  public static final Sort DEFAULT_SORT = Sort.by(Order.desc("timestamp"));
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class InventoryLogService extends AbstractVimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by(Order.desc("timestamp"));
+    return InventoryLog.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)

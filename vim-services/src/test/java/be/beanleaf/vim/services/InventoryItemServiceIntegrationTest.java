@@ -24,6 +24,11 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
   InventoryItemService inventoryItemService;
 
   @Test
+  void getDefaultSort() {
+    assertThat(inventoryItemService.getDefaultSort()).isEqualTo(Sort.by("description"));
+  }
+
+  @Test
   void findAll() {
     ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
     User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
@@ -58,6 +63,28 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
         .isEqualTo(0);
     assertThat(inventoryItemService.findItems("descr", null, null, Pageable.unpaged()).size())
         .isEqualTo(1);
+  }
+
+  @Test
+  void findByUuidOrId() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", itemCategory, user);
+    createAndStore(item);
+    assertThat(inventoryItemService.findByUuidOrId("wrong")).isNull();
+    assertThat(inventoryItemService.findByUuidOrId("uuid")).isNotNull();
+    assertThat(inventoryItemService.findByUuidOrId(item.getId().toString())).isNotNull();
+  }
+
+  @Test
+  void countItems() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory, user));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user));
+    assertThat(inventoryItemService.countItems(null, null, null)).isEqualTo(2);
+    assertThat(inventoryItemService.countItems(null, itemCategory, null)).isEqualTo(2);
+    assertThat(inventoryItemService.countItems("wrong", null, null)).isZero();
   }
 
   @Test
@@ -118,4 +145,30 @@ class InventoryItemServiceIntegrationTest extends ServiceIntegrationTest {
     assertThat(inventoryItemService.getShortCode(item)).isEqualTo("CODE_DESCR");
   }
 
+  @Test
+  void updateItem() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    InventoryItem item = InventoryItemFixture.newInventoryItem("uuid", itemCategory, user);
+    createAndStore(item);
+    inventoryItemService
+        .updateItem(item, itemCategory, "new description", false, null, null, ItemStatus.DEFECT);
+    assertThat(item.getDescription()).isEqualTo("new description");
+    assertThat(item.isActive()).isFalse();
+    assertThat(item.getBrand()).isNull();
+    assertThat(item.getValue()).isNull();
+    assertThat(item.getCurrentStatus()).isEqualTo(ItemStatus.DEFECT);
+  }
+
+  @Test
+  void findAllActiveItems() {
+    ItemCategory itemCategory = createAndStore(ItemCategoryFixture.newItemCategory("code"));
+    User user = createAndStore(UserFixture.newUser("bob", "uuid", "mail"));
+    createAndStore(InventoryItemFixture.newInventoryItem("uuid", itemCategory, user));
+    assertThat(inventoryItemService.findAllActiveItems()).isEmpty();
+    InventoryItem item2 = InventoryItemFixture.newInventoryItem("uuid2", itemCategory, user);
+    item2.setActive(true);
+    createAndStore(item2);
+    assertThat(inventoryItemService.findAllActiveItems()).hasSize(1);
+  }
 }

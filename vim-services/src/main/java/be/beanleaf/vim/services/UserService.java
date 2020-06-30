@@ -5,6 +5,7 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
+import be.beanleaf.vim.utils.MailUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,7 @@ public class UserService implements VimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by(Order.asc("name"), Order.asc("name"));
+    return User.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)
@@ -113,6 +113,9 @@ public class UserService implements VimService {
 
   public User createNewUser(boolean active, String emailAddress, String name,
       String phonenumber, UserRole role, String username, String languageTag) {
+    if (!MailUtils.isValidEmailAddress(emailAddress)) {
+      throw new ValidationException("error.email.invalid");
+    }
     User user = new User();
     user.setActive(active);
     user.setEmailAddress(emailAddress);
@@ -128,13 +131,13 @@ public class UserService implements VimService {
   @Transactional
   public void updateUser(User user, String email, boolean active, String name,
       String phonenumber, UserRole userRole, String username, String languageTag) {
-    user.setEmailAddress(email);
     user.setActive(active);
     user.setName(name);
     user.setPhonenumber(phonenumber);
     user.setUserRole(userRole);
     user.setUsername(username);
     user.setLanguageTag(languageTag);
+    updateEmail(user, email);
   }
 
   @Transactional(readOnly = true)
@@ -168,6 +171,13 @@ public class UserService implements VimService {
 
   @Transactional
   public void updateEmail(User user, String email) {
+    User search = findUserByEmailAddress(email);
+    if (search != null && search != user) {
+      throw new ValidationException("error.email.exists");
+    }
+    if (!MailUtils.isValidEmailAddress(email)) {
+      throw new ValidationException("error.email.invalid");
+    }
     user.setEmailAddress(email);
   }
 

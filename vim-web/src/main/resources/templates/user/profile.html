@@ -25,7 +25,7 @@
         <dt><label for="email"><span th:text="#{user.email}"></span>:</label></dt>
         <dd>
           <input class="form-control emailCheck" id="email" name="email" th:field="*{email}"
-                 type="text"/>
+                 type="email"/>
           <div class="note" th:text="#{profile.emailNote}"></div>
         </dd>
         <dd class="success" th:text="#{users.emailAvailable}"></dd>

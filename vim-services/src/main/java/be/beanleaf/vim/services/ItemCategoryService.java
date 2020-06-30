@@ -20,7 +20,7 @@ public class ItemCategoryService implements VimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by("description");
+    return ItemCategory.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)

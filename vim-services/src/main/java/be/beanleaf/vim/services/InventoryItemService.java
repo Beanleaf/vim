@@ -36,7 +36,7 @@ public class InventoryItemService extends AbstractVimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by("description");
+    return InventoryItem.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)
@@ -45,7 +45,7 @@ public class InventoryItemService extends AbstractVimService {
     if (byUuid != null) {
       return byUuid;
     }
-    return getInventoryItem(Long.parseLong(input));
+    return StringUtils.isNumeric(input) ? getInventoryItem(Long.parseLong(input)) : null;
   }
 
   @Transactional(readOnly = true)

@@ -42,7 +42,7 @@
     <dl class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'errored'">
       <dt><label for="email" th:text="#{user.email}"></label></dt>
       <dd>
-        <input class="form-control emailCheck" id="email" th:field="*{email}" type="text"/>
+        <input class="form-control emailCheck" id="email" th:field="*{email}" type="email"/>
       </dd>
       <dd class="success" th:text="#{users.emailAvailable}"></dd>
       <dd class="error" th:errors="*{email}"></dd>

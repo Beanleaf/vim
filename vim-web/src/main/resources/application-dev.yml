@@ -1,0 +1,29 @@
+management:
+  endpoints:
+    enabled-by-default: false
+
+  endpoint:
+    health:
+      enabled: false
+
+vim:
+  app:
+    catch-mail-address: catch-all@vim.com
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vim
+    username: vim
+    password: vim
+  flyway:
+    user: vim_dba
+    password: vim_dba
+  mail:
+    host: localhost
+    port: 9025
+    username: no-reply@vim.com
+    password: no-reply
+logging:
+  level:
+    ROOT: WARN
+    be: TRACE
+    org.hibernate.SQL: DEBUG

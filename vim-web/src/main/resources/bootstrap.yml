@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: vim
+logging:
+  file:
+    path: /var/log/${spring.application.name}
+---
+spring:
+  profiles: dev
+logging:
+  file:
+    path: "@project.basedir@/target"
+---
+spring:
+  profiles: test
+logging:
+  file:
+    path: "@project.basedir@/target"

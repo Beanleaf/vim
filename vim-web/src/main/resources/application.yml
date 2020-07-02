@@ -1,0 +1,46 @@
+spring:
+  mvc:
+    locale: en
+    locale-resolver: fixed
+  messages:
+    encoding: UTF-8
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://google/vim_staging?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=vizit-vim:europe-west1:vizit-vim-pgsql
+    username:
+    password:
+  mail:
+    host:
+    port:
+    username:
+    password:
+    properties:
+      mail.smtp:
+        auth:
+        starttls.enable:
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
+  thymeleaf:
+    cache: false
+  jpa:
+    open-in-view: true
+  flyway:
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    table: _flyway_history
+server:
+  servlet:
+    session:
+      timeout: 30m
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+logging:
+  level:
+    ROOT: ERROR
+    be:
+      INFO

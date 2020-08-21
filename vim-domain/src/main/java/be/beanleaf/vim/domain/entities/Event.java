@@ -8,10 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
 
 @Entity
 @Table(name = "events")
 public class Event extends AbstractVimEntity {
+
+  public static final Sort DEFAULT_SORT = Sort.by("name", "startTime", "venue.name");
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

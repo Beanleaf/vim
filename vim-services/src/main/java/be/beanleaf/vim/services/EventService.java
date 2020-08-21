@@ -26,7 +26,7 @@ public class EventService extends AbstractVimService {
 
   @Override
   public Sort getDefaultSort() {
-    return Sort.by("name", "startTime", "venue.name");
+    return Event.DEFAULT_SORT;
   }
 
   @Transactional(readOnly = true)

@@ -1,5 +1,9 @@
 package be.beanleaf.vim.app.utils;
 
+import be.beanleaf.vim.domain.UserRole;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.CacheControl;
@@ -39,5 +43,11 @@ public final class WebUtils {
     headers
         .setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
     return headers;
+  }
+
+  public static List<UserRole> getAllInheritedRoles(UserRole role) {
+    return Arrays
+        .stream(UserRole.values()).filter((userRole -> userRole.getId() <= role.getId()))
+        .collect(Collectors.toList());
   }
 }

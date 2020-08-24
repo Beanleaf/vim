@@ -1,10 +1,11 @@
 package be.beanleaf.vim.app;
 
+import be.beanleaf.vim.app.utils.WebUtils;
 import be.beanleaf.vim.domain.UserRole;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.services.UserService;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,9 +29,10 @@ public class VimAuthenticationProvider implements AuthenticationProvider {
 
   private UsernamePasswordAuthenticationToken createUserAuthenticationToken(User user) {
     UserRole userRole = user.getUserRole();
-    List<SimpleGrantedAuthority> authorities = userRole != null ?
-        Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().name()))
-        : null;
+    List<UserRole> allInheritedRoles = WebUtils.getAllInheritedRoles(userRole);
+    List<SimpleGrantedAuthority> authorities = allInheritedRoles.stream().map(
+        (role) -> new SimpleGrantedAuthority(role.name())
+    ).collect(Collectors.toList());
     return new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorities);
   }
 
@@ -44,7 +46,7 @@ public class VimAuthenticationProvider implements AuthenticationProvider {
     User user = userService.login(input);
     if (user != null) {
       vimSession.setActiveUser(user);
-      return createUserAuthenticationToken(vimSession.getActiveUser());
+      return createUserAuthenticationToken(user);
     }
     throw new BadCredentialsException("Authentication failed!");
   }

@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "product_counts")
-public class ProductCount extends AbstractVimEntity {
+@Table(name = "stock_counts")
+public class StockCount extends AbstractVimEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package be.beanleaf.vim.app.dto;
 
-import be.beanleaf.vim.domain.entities.SalesOutlet;
+import be.beanleaf.vim.domain.entities.Venue;
 import be.beanleaf.vim.utils.DateUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class EventDto {
   private Integer startHour;
   private Integer endHour;
   @NotNull(message = "{validations.choice}")
-  private SalesOutlet venue;
+  private Venue venue;
 
   public EventDto() {
   }
@@ -27,7 +27,7 @@ public class EventDto {
       String name,
       LocalDateTime startDate,
       LocalDateTime endDate,
-      SalesOutlet venue) {
+      Venue venue) {
     setName(name);
     setStartDate(startDate.toLocalDate());
     setStartHour(startDate.getHour());
@@ -60,11 +60,11 @@ public class EventDto {
     this.endDate = endDate;
   }
 
-  public SalesOutlet getVenue() {
+  public Venue getVenue() {
     return venue;
   }
 
-  public void setVenue(SalesOutlet venue) {
+  public void setVenue(Venue venue) {
     this.venue = venue;
   }
 

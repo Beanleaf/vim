@@ -8,16 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
 
 @Entity
 @Table(name = "sales_transactions")
 public class SalesTransaction extends AbstractVimEntity {
 
+  public static final Sort DEFAULT_SORT = Sort.by("timestamp");
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @ManyToOne(optional = false)
-  private SalesOutlet outlet;
+  private Venue outlet;
   @Column(nullable = false)
   private LocalDateTime timestamp;
   @Column(nullable = false)
@@ -34,11 +37,11 @@ public class SalesTransaction extends AbstractVimEntity {
     this.id = id;
   }
 
-  public SalesOutlet getOutlet() {
+  public Venue getOutlet() {
     return outlet;
   }
 
-  public void setOutlet(SalesOutlet outlet) {
+  public void setOutlet(Venue outlet) {
     this.outlet = outlet;
   }
 

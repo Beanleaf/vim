@@ -5,6 +5,7 @@ import be.beanleaf.vim.domain.entities.InventoryLog;
 import be.beanleaf.vim.domain.entities.User;
 import be.beanleaf.vim.domain.utilities.ValidationException;
 import be.beanleaf.vim.repository.UserRepository;
+import be.beanleaf.vim.utils.DbUtils;
 import be.beanleaf.vim.utils.MailUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,14 +90,7 @@ public class UserService implements VimService {
       specs.add((user, cq, cb) -> cb.equal(user.get("userRole"), userRole));
     }
     specs.add((user, cq, cb) -> cb.equal(user.get("active"), active));
-
-    Specification<User> resultSpec = Specification.where(null);
-    for (Specification<User> spec : specs) {
-      if (resultSpec != null) {
-        resultSpec = resultSpec.and(spec);
-      }
-    }
-    return resultSpec;
+    return DbUtils.combineAnd(specs);
   }
 
   @Transactional

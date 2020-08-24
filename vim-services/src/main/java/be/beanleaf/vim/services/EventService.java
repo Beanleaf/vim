@@ -1,18 +1,20 @@
 package be.beanleaf.vim.services;
 
 import be.beanleaf.vim.domain.entities.Event;
-import be.beanleaf.vim.domain.entities.SalesOutlet;
 import be.beanleaf.vim.domain.entities.User;
+import be.beanleaf.vim.domain.entities.Venue;
 import be.beanleaf.vim.repository.EventRepository;
+import be.beanleaf.vim.utils.DbUtils;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 public class EventService extends AbstractVimService {
@@ -36,7 +38,7 @@ public class EventService extends AbstractVimService {
 
   public Event createNewEvent(String name, LocalDateTime startTime, LocalDateTime endTime,
       User planner,
-      SalesOutlet venue) {
+      Venue venue) {
     Event event = new Event();
     event.setName(name);
     event.setVenue(venue);
@@ -49,7 +51,7 @@ public class EventService extends AbstractVimService {
 
   @Transactional
   public void updateEvent(Event event, String name, LocalDateTime startTime, LocalDateTime endTime,
-      SalesOutlet venue) {
+      Venue venue) {
     event.setName(name);
     event.setVenue(venue);
     event.setEndTime(endTime);
@@ -77,15 +79,42 @@ public class EventService extends AbstractVimService {
   }
 
   @Transactional(readOnly = true)
-  public long countEvents(String q) {
-    return eventRepository.count(buildSpec(q));
+  public long countCurrentOrFutureEvents(Venue outlet) {
+    return eventRepository.count(buildSpec(null, outlet, false));
   }
 
-  private Specification<Event> buildSpec(String name) {
-    if (StringUtils.isEmpty(name)) {
-      return Specification.where(null);
+  @Transactional(readOnly = true)
+  public long countEvents(String q) {
+    return eventRepository.count(buildSpec(q, null, null));
+  }
+
+  private Specification<Event> buildSpec(String name, Venue venue, Boolean hasFinished) {
+
+    List<Specification<Event>> specs = new ArrayList<>();
+    if (!StringUtils.isEmpty(name)) {
+      specs.add(
+          (event, query, builder) -> builder.like(
+              builder.upper(event.get("name")), "%" + name.toUpperCase() + "%"
+          )
+      );
     }
-    return (event, cq, cb) -> cb.like(cb.upper(event.get("name")), "%" + name.toUpperCase() + "%");
+    if (venue != null) {
+      specs.add(Specification.where(
+          (event, query, builder) -> builder.equal(event.get("venue"), venue)
+      ));
+    }
+    if (hasFinished == Boolean.TRUE) {
+      specs.add(Specification.where(
+          (event, query, builder) -> builder.lessThan(event.get("endTime"), LocalDateTime.now())
+      ));
+    }
+    if (hasFinished == Boolean.FALSE) {
+      specs.add(Specification.where(
+          (event, query, builder) -> builder
+              .greaterThan(event.get("startTime"), LocalDateTime.now())
+      ));
+    }
+    return DbUtils.combineAnd(specs);
   }
 
 }

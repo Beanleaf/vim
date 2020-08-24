@@ -7,7 +7,7 @@ import be.beanleaf.vim.app.utils.MessageType;
 import be.beanleaf.vim.app.utils.ToastMessage;
 import be.beanleaf.vim.domain.entities.Event;
 import be.beanleaf.vim.services.EventService;
-import be.beanleaf.vim.services.SalesOutletService;
+import be.beanleaf.vim.services.VenueService;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +33,16 @@ public class EventController extends VimController {
   private static final String VIEW_OVERVIEW = "admin/events/overview";
 
   private final EventService eventService;
-  private final SalesOutletService salesOutletService;
+  private final VenueService venueService;
 
   @Autowired
   public EventController(
       VimSession vimSession,
       EventService eventService,
-      SalesOutletService salesOutletService) {
+      VenueService venueService) {
     super(vimSession);
     this.eventService = eventService;
-    this.salesOutletService = salesOutletService;
+    this.venueService = venueService;
   }
 
   @GetMapping(URL_OVERVIEW)
@@ -72,7 +72,7 @@ public class EventController extends VimController {
   @GetMapping(URL_NEW_EVENT)
   public String newEvent(Model model) {
     model.addAttribute(new EventDto());
-    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
+    model.addAttribute("saleOutlets", venueService.findAll(false));
     return VIEW_EDIT_EVENT;
   }
 
@@ -83,7 +83,7 @@ public class EventController extends VimController {
       Model model,
       RedirectAttributes redirectAttributes) {
     model.addAttribute(eventDto);
-    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
+    model.addAttribute("saleOutlets", venueService.findAll(false));
     if (bindingResult.hasErrors()) {
       return VIEW_EDIT_EVENT;
     }
@@ -113,7 +113,7 @@ public class EventController extends VimController {
       Model model) {
     Event event = eventService.getEvent(id);
     model.addAttribute("originalEvent", event);
-    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
+    model.addAttribute("saleOutlets", venueService.findAll(false));
     model.addAttribute(new EventDto(
         event.getName(), event.getStartTime(), event.getEndTime(), event.getVenue()
     ));
@@ -130,7 +130,7 @@ public class EventController extends VimController {
   ) {
     Event event = eventService.getEvent(id);
     model.addAttribute("originalEvent", event);
-    model.addAttribute("saleOutlets", salesOutletService.findAll(false));
+    model.addAttribute("saleOutlets", venueService.findAll(false));
     model.addAttribute(eventDto);
     if (!bindingResult.hasErrors()) {
       eventService.updateEvent(event, eventDto.getName(), eventDto.getActualStartDate(),

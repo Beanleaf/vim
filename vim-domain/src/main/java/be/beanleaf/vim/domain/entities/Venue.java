@@ -9,10 +9,11 @@ import javax.persistence.Table;
 import org.springframework.data.domain.Sort;
 
 @Entity
-@Table(name = "sales_outlets")
-public class SalesOutlet extends AbstractVimEntity {
+@Table(name = "venues")
+public class Venue extends AbstractVimEntity {
 
-  public static final Sort DEFAULT_SORT = Sort.by("description");
+  public static final String DEFAULT_SORT_FIELD = "name";
+  public static final Sort DEFAULT_SORT = Sort.by(DEFAULT_SORT_FIELD);
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

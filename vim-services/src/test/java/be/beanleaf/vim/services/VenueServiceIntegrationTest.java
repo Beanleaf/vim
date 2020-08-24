@@ -14,7 +14,7 @@ class VenueServiceIntegrationTest extends ServiceIntegrationTest {
 
   @Test
   void getDefaultSort() {
-    assertThat(venueService.getDefaultSort()).isEqualTo(Sort.by("description"));
+    assertThat(venueService.getDefaultSort()).isEqualTo(Sort.by("name"));
   }
 
   @Test

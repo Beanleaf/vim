@@ -10,4 +10,8 @@ public abstract class VenueFixture {
     venue.setDeleted(false);
     return venue;
   }
+
+  public static Venue newVenue() {
+    return newVenue("outlet");
+  }
 }

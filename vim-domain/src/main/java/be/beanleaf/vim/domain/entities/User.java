@@ -14,7 +14,7 @@ import org.springframework.data.domain.Sort.Order;
 @Table(name = "users")
 public class User extends AbstractVimEntity {
 
-  public static final Sort DEFAULT_SORT = Sort.by(Order.asc("name"), Order.asc("name"));
+  public static final Sort DEFAULT_SORT = Sort.by(Order.asc("name"));
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

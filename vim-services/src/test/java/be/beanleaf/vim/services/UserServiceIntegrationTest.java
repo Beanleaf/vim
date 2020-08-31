@@ -28,7 +28,7 @@ class UserServiceIntegrationTest extends ServiceIntegrationTest {
   @Test
   void getDefaultSort() {
     assertThat(userService.getDefaultSort())
-        .isEqualTo(Sort.by(Order.asc("name"), Order.asc("name")));
+        .isEqualTo(Sort.by(Order.asc("name")));
   }
 
   @Test

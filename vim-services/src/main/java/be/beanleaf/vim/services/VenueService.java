@@ -39,6 +39,11 @@ public class VenueService extends AbstractVimService {
     return venueRepository.findAllByDeleted(deleted, page);
   }
 
+  @Transactional(readOnly = true)
+  public List<Venue> findVenues(String q, boolean deleted, Pageable page) {
+    return venueRepository.findAll(buildSpec(q, deleted), page).getContent();
+  }
+
   @Override
   public Sort getDefaultSort() {
     return Venue.DEFAULT_SORT;
@@ -90,10 +95,10 @@ public class VenueService extends AbstractVimService {
 
   @Transactional(readOnly = true)
   public long countVenues(String q) {
-    return venueRepository.count(buildSpec(q));
+    return venueRepository.count(buildSpec(q, null));
   }
 
-  private Specification<Venue> buildSpec(String q) {
+  private Specification<Venue> buildSpec(String q, Boolean deleted) {
     List<Specification<Venue>> specs = new ArrayList<>();
     if (!StringUtils.isEmpty(q)) {
       String searchString = "%" + q.toUpperCase() + "%";
@@ -102,6 +107,9 @@ public class VenueService extends AbstractVimService {
       qSpec = qSpec
           .or((venue, cq, cb) -> cb.like(cb.upper(venue.get("description")), searchString));
       specs.add(qSpec);
+    }
+    if (deleted != null) {
+      specs.add((venue, cq, cb) -> cb.equal(venue.get("deleted"), deleted));
     }
 
     return DbUtils.combineAnd(specs);

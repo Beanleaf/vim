@@ -57,7 +57,7 @@ public class VenueController extends VimController {
       public List<Venue> getData() {
         PageRequest page = PageRequest
             .of(getCurrentPage(), getPageSize(), venueService.getDefaultSort());
-        return venueService.findAll(false, page);
+        return venueService.findVenues(q, false, page);
       }
     };
 

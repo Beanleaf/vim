@@ -74,8 +74,8 @@ public class EventService extends AbstractVimService {
   }
 
   @Transactional(readOnly = true)
-  public List<Event> findAllEvents(boolean includeDeleted, Pageable page) {
-    return eventRepository.findAllByDeleted(includeDeleted, page);
+  public List<Event> findAllEvents(boolean deleted, Pageable page) {
+    return eventRepository.findAllByDeleted(deleted, page);
   }
 
   @Transactional(readOnly = true)
@@ -111,7 +111,7 @@ public class EventService extends AbstractVimService {
     if (hasFinished == Boolean.FALSE) {
       specs.add(Specification.where(
           (event, query, builder) -> builder
-              .greaterThan(event.get("startTime"), LocalDateTime.now())
+              .greaterThan(event.get("endTime"), LocalDateTime.now())
       ));
     }
     return DbUtils.combineAnd(specs);

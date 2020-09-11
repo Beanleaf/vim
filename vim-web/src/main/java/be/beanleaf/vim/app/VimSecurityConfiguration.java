@@ -25,7 +25,7 @@ public class VimSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http
         .authorizeRequests()
           .antMatchers("/admin/*").hasAuthority(UserRole.ADMIN.name())
           .antMatchers("/inventory/*").hasAnyAuthority(getAllPossibleUserRoles())

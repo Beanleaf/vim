@@ -6,7 +6,7 @@ public enum UserRole implements IntegerEnum {
   VOLUNTEER(2),
   STANDARD(1);
 
-  private int id;
+  private final int id;
 
   UserRole(int id) {
     this.id = id;
@@ -16,5 +16,4 @@ public enum UserRole implements IntegerEnum {
   public int getId() {
     return id;
   }
-
 }

@@ -8,10 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.domain.Sort;
 
 @Entity
 @Table(name = "events")
 public class Event extends AbstractVimEntity {
+
+  public static final Sort DEFAULT_SORT = Sort
+      .by("startTime", "name", "venue." + Venue.DEFAULT_SORT_FIELD);
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +27,7 @@ public class Event extends AbstractVimEntity {
   @ManyToOne(optional = false)
   private User plannedByUser;
   @ManyToOne(optional = false)
-  private SalesOutlet venue;
+  private Venue venue;
   private boolean deleted;
 
   @Override
@@ -67,11 +71,11 @@ public class Event extends AbstractVimEntity {
     this.plannedByUser = plannedByUser;
   }
 
-  public SalesOutlet getVenue() {
+  public Venue getVenue() {
     return venue;
   }
 
-  public void setVenue(SalesOutlet venue) {
+  public void setVenue(Venue venue) {
     this.venue = venue;
   }
 

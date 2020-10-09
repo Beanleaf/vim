@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html th:lang="${htmlLang}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: htmlHead"></head>
+<body>
+<section th:replace="fragments/header :: baseElements"></section>
+<header th:replace="fragments/header :: topBar"></header>
+
+<div class="container-lg px-3 p-responsive width-full"
+     th:with="frmAction=${originalVenue == null ? '/admin/venue/new' : '/admin/venue/edit/' + originalVenue.getId()}"
+>
+  <div class="Subhead pb-1 my-2">
+    <div class="Subhead-heading" th:text="#{events.newEvent}" th:unless="${originalVenue}"></div>
+    <div class="Subhead-heading" th:if="${originalVenue}">
+      <span th:text="#{venues.editVenue}"></span>
+      <span th:text="${originalVenue.getName()}"></span>
+    </div>
+  </div>
+
+  <form autocomplete="off" id="userForm" method="post" th:action="@{${frmAction}}"
+        th:object="${venueDto}">
+    <input id="userId" th:if="${originalVenue != null}" th:value="${originalVenue.getId()}"
+           type="hidden">
+    <dl class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'errored'">
+      <dt><label for="name" th:text="#{venue.name}"></label></dt>
+      <dd>
+        <input class="form-control" id="name" th:field="*{name}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{name}">First name error</dd>
+    </dl>
+    <dl class="form-group" th:classappend="${#fields.hasErrors('description')} ? 'errored'">
+      <dt><label for="name" th:text="#{venue.description}"></label></dt>
+      <dd>
+        <input class="form-control" id="description" th:field="*{description}" type="text"/>
+      </dd>
+      <dd class="error" th:errors="*{description}">Description error</dd>
+    </dl>
+
+    <div class="form-actions">
+      <a class="btn btn-danger"
+         th:href="@{/admin/venue/delete/{id}(id=${originalVenue.getId()})}"
+         th:if="${originalVenue}"
+         th:text="#{venue.delete}">delete</a>
+      <button class="btn btn-primary float-left" th:text="#{form.save}" type="submit">form.save
+      </button>
+      <a class="btn btn-invisible float-left" th:href="@{/admin/venues}"
+         th:text="#{form.cancel}">form.cancel</a>
+    </div>
+  </form>
+
+</div>
+</body>
+<footer th:replace="fragments/footer :: footer"></footer>
+</html>

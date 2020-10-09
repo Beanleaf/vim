@@ -6,7 +6,7 @@ alter table inventory_items
     alter column added_on type timestamp using added_on::timestamp;
 alter table inventory_logs
     alter column timestamp type timestamp using timestamp::timestamp;
-alter table product_counts
+alter table stock_counts
     alter column timestamp type timestamp using timestamp::timestamp;
 alter table sales_transactions
     alter column timestamp type timestamp using timestamp::timestamp;

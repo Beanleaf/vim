@@ -1,15 +1,15 @@
-create table sales_outlets
+create table venues
 (
     id          serial       not null
-        constraint sales_outlets_pk
+        constraint venues_pk
             primary key,
     name        varchar(255) not null,
     description varchar(255),
     deleted     bool         not null
 );
 
-create unique index sales_outlets_id_uindex
-    on sales_outlets (id);
+create unique index venues_id_uindex
+    on venues (id);
 
 create table sales_transactions
 (
@@ -17,7 +17,7 @@ create table sales_transactions
         constraint sales_transactions_pk
             primary key,
     outlet_id       int         not null
-        constraint sales_transactions_sales_outlets_id_fk references sales_outlets,
+        constraint sales_transactions_venues_id_fk references venues,
     timestamp       timestamptz not null,
     wholesale_price float8      not null
 );
@@ -50,25 +50,12 @@ create table products
         constraint products_product_categories_id_fk
             references product_categories,
     sales_outlet_id      int          not null
-        constraint products_sales_outlets_is_fk
-            references sales_outlets,
-    deleted bool not null
+        constraint products_venues_is_fk
+            references venues,
+    deleted              bool         not null
 );
 create unique index products_id_uindex
     on products (id);
-
-create table products_in_transaction
-(
-    id                   serial not null
-        constraint products_in_transaction_pk
-            primary key,
-    product_id           int    not null
-        constraint products_in_transaction_products_id_fk references products,
-    sales_transaction_id int    not null
-        constraint products_in_transaction_sales_transactions_id_fk references sales_transactions,
-    amount               int    not null
-);
-create unique index products_in_transaction_id_uindex on products_in_transaction (id);
 
 create table payments
 (
@@ -93,8 +80,8 @@ create table events
         constraint events_users_id_fk
             references users,
     venue_id           integer      not null
-        constraint events_sales_outlets_id_fk
-            references sales_outlets,
+        constraint events_venues_id_fk
+            references venues,
     deleted            bool         not null
 );
 
@@ -104,17 +91,17 @@ create unique index events_id_uindex
 create index events_planned_by_user_id_index
     on events (planned_by_user_id);
 
-create table product_counts
+create table stock_counts
 (
     id          serial      not null
-        constraint product_counts_pk primary key,
+        constraint stock_counts_pk primary key,
     timestamp   timestamptz not null,
     user_id     int         not null
-        constraint product_counts_users_id_fk references users,
+        constraint stock_counts_users_id_fk references users,
     crate_count int,
     loose_count int,
     confirmed   bool,
     event_id    int
-        constraint product_counts_events_id_fk references events
+        constraint stock_counts_events_id_fk references events
 );
-create unique index product_counts_id_uindex on product_counts (id);
+create unique index stock_counts_id_uindex on stock_counts (id);

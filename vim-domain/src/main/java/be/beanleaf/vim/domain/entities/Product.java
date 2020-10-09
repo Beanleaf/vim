@@ -29,7 +29,7 @@ public class Product extends AbstractVimEntity {
   @ManyToOne(optional = false)
   private ProductCategory productCategory;
   @ManyToOne
-  private SalesOutlet salesOutlet;
+  private Venue venue;
   private boolean deleted;
 
   @Override
@@ -89,12 +89,12 @@ public class Product extends AbstractVimEntity {
     this.productCategory = productCategory;
   }
 
-  public SalesOutlet getSalesOutlet() {
-    return salesOutlet;
+  public Venue getVenue() {
+    return venue;
   }
 
-  public void setSalesOutlet(SalesOutlet salesOutlet) {
-    this.salesOutlet = salesOutlet;
+  public void setVenue(Venue venue) {
+    this.venue = venue;
   }
 
   public boolean isDeleted() {

@@ -204,6 +204,7 @@ public class UserController extends VimController {
 
   @GetMapping(URL_PROFILE)
   public String profile(Model model) {
+    getVimSession().refreshUser();
     User user = getVimSession().getActiveUser();
     model.addAttribute(
         new ProfileDto(user.getName(), user.getEmailAddress(), user.getLanguageTag()));

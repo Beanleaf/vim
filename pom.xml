@@ -24,7 +24,7 @@
     <module>vim-domain</module>
     <module>vim-persistence</module>
     <module>vim-services</module>
-    <module>vim-web</module>
+    <module>vim-app</module>
   </modules>
 
   <packaging>pom</packaging>
@@ -40,4 +40,18 @@
     <java.version>11</java.version>
   </properties>
   <version>0.0.3-SNAPSHOT</version>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+    <repository>
+      <id>github-datatable</id>
+      <name>GitHub Beanleaf Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/Beanleaf/datatable</url>
+    </repository>
+  </repositories>
 </project>
